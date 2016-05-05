@@ -29,7 +29,6 @@ function seed(files) {
 		code.push(new Code(codeObj));
 	})
 	var docs = users.concat(code);
-	console.log(docs)
 	return Promise.map(docs, function (doc) {
 		return doc.save();
 	});

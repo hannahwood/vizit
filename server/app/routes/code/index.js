@@ -48,7 +48,7 @@ router.delete('/:codeId', Auth.assertAdminOrSelf, function(req, res, next) {
 });
 
 // remove one revision
-router.put('/:codeId/:revisionIndex', Auth.assertAdminOrSelf, function(req, res, next) {
+router.delete('/:codeId/:revisionIndex', Auth.assertAdminOrSelf, function(req, res, next) {
     Code.findById(req.params.codeId)
         .then(code => {
             var index = parseInt(req.params.revisionIndex);
