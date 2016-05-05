@@ -6,7 +6,11 @@ var schema = new mongoose.Schema({
     revisions: {
         type: [String],
         required: true
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
-mongoose.model('Revisions', schema);
+mongoose.model('Code', schema);
