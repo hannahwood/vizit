@@ -1,6 +1,7 @@
 'use strict';
 
 const router = require('express').Router();
+const request = require('request');
 module.exports = router;
 const mongoose = require('mongoose');
 const Code = mongoose.model('Code');
@@ -12,6 +13,13 @@ router.get('/', function(req,res,next) {
     Code.find({})
         .then((code) => res.json(code))
     .catch(next);
+});
+
+router.get('/eval', function(req,res,next) {
+    //console.log('192.168.1.194:3000/exec_js?user_script=' + req.query.user_script.toString())
+    request.get('http://192.168.1.194:3000/exec_js?user_script=' + req.query.user_script, function(err, response) {
+       res.send(response.body)
+   });
 });
 
 // get all revisions from one code document
