@@ -1,0 +1,65 @@
+<section id="home" ng-controller="HomeCtrl">
+
+  <md-content flex md-scroll-y>
+    <div layout="column" layout-fill layout-padding>
+      <div class="inset" hide-sm></div>
+              <md-tabs md-stretch-tabs class="md-hue-3" md-selected="data.selectedIndex">
+          <md-tab id="tab1" aria-controls="tab1-content">
+            Workspace
+          </md-tab>
+          <md-tab id="tab2" aria-controls="tab2-content">
+            Favorites
+          </md-tab>
+        </md-tabs>
+        <ng-switch on="data.selectedIndex" class="tabpanel-container">
+          <div role="tabpanel"
+               id="tab1-content"
+               aria-labelledby="tab1"
+               ng-switch-when="0"
+               md-swipe-left="next()"
+               md-swipe-right="previous()"
+               layout="row" layout-align="center center">
+              <md-card flex-gt-sm="90" flex-gt-md="80">
+                <md-card-content>
+                  <h2>Workspace</h2>
+                  <md-list>
+                    <md-divider></md-divider>
+                    <md-item layout class="inset">
+                        <md-button layout layout-align="start center" flex class="md-primary">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg> More
+                        </md-button>
+                    </md-item>
+                  </md-list>
+                </md-card-content>
+              </md-card>
+          </div>
+          <div role="tabpanel"
+               id="tab2-content"
+               aria-labelledby="tab2"
+               ng-switch-when="1"
+               md-swipe-left="next()"
+               md-swipe-right="previous()"
+               layout="row" layout-align="center center">
+              <md-card flex-gt-sm="90" flex-gt-md="80">
+                <md-card-content>
+                  <h2>Favorites</h2>
+                  <md-list>
+
+                    <md-divider></md-divider>
+                    <md-item layout class="inset">
+                        <md-button layout layout-align="start center" flex class="md-primary">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg> More
+                        </md-button>
+                    </md-item>
+                  </md-list>
+                </md-card-content>
+              </md-card>
+          </div>
+
+      </ng-switch>
+
+    </div>
+  </md-content>
+
+</section>
+

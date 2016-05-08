@@ -1,0 +1,43 @@
+<div id="navbar">
+
+  <md-toolbar class="{{color}}" ng-controller="NavCtrl" ng-style="{'height': height, 'transition': 'height 0.15s', 'transition-timing-function': 'linear'}">
+
+    <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
+
+    <div id="menu">
+    <ng-md-icon icon="{{icon}}" size="42" ng-click="toggleSidenav()" aria-label="Menu" ng-style="{'margin-top': '-5px'}"></ng-md-icon>
+    </div>
+
+
+<!-- <h2>{{currentState() | uppercase}}</h2> -->
+    <div id="logo" hide-xs>
+      <vizit-logo></vizit-logo>
+    </div>
+    <span flex></span>
+
+<!-- Active user -->
+
+    <div layout="row" layout-padding layout-align="center center" ng-show="user">
+    <md-list>
+      <md-list-item layout-padding>
+        {{userName}}
+        <img ng-src="{{avatar}}" class="md-avatar" />
+        <ng-md-icon icon="logout" size="26" aria-label="Logout" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
+      </md-list-item>
+    </md-list>
+    <ng-md-icon icon="more_vert" size="26" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
+    </div>
+
+<!--  No user -->
+
+    <div layout="row" layout-margin layout-align="center center" ng-show="!user">
+      <md-button ng-click="showSignUp()">Login</md-button>
+      <md-button ng-click="showSignUp()">Signup</md-button>
+      <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
+    </div>
+
+
+    </div>
+  </md-toolbar>
+
+</div>

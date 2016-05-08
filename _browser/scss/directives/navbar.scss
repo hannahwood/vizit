@@ -1,0 +1,77 @@
+#navbar {
+    width:100%;
+    position: fixed;
+    z-index: 1;
+    transform: translateZ(0);
+   -webkit-transform: translateZ(0);
+   -webkit-transition:0.5s linear all;
+   -moz-transition:0.5s linear all;
+   -o-transition:0.5s linear all;
+   transition:0.5s linear all;
+    .md-button {
+    text-transform: none;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+  }
+  .md-toolbar-tools {
+    font-size: 16px;
+  }
+}
+
+#sidenav {
+  background-color: #263238;
+  .inset {
+    color: #fafafa;
+    font-size: 1.1em;
+    letter-spacing: 0.1em;
+    text-transform: none;
+  }
+  .md-button {
+    margin: 0 0;
+  }
+}
+
+#logo {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  margin: 0 0 0 -80px;
+}
+
+#signup {
+  md-dialog {
+    min-width: 400px !important;
+    border-radius: 0;
+  }
+  .md-button {
+    border-radius: 0;
+    background-color: #263238;
+    color: #fafafa;
+  }
+}
+
+#signLogo {
+  position: absolute;
+  left: 50%;
+  margin-left: -80px;
+}
+
+ng-md-icon {
+  outline: none;
+}
+
+md-sidenav {
+  height: 100vh;
+}
+
+body, h1, h2, h3, h4, h5 {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.1em !important;
+}
+
+h2 {
+  font-size: 1.5em !important;
+  font-weight: 700;
+  padding-bottom: 5px;
+}
+
