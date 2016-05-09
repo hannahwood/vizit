@@ -240,6 +240,10 @@ app.controller('SideNavCtrl', function($scope, $mdSidenav, $state, $rootScope, A
 
 
 app.controller('HomeCtrl', function($scope){
+  $scope.code = {};
+  $scope.submitCode = function(code){
+    console.log('code', code);
+  }
 
 
 });

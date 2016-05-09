@@ -22,6 +22,22 @@
               <md-card flex-gt-sm="90" flex-gt-md="80">
                 <md-card-content>
                   <h2>Workspace</h2>
+                  <div id="ace" ng-model="code" ui-ace="{
+                  require: ['ace/ext/language_tools'],
+                  useWrapMode : true,
+                  splitMode: true,
+                  showGutter: true,
+                  theme:'solarized_dark',
+                  mode: 'javascript',
+                  firstLineNumber: 1,
+                    advanced: {
+                      enableSnippets: true,
+                      enableBasicAutocompletion: true,
+                      enableLiveAutocompletion: true
+                    }
+                  }">
+                  </div>
+                  <md-button ng-click="submitCode(code)"> Visualize Code</md-button>
                   <md-list>
                     <md-divider></md-divider>
                     <md-item layout class="inset">
@@ -44,7 +60,6 @@
                 <md-card-content>
                   <h2>Favorites</h2>
                   <md-list>
-
                     <md-divider></md-divider>
                     <md-item layout class="inset">
                         <md-button layout layout-align="start center" flex class="md-primary">
