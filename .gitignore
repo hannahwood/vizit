@@ -6,3 +6,4 @@ public
 coverage
 /ptjavascript/node_modules
 /ptjavascript/node-v6.0.0-linux-x64
+.eslintrc
