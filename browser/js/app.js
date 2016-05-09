@@ -1,7 +1,7 @@
 'use strict';
-window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate']);
+window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate', 'ngMaterial', 'ngAria', 'ngMdIcons']);
 
-app.config(function ($urlRouterProvider, $locationProvider) {
+app.config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
     $locationProvider.html5Mode(true);
     // If we go to a URL that ui-router doesn't have registered, go to the "/" url.
@@ -10,6 +10,32 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.when('/auth/:provider', function () {
         window.location.reload();
     });
+    $mdThemingProvider.definePalette('neon', {
+      '50'  : 'FAFAFA',
+      '100' : 'F5F5F5',
+      '200' : 'EEEEEE',
+      '300' : 'E0E0E0',
+      '400' : 'BDBDBD',
+      '500' : '9E9E9E',
+      '600' : '757575',
+      '700' : '616161',
+      '800' : '424242',
+      '900' : '212121',
+      'A100': 'FFEB3B',
+      'A200': 'FFEB3B',
+      'A400': 'FFEB3B',
+      'A700': 'FFEB3B',
+      'contrastDefaultColor': 'dark',    // whether, by default, text (contrast)
+                                          // on this palette should be dark or light
+      'contrastDarkColors': undefined,
+      'contrastLightColors': ['600', '700', '800', '900']   // could also specify this if default was 'dark'
+    });
+    $mdThemingProvider.theme('default')
+      .primaryPalette('blue-grey')
+      .accentPalette('neon', {
+        'default': '100'
+         // use shade 50 for default, and keep all other shades the same
+      });
 });
 
 // This app.run is for controlling access to specific states.
