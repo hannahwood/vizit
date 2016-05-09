@@ -1,0 +1,20 @@
+{
+  "name": "ptjavascript",
+  "version": "1.0.0",
+  "description": "Run 'make deps' to install node dependencies in here",
+  "main": "jslogger.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eval": "^0.1.1",
+    "minimist": "^1.2.0",
+    "source-map": "^0.5.6",
+    "underscore": "^1.8.3"
+  }
+}

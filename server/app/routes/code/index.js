@@ -15,12 +15,12 @@ router.get('/', function(req,res,next) {
     .catch(next);
 });
 
-router.get('/eval', function(req,res,next) {
-    //console.log('192.168.1.194:3000/exec_js?user_script=' + req.query.user_script.toString())
-    request.get('http://192.168.1.194:3000/exec_js?user_script=' + req.query.user_script, function(err, response) {
-       res.send(response.body)
-   });
-});
+// router.get('/eval', function(req,res,next) {
+//     //console.log('192.168.1.194:3000/exec_js?user_script=' + req.query.user_script.toString())
+//     request.get('http://192.168.1.194:3000/exec_js?user_script=' + req.query.user_script, function(err, response) {
+//        res.send(response.body)
+//    });
+// });
 
 // get all revisions from one code document
 router.get('/:codeId', function(req,res,next) {
