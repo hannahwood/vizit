@@ -45,7 +45,6 @@ regarding the 'handle_' field of serialized objects ...
 
 */
 
-
 /* global Debug */
 "use strict";
 
@@ -57,9 +56,7 @@ var debug = Debug.Debug;
 
 var log = console.warn; // use stderr because stdout is being captured in the trace
 
-
 var argv = require('minimist')(process.argv.slice(2));
-
 
 var IGNORE_GLOBAL_VARS = {'ArrayBuffer': true,
                           'Int8Array': true,
@@ -96,68 +93,12 @@ var IGNORE_GLOBAL_VARS = {'ArrayBuffer': true,
                           'exports': true,
                           'module': true};
 
-
 var MAX_EXECUTED_LINES = 1000;
 
 String.prototype.rtrim = function() {
   return this.replace(/\s*$/g, "");
 };
 
-// Inspired by https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
-var ts = require("typescript");
-var path = require("path");
-
-function typescriptCompile(contents) {
-    // default ts standard library
-    var libSource = fs.readFileSync(path.join(path.dirname(require.resolve('typescript')), 'lib.d.ts')).toString();
-
-    var compilerOptions = {sourceMap: true}; // yes, create a source map!
-    // Generated outputs
-    var outputs = [];
-    // Create a compilerHost object to allow the compiler to read and write files
-    var compilerHost = {
-        getSourceFile: function (filename, languageVersion) {
-            if (filename === "file.ts")
-                return ts.createSourceFile(filename, contents, compilerOptions.target, "0");
-            if (filename === "lib.d.ts")
-                return ts.createSourceFile(filename, libSource, compilerOptions.target, "0");
-            return undefined;
-        },
-        writeFile: function (name, text, writeByteOrderMark) {
-            outputs.push({ name: name, text: text, writeByteOrderMark: writeByteOrderMark });
-        },
-        getDefaultLibFilename: function () { return "lib.d.ts"; },
-        useCaseSensitiveFileNames: function () { return false; },
-        getCanonicalFileName: function (filename) { return filename; },
-        getCurrentDirectory: function () { return ""; },
-        getNewLine: function () { return "\n"; }
-    };
-    // Create a program from inputs
-    var program = ts.createProgram(["file.ts"], compilerOptions, compilerHost);
-    // Query for early errors
-    var errors = program.getDiagnostics();
-    // Do not generate code in the presence of early errors
-    if (!errors.length) {
-        // Type check and get semantic errors
-        var checker = program.getTypeChecker(true);
-        errors = checker.getDiagnostics();
-        // Generate output
-        checker.emitFiles();
-    }
-    return {
-        outputs: outputs,
-        //errors: errors.map(function (e) { return e.file.filename + "(" + e.file.getLineAndCharacterFromPosition(e.start).line + "): " + e.messageText; })
-        errors: errors.map(function (e) {
-            var errPos = e.file.getLineAndCharacterFromPosition(e.start);
-            return {line: errPos.line, msg: e.messageText};
-        })
-    };
-}
-
-
-// for some reason, stderr is borked when running under the node
-// debugger, so we must print to stdout. the node 'assert' module fails
-// silently :/
 function assert(cond) {
   if (!cond) {
     var stack = new Error().stack;
@@ -167,14 +108,12 @@ function assert(cond) {
   }
 }
 
-
 var NUM_ADDED_LINES = 2; // match up with how many lines we added ...
 function wrapUserscript(userscript) {
   var s = "\"use strict\";\ndebugger;\n";
   s += userscript.rtrim();
   return s;
 }
-
 
 var originalStdout = process.stdout.write;
 var fauxStdout = [];
@@ -212,7 +151,6 @@ function getCanonicalFrameId(frame) {
     realFrameId = baseFrameId + '_' + String(frameIdCalls[baseFrameId]);
   }
 
-  // now canonicalize
   if (frameIdToSmallIds[realFrameId] === undefined) {
     frameIdToSmallIds[realFrameId] = curSmallId++;
   }
@@ -244,9 +182,6 @@ function resetHeap() {
 var canonicalSet = new Set();
 var canonicalMap = new Map();
 
-// modeled after:
-// https://github.com/pgbovine/OnlinePythonTutor/blob/master/v3/pg_encoder.py
-//
 // modifies global encodedHeapObjects
 function encodeObject(o) {
   if (_.isNumber(o)) {
@@ -264,11 +199,8 @@ function encodeObject(o) {
   } else if (_.isBoolean(o) || _.isNull(o) || _.isUndefined(o)) {
     return ['JS_SPECIAL_VAL', String(o)];
   } else if (typeof o === 'symbol') {
-    // ES6 symbol
     return ['JS_SPECIAL_VAL', String(o)];
   } else {
-    // render these as heap objects
-
     // very important to use _.has since we don't want to
     // grab the property in your prototype, only in YOURSELF ... SUBTLE!
     if (!_.has(o, 'smallObjId_hidden_')) {
@@ -315,9 +247,6 @@ function encodeObject(o) {
           funcProperties.push(['prototype', encodedProto]);
         }
 
-        // now get all of the normal properties out of this function
-        // object (it's unusual to put properties in a function object,
-        // but it's still legal!)
         var funcPropPairs = _.pairs(o);
         for (i = 0; i < funcPropPairs.length; i++) {
           funcProperties.push([funcPropPairs[i][0], encodeObject(funcPropPairs[i][1])]);
@@ -325,20 +254,6 @@ function encodeObject(o) {
 
         var funcCodeString = o.toString();
 
-        /*
-
-        #craftsmanship -- make nested functions look better by indenting
-        the first line of a nested function definition by however much
-        the LAST line is indented, ONLY if the last line is simply a
-        single ending '}'. otherwise it will look ugly since the
-        function definition doesn't start out indented, like so:
-
-function bar(x) {
-        globalZ += 100;
-        return x + y + globalZ;
-    }
-
-        */
         var codeLines = funcCodeString.split('\n');
         if (codeLines.length > 1) {
           var lastLine = _.last(codeLines);
@@ -360,22 +275,15 @@ function bar(x) {
         }
       } else if (o.__proto__.toString() === canonicalSet.__proto__.toString()) { // dunno why 'instanceof' doesn't work :(
         newEncodedObj.push('SET');
-        // ES6 Set (TODO: add WeakSet)
         for (var item in o) {
           newEncodedObj.push(encodeObject(item));
         }
       } else if (o.__proto__.toString() === canonicalMap.__proto__.toString()) { // dunno why 'instanceof' doesn't work :(
-        // ES6 Map (TODO: add WeakMap)
         newEncodedObj.push('DICT'); // use the Python 'DICT' type since it's close enough; adjust display in frontend
         for (var key in o) {
           newEncodedObj.push([encodeObject(key), encodeObject(o[key])]);
         }
       } else {
-        // a true object
-
-        // if there's a custom toString() function (note that a truly
-        // prototypeless object won't have toString method, so check first to
-        // see if toString is *anywhere* up the prototype chain)
         var s = (o.toString !== undefined) ? o.toString() : '';
         if (s !== '' && s !== '[object Object]') {
           newEncodedObj.push('INSTANCE_PPRINT', 'object', s);
@@ -389,9 +297,6 @@ function bar(x) {
 
           var proto = Object.getPrototypeOf(o);
           if (_.isObject(proto) && !_.isEmpty(proto)) {
-            //log('obj.prototype', proto, proto.smallObjId_hidden_);
-            // I think __proto__ is the official term for this field,
-            // *not* 'prototype'
             newEncodedObj.push(['__proto__', encodeObject(proto)]);
           }
         }
@@ -401,7 +306,6 @@ function bar(x) {
     }
 
   }
-  assert(false);
 }
 
 
@@ -415,7 +319,6 @@ function listener(event, execState, eventData, data) {
   var ii, jj, sc, scopeType, scopeObj, scopeIdx;
   var f;
 
-  // TODO: catch CompileError and maybe other events too
   if (event !== debug.DebugEvent.Break && event !== debug.DebugEvent.Exception) {
     return;
   }
@@ -426,7 +329,7 @@ function listener(event, execState, eventData, data) {
   var line = eventData.sourceLine() + 1;
   var col = eventData.sourceColumn();
 
-  if (!script) return; // in Node 6.0, sometimes script is null, so skip it
+  if (!script) return;
 
   assert(line >= NUM_ADDED_LINES);
   line -= NUM_ADDED_LINES; // to account for wrapUserscript() adding extra lines
@@ -546,36 +449,36 @@ function listener(event, execState, eventData, data) {
     curTraceEntry.globals = {};
     curTraceEntry.ordered_globals = [];
 
-    // apply the source map to get the right line numbers:
-    if (isTypescript) {
-      // source map doesn't seem to work for 'return' lines since the
-      // column is 0. hack: set the column to the FIRST column of the text
-      // in the line to get the source map to detect it ...
-      // (actually if it's more reliable, do this for EVERY kind of event,
-      // since we really don't care about column numbers, we care only
-      // about line numbers)
-      if (logEventType === 'return') {
-        var retline = allCodLines[line-1];
-        var retlineTrimmed = retline.trim();
-        var firstInd = retline.indexOf(retlineTrimmed);
-        assert(firstInd >= 0);
-        col = firstInd;
-      }
-      var tsPos = tsSourceMap.originalPositionFor({line: line, column: col});
-      //log('TS:', tsPos.line, tsPos.column);
-      line = tsPos.line;
-      col = tsPos.column;
+    // // apply the source map to get the right line numbers:
+    // if (isTypescript) {
+    //   // source map doesn't seem to work for 'return' lines since the
+    //   // column is 0. hack: set the column to the FIRST column of the text
+    //   // in the line to get the source map to detect it ...
+    //   // (actually if it's more reliable, do this for EVERY kind of event,
+    //   // since we really don't care about column numbers, we care only
+    //   // about line numbers)
+    //   if (logEventType === 'return') {
+    //     var retline = allCodLines[line-1];
+    //     var retlineTrimmed = retline.trim();
+    //     var firstInd = retline.indexOf(retlineTrimmed);
+    //     assert(firstInd >= 0);
+    //     col = firstInd;
+    //   }
+    //   var tsPos = tsSourceMap.originalPositionFor({line: line, column: col});
+    //   //log('TS:', tsPos.line, tsPos.column);
+    //   line = tsPos.line;
+    //   col = tsPos.column;
 
-      // TypeScript features that lead to auto-generated hidden JS code
-      // (e.g., inheritance) leave no corresponding lines in the .ts file,
-      // so the conservative thing to do is to *SKIP* those steps, since we
-      // have nothing sensible to render for them anyhow
-      if (line === null || line === undefined) {
-        assert(stepType !== undefined);
-        execState.prepareStep(stepType); // set debugger to stop at next step
-        return; // get outta here early!
-      }
-    }
+    //   // TypeScript features that lead to auto-generated hidden JS code
+    //   // (e.g., inheritance) leave no corresponding lines in the .ts file,
+    //   // so the conservative thing to do is to *SKIP* those steps, since we
+    //   // have nothing sensible to render for them anyhow
+    //   if (line === null || line === undefined) {
+    //     assert(stepType !== undefined);
+    //     execState.prepareStep(stepType); // set debugger to stop at next step
+    //     return; // get outta here early!
+    //   }
+    // }
 
     curTraceEntry.line = line;
     curTraceEntry.col = col;
@@ -640,7 +543,7 @@ function listener(event, execState, eventData, data) {
         }
       }
 
-      var j, k, v;
+      var k;
 
       /*
 
@@ -694,7 +597,7 @@ function listener(event, execState, eventData, data) {
         }
       }
 
-      //log('  f.scopeCount()', f.scopeCount(), ', nBlockScopes:', nBlockScopes);
+      // log('  f.scopeCount()', f.scopeCount(), ', nBlockScopes:', nBlockScopes);
 
       var nParentScopes = 1;
       // TODO: for some weird reason, it doesn't work when I iterate
@@ -940,99 +843,18 @@ function listener(event, execState, eventData, data) {
   }
 }
 
-
-// for testing
-function simpleListener(event, execState, eventData, data) {
-  var stepType, i, n;
-  var ii, jj, sc, scopeType, scopeObj;
-  var f;
-
-  // TODO: catch CompileError and maybe other events too
-  if (event !== debug.DebugEvent.Break && event !== debug.DebugEvent.Exception) {
-    return;
-  }
-
-  var isException = (event === debug.DebugEvent.Exception);
-
-  var script   = eventData.func().script().name();
-  var line     = eventData.sourceLine() + 1;
-  var col      = eventData.sourceColumn();
-  assert(line >= 2);
-  line -= 2; // to account for wrapUserscript() adding extra lines
-
-  log(script, line, col, isException);
-
-  // if what we're currently executing isn't inside of userscript.js,
-  // then PUNT, since we're probably in the first line of console.log()
-  // or some other utility function
-  if (script !== 'userscript.js') {
-    execState.prepareStep(debug.StepAction.StepOut);
-  } else {
-    execState.prepareStep(debug.StepAction.StepIn);
-  }
-}
-
-
 assert(argv._.length <= 1);
 var cod;
 if (argv._.length === 1) {
-  var FN = argv._[0];
   // trim trailing newlines so that nothing dangles off of the end
-  cod = String(fs.readFileSync(FN)).rtrim();
+  cod = String(fs.readFileSync(argv._[0])).rtrim();
 } else {
-  assert(argv._.length === 0);
+  assert(argv._.length === 0 && argv.code);
   // take a string from the command line, trimming trailing newlines
   cod = argv.code.rtrim();
 }
 
-var isTypescript = false;
-var sm = require('source-map');
-
-var originalTsCod;
-
-if (argv.typescript) {
-  isTypescript = true;
-  originalTsCod = cod; // stash this away!
-  var tscCompilerOutput = typescriptCompile(cod);
-  //console.log(tscCompilerOutput);
-
-  var tsSourceMap, compiledJsCod;
-  tscCompilerOutput.outputs.forEach(function(e, i) {
-    if (e.name === 'file.js.map') {
-      tsSourceMap = new sm.SourceMapConsumer(e.text);
-    } else if (e.name === 'file.js') {
-      compiledJsCod = e.text;
-    }
-  });
-
-  // if there are any errors, then handle them here, create a trace, and
-  // bail out before executing!
-  if (tscCompilerOutput.errors.length > 0) {
-    // right now just grab and display the first error
-    // TODO: handle displaying multiple errors
-
-    var firstErr = tscCompilerOutput.errors[0];
-
-    var errorTraceEntry = {};
-    errorTraceEntry.event = 'uncaught_exception';
-
-    errorTraceEntry.exception_msg = firstErr.msg;
-    errorTraceEntry.line = firstErr.line;
-    curTrace.push(errorTraceEntry);
-    finalize();
-    process.exit(); // bail out early!!! // NB: on Node v6 this will CUT OFF the stdout output to terminal (but OK if redirected to file), ergh :(
-  } else {
-    // strip off the final line, which should say something like:
-    //   '//# sourceMappingURL=file.js.map'
-    // since that screws up line numbers when executing, and looks ugly too
-    var idx = compiledJsCod.indexOf('//# sourceMappingURL=file.js.map');
-    assert(idx >= 0);
-    cod = compiledJsCod.substr(0, idx-1);
-  }
-}
-
 assert(cod);
-var allCodLines = cod.split('\n');
 
 var wrappedCod = wrapUserscript(cod);
 
@@ -1040,27 +862,10 @@ try {
   redirectStdout();
   debug.setListener(listener);
   debug.setBreakOnException(); // for exception handling
-  //debug.setBreakOnUncaughtException(); // doesn't seem to do anything :/
-
   _eval(wrappedCod, 'userscript.js', {} /* scope */, true /* includeGlobals */);
 }
 catch (e) {
-  // for some reason, the node debugger doesn't allow us to keep going
-  // after an uncaught exception to, say, execute 'finally' clauses.
-  // NB: is this still true for Node v6.0? Maybe not.
-  if (curTrace.length > 0) {
-    // do a NOP for now ... it's weird to issue an uncaught_exception since
-    // that's usually reserved for syntax errors
-    /*
-    var lastEntry = curTrace[curTrace.length - 1];
-    lastEntry.event = 'exception';
-    lastEntry.exception_msg = String(e);
-    lastEntry.exception_msg += "\n(Uncaught Exception: execution ended due to current limits of\nthis visualizer. 'finally' blocks and other code might not be run.)";
-    lastEntry.line = 0;
-    */
-  } else {
-    // likely a compile error since nothing executed yet; trace is empty
-
+  if (curTrace.length <= 0) {
     var originalErrorMsg = e.toString();
     var stackTrace = e.stack;
 
@@ -1096,9 +901,7 @@ function finalize() {
     }
   }
 
-  // very important to display the ORIGINAL TypeScript code in the
-  // trace, not the auto-generated JS code
-  var blob = {code: isTypescript ? originalTsCod : cod, trace: curTrace};
+  var blob = {code: cod, trace: curTrace};
   if (argv.jsfile) {
     fs.writeFileSync(argv.jsfile, 'var trace = ' + JSON.stringify(blob) + ';\n');
     log('Wrote trace to', argv.jsfile);
@@ -1108,4 +911,3 @@ function finalize() {
     console.log(util.inspect(blob, {depth: null}));
   }
 }
-
