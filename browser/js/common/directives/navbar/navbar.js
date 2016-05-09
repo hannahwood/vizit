@@ -239,11 +239,28 @@ app.controller('SideNavCtrl', function($scope, $mdSidenav, $state, $rootScope, A
 });
 
 
-app.controller('HomeCtrl', function($scope){
+app.controller('HomeCtrl', function($scope, VisualizeCodeFactory){
   $scope.code = {};
-  $scope.submitCode = function(code){
-    console.log('code', code);
-  }
-
-
+  $scope.submitCode = VisualizeCodeFactory.submitCode;
 });
+
+
+app.factory('VisualizeCodeFactory', function($http) {
+  return {
+    submitCode: function(code) {
+      $http.post('/api/pt/exec_js', {user_script: code})
+      .then(function(data) {
+        console.log(data);
+        return data;
+      });
+    }
+  };
+});
+
+
+
+
+
+
+
+
