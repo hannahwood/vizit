@@ -33,13 +33,6 @@ npm install eval
 npm install underscore
 npm install minimist
 
-For TypeScript support:
-
-npm install typescript
-sudo npm link typescript # to expose TypeScript compiler
-npm install source-map
-
-
 From: https://code.google.com/p/v8-wiki/wiki/DebuggerProtocol
 regarding the 'handle_' field of serialized objects ...
 
@@ -49,36 +42,6 @@ regarding the 'handle_' field of serialized objects ...
   the same object. Currently the lifetime of handles match the
   processing of a debug event. For each debug event handles are
   recycled.
-
-
-TODOs:
-
-
-Low-priority TODOs:
-
-- maybe directly use vm.runInContext
-- realize that running within VM module leads to subtle behavioral
-  differences, as documented in the Node docs
-
-- check out PromiseEvent and AsyncTaskEvent for maybe handling callbacks?
-
-Debug.DebugEvent = { Break: 1,
-                     Exception: 2,
-                     NewFunction: 3,
-                     BeforeCompile: 4,
-                     AfterCompile: 5,
-                     CompileError: 6,
-                     PromiseEvent: 7,
-                     AsyncTaskEvent: 8,
-                     BreakForCommand: 9 };
-
-
-TypeScript TODOs:
-
-- display more than one error in the trace when there's a TypeScript
-  compiler error. right now we display only the first error for simplicity.
-
-- add regression tests
 
 */
 
@@ -134,13 +97,11 @@ var IGNORE_GLOBAL_VARS = {'ArrayBuffer': true,
                           'module': true};
 
 
-//var MAX_EXECUTED_LINES = 300;
-var MAX_EXECUTED_LINES = 1000; // on 2016-05-01, I increased the limit from 300 to 1000 due to popular user demand! and I also improved the warning message
+var MAX_EXECUTED_LINES = 1000;
 
 String.prototype.rtrim = function() {
   return this.replace(/\s*$/g, "");
 };
-
 
 // Inspired by https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
 var ts = require("typescript");
