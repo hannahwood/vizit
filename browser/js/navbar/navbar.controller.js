@@ -68,7 +68,7 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
   $scope.showBottomSheet = function($event) {
     $scope.alert = '';
     $mdBottomSheet.show({
-      templateUrl: 'js/common/directives/bottom-sheet/bottom-sheet.html',
+      templateUrl: 'js/bottom-sheet/bottom-sheet.html',
       controller: 'BottomSheetCtrl',
       targetEvent: $event
     }).then(function(clickedItem) {
@@ -79,7 +79,7 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
   $scope.showSignUp = function(ev) {
     $mdDialog.show({
       controller: 'SignUpController',
-      templateUrl: 'js/common/directives/signup/signup.html',
+      templateUrl: 'js/signup/signup.html',
       targetEvent: ev,
       clickOutsideToClose: true,
     })
