@@ -18,12 +18,22 @@
                     }
                   }">
                     </div>
-                    <md-button ng-click="submitCode(code)"> Visualize Code</md-button>
+                    <md-button id="executeBtn" ng-click="submitCode(code)"> Visualize Code</md-button>
                 </div>
-                <div flex>
-                  <md-card><h1>sdfjhsb</h1></md-card>
+                <div flex >
+                  <md-card>
+                    <div flex id="pyInputPane">
+                        <div flex id="codeInputPane"></div>
+                        <!-- populate with a CodeMirror or Ace code editor instance -->
+                        <div flex id="frontendErrorOutput"></div>
+                        <!-- <div id="surveyPane"></div> -->
+                    </div>
+                    <div id="pyOutputPane">
+                    </div>
+                    </md-card>
                 </div>
             </div>
+        </div>
         </div>
     </md-content>
 </section>
