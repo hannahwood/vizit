@@ -10,10 +10,12 @@ module.exports = function (app) {
     var npmPath = path.join(root, './node_modules');
     var publicPath = path.join(root, './public');
     var browserPath = path.join(root, './browser');
+    var pyTutorPath = path.join(root, './pyTutorFrontend');
 
     app.use(favicon(app.getValue('faviconPath')));
     app.use(express.static(npmPath));
     app.use(express.static(publicPath));
     app.use(express.static(browserPath));
+    app.use(express.static(pyTutorPath));
 
 };
