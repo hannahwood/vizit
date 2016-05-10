@@ -1,5 +1,17 @@
-app.controller('LoginCtrl', function ($scope, AuthService, $state) {
+app.controller('LoginCtrl', function ($scope, $mdDialog, AuthService, $state) {
 
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+    
     $scope.login = {};
     $scope.error = null;
 
@@ -8,11 +20,11 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state) {
         $scope.error = null;
 
         AuthService.login(loginInfo).then(function () {
+            $mdDialog.hide();
             $state.go('home');
         }).catch(function () {
             $scope.error = 'Invalid login credentials.';
         });
 
     };
-
 });

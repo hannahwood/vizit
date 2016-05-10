@@ -16,10 +16,16 @@ var schema = new mongoose.Schema({
         type: String
     },
     password: {
-        type: String
+        type: String,
+        select: false
     },
     salt: {
-        type: String
+        type: String,
+        select: false
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
     github: {
         id: String

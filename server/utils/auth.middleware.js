@@ -8,7 +8,7 @@ Auth.isAuthenticated = function (req) {
 };
 
 Auth.isAdmin = function (req) {
-    return req.user && req.user.type === 'Admin';
+    return req.user && req.user.isAdmin;
 };
 
 Auth.isSelf = function (req) {

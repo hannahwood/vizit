@@ -1,29 +1,30 @@
-app.controller('SignUpController', function($scope, $mdDialog, AuthService, $state) {
-
+app.controller('SignUpCtrl', function($scope, $mdDialog, AuthService, $state) {
 
   $scope.hide = function() {
     $mdDialog.hide();
   };
+
   $scope.cancel = function() {
     $mdDialog.cancel();
   };
+
   $scope.answer = function(answer) {
     $mdDialog.hide(answer);
   };
-  $scope.login = {};
+  
+  $scope.signup = {};
   $scope.error = null;
 
-  $scope.sendLogin = function (loginInfo) {
+  $scope.sendSignup = function (signupInfo) {
 
       $scope.error = null;
-
-      AuthService.login(loginInfo).then(function () {
+      
+      AuthService.login(signupInfo).then(function () {
+          $mdDialog.hide();
           $state.go('home');
       }).catch(function () {
           $scope.error = 'Invalid login credentials.';
       });
-
-      $mdDialog.hide();
 
   };
 });

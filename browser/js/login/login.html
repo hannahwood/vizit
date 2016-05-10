@@ -1,16 +1,50 @@
-<form id="login-form" name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)">
+<div id="signup">
+<md-dialog aria-label="Signup">
+<md-toolbar class="md-tall md-hue-2" layout-align="center center">
+<h2>Login</h2>
+</md-toolbar>
+<md-content class="md-padding">
+<form name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)" novalidate>
 
-    <alert type="danger" ng-show="error">
-        {{ error }}
-    </alert>
+    <md-input-container class="md-block">
+    <label>Email Address</label>
+    <input ng-model="login.email">
+    </md-input-container>
 
-    <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="text" ng-model="login.email" class="form-control" id="email" placeholder="Enter email">
-    </div>
-    <div class="form-group">
-        <label for="login-password">Password</label>
-        <input type="password" ng-model="login.password" class="form-control" id="login-password" placeholder="Password">
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <md-input-container class="md-block">
+    <label>Password</label>
+    <input type="password" ng-model="login.password" required>
+    </md-input-container>
+
 </form>
+
+</md-content>
+
+  <md-button ng-click="sendLogin(login)" class="md-hue-3">
+    <md-item>
+      <md-item-content md-ink-ripple layout="row" layout-align="left center">
+        <div class="inset"><ng-md-icon icon="login" style="fill: #fafafa"></ng-md-icon></div>
+        <div class="inset">Login</div>
+      </md-item-content>
+    </md-item>
+  </md-button>
+  <md-button ng-click="loginGitHub()" class="md-hue-3">
+    <md-item>
+      <md-item-content md-ink-ripple layout="row" layout-align="left center">
+        <div class="inset"><ng-md-icon icon="github-box" style="fill: #fafafa"></ng-md-icon></div>
+        <div class="inset">Login with Github</div>
+      </md-item-content>
+    </md-item>
+  </md-button>
+  <md-button ng-click="loginGoogle()" class="md-hue-3">
+    <md-item>
+      <md-item-content md-ink-ripple layout="row" layout-align="left center">
+        <div class="inset"><ng-md-icon icon="google-plus-box" style="fill: #fafafa"></ng-md-icon></div>
+        <div class="inset">Login with Google</div>
+      </md-item-content>
+    </md-item>
+  </md-button>
+
+
+</md-dialog>
+</div>

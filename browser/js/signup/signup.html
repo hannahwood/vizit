@@ -1,53 +1,51 @@
 <div id="signup">
 <md-dialog aria-label="Signup">
 <md-toolbar class="md-tall md-hue-2" layout-align="center center">
-<!-- <h2>Login</h2> -->
-  <div id="signLogo">
-    <vizit-logo></vizit-logo>
-  </div>
+<h2>Signup</h2>
 </md-toolbar>
 <md-content class="md-padding">
-<form name="loginForm">
+<form name="signupForm" ng-submit="signupForm.$valid && sendSignup(signup)" novalidate>
 
     <md-input-container class="md-block">
     <label>Full Name</label>
-    <input ng-model="login.fullName"> </md-input-container>
+    <input type="text" ng-model="signup.fullName">
+    </md-input-container>
 
     <md-input-container class="md-block">
     <label>Email Address</label>
-    <input ng-model="login.email">
+    <input type="email" ng-model="signup.email">
     </md-input-container>
 
     <md-input-container class="md-block">
     <label>Password</label>
-    <input ng-model="login.password">
+    <input type="password" ng-model="signup.password">
     </md-input-container>
 
 </form>
 
 </md-content>
 
-  <md-button ng-click="sendLogin(login)" class="md-hue-3">
+  <md-button ng-click="sendSignup(signup)" class="md-hue-3">
     <md-item>
       <md-item-content md-ink-ripple layout="row" layout-align="left center">
         <div class="inset"><ng-md-icon icon="login" style="fill: #fafafa"></ng-md-icon></div>
-        <div class="inset">Login</div>
+        <div class="inset">Signup</div>
       </md-item-content>
     </md-item>
   </md-button>
-  <md-button ng-click="sendLoginGitHub(login)" class="md-hue-3">
+  <md-button ng-click="signupGitHub()" class="md-hue-3">
     <md-item>
       <md-item-content md-ink-ripple layout="row" layout-align="left center">
         <div class="inset"><ng-md-icon icon="github-box" style="fill: #fafafa"></ng-md-icon></div>
-        <div class="inset">Login with Github</div>
+        <div class="inset">Signup with Github</div>
       </md-item-content>
     </md-item>
   </md-button>
-  <md-button ng-click="sendLoginGoogle(login)" class="md-hue-3">
+  <md-button ng-click="signupGoogle()" class="md-hue-3">
     <md-item>
       <md-item-content md-ink-ripple layout="row" layout-align="left center">
         <div class="inset"><ng-md-icon icon="google-plus-box" style="fill: #fafafa"></ng-md-icon></div>
-        <div class="inset">Login with Google</div>
+        <div class="inset">Signup with Google</div>
       </md-item-content>
     </md-item>
   </md-button>
