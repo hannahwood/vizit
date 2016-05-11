@@ -4,29 +4,28 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 
 var schema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
-        required: true
-    },
+    fullName: String,
     email: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
-    password: {
-        type: String
+    password: String,
+    salt: String,
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
-    salt: {
-        type: String
+    facebook: {
+        id: String
     },
     github: {
         id: String
     },
     google: {
         id: String
-    }
+    },
+    photo: String
 });
 
 // method to remove sensitive information from user objects before sending them out
