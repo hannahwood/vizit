@@ -7,7 +7,6 @@ app.factory('VisualizeCodeFactory', function($http) {
 
     function ExecutionVisualizer(domRootID, dat) {
         console.log(dat);
-        debugger;
         console.log("domRootID", domRootID);
 
         this.curInputCode = dat.code.rtrim(); // kill trailing spaces
@@ -260,23 +259,17 @@ app.factory('VisualizeCodeFactory', function($http) {
         var myViz = this; // to prevent confusion of 'this' inside of nested functions
 
         var codeDisplayHTML =
-            '<div id="codeDisplayDiv">\
-       <div id="langDisplayDiv"></div>\
+            '<md-card><div id="codeDisplayDiv"></md-card>\
        <div id="pyCodeOutputDiv"/>\
        <div id="editCodeLinkDiv"><a id="editBtn">Edit code</a></div>\
        <div id="executionSlider"/>\
        <div id="executionSliderFooter"/>\
        <div id="vcrControls">\
-         <button id="jmpFirstInstr", type="button">&lt;&lt; First</button>\
-         <button id="jmpStepBack", type="button">&lt; Back</button>\
+         <button id="jmpFirstInstr", type="button">&lt;&lt;</button>\
+         <button id="jmpStepBack", type="button">&lt;</button>\
          <span id="curInstr">Step ? of ?</span>\
-         <button id="jmpStepFwd", type="button">Forward &gt;</button>\
-         <button id="jmpLastInstr", type="button">Last &gt;&gt;</button>\
-       </div>\
-       <div id="rawUserInputDiv">\
-         <span id="userInputPromptStr"/>\
-         <input type="text" id="raw_input_textbox" size="30"/>\
-         <button id="raw_input_submit_btn">Submit</button>\
+         <button id="jmpStepFwd", type="button">&gt;</button>\
+         <button id="jmpLastInstr", type="button">&gt;&gt;</button>\
        </div>\
        <div id="errorOutput"/>\
        <div id="stepAnnotationDiv">\
@@ -288,7 +281,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             '<div id="htmlOutputDiv"></div>\
      <div id="progOutputs">\
        Program output:<br/>\
-       <textarea id="pyStdout" cols="50" rows="10" wrap="off" readonly></textarea>\
+       <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
      </div>';
 
         var codeVizHTML =
@@ -308,15 +301,15 @@ app.factory('VisualizeCodeFactory', function($http) {
            </td>\
          </tr>\
        </table>\
-     </div>';
+     </div></md-card>';
 
         // override
 
         var vizHeaderHTML = '<div id="vizHeader"></div>';
 
-        this.domRoot.html(vizHeaderHTML + '<table border="0" class="visualizer"><tr><td class="vizLayoutTd" id="vizLayoutTdFirst">' +
-            codeDisplayHTML + '</td><td class="vizLayoutTd" id="vizLayoutTdSecond">' +
-            codeVizHTML + '</td></tr></table>');
+        this.domRoot.html(vizHeaderHTML + '<table border="0" class="visualizer"><tr><div class="vizLayoutTd" id="vizLayoutTdFirst">' +
+            codeDisplayHTML + '</div><div class="vizLayoutTd" id="vizLayoutTdSecond">' +
+            codeVizHTML + '</div></tr></table>');
 
         this.domRoot.find('#vizLayoutTdFirst').append(outputsHTML);
 
@@ -469,15 +462,6 @@ app.factory('VisualizeCodeFactory', function($http) {
             this.renderPyCodeOutput();
         }
 
-        var ruiDiv = myViz.domRoot.find('#rawUserInputDiv');
-        ruiDiv.find('#userInputPromptStr').html(myViz.userInputPromptStr);
-        ruiDiv.find('#raw_input_submit_btn').click(function() {
-            var userInput = ruiDiv.find('#raw_input_textbox').val();
-            // advance instruction count by 1 to get to the NEXT instruction
-            myViz.executeCodeWithRawInputFunc(userInput, myViz.curInstr + 1);
-        });
-
-
         this.updateOutput();
 
         this.hasRendered = true;
@@ -618,7 +602,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 return (d === 0) ? 0 : xrange(d) - 1;
             })
             .attr('y', 0)
-            .attr('width', 2)
+            .attr('width', 20)
             .attr('height', 12)
             .style('fill', function(d) {
                 return breakpointColor;
@@ -1230,7 +1214,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 // scroll to bottom, though:
                 myViz.domRoot.find("#pyStdout").scrollTop(myViz.domRoot.find("#pyStdout")[0].scrollHeight);
             } else {
-                this.domRoot.find('#progOutputs').hide();
+                this.domRoot.find('#progOutputs').show();
             }
 
 
@@ -1268,9 +1252,6 @@ app.factory('VisualizeCodeFactory', function($http) {
                 }
             }
 
-            // handle raw user input
-            var ruiDiv = myViz.domRoot.find('#rawUserInputDiv');
-            ruiDiv.hide(); // hide by default
 
             if (isLastInstr && myViz.executeCodeWithRawInputFunc) {
                 if (myViz.promptForUserInput) {
@@ -2936,6 +2917,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         submitCode: function(code) {
             $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
+                  console.log('asdsa');
                     return new ExecutionVisualizer("pyOutputPane", response.data);
                 });
         }

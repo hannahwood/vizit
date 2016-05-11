@@ -1,8 +1,17 @@
 <section id="home" ng-controller="HomeCtrl">
-    <md-content flex md-scroll-y>
-        <div layout="column" layout-fill layout-padding>
+    <md-toolbar class="md-accent" id="toolbar">
+        <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
+            <span flex></span>
+            <md-button class="tools" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
+            <md-button class="tools" ng-class="{'active': selection === 'visualize'}" ng-click="set('visualize'); submitCode(code)"> Visualize </md-button>
+            <md-button class="tools" ng-class="{'active': selection === 'analyze'}" ng-click="set('analyze')"> Analyze </md-button>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <div layout="column" layout-fill layout-padding class="full">
             <div layout="row" layout-xs="column">
-                <div flex>
+                <div flex ng-show="selection === 'edit'">
                     <div id="ace" ng-model="code" ui-ace="{
                   require: ['ace/ext/language_tools'],
                   useWrapMode : true,
@@ -18,22 +27,11 @@
                     }
                   }">
                     </div>
-                    <md-button id="executeBtn" ng-click="submitCode(code)"> Visualize Code</md-button>
+                    <!-- <md-button id="executeBtn" ng-click="submitCode(code)"> Visualize Code</md-button> -->
                 </div>
-                <div flex >
-                  <md-card>
-                    <div flex id="pyInputPane">
-                        <div flex id="codeInputPane"></div>
-                        <!-- populate with a CodeMirror or Ace code editor instance -->
-                        <div flex id="frontendErrorOutput"></div>
-                        <!-- <div id="surveyPane"></div> -->
-                    </div>
-                    <div id="pyOutputPane">
-                    </div>
-                    </md-card>
-                </div>
+                <visualize ng-show="selection === 'visualize'"></visualize>
+                <analyze ng-show="selection === 'analyze'">ANALYZE</analyze>
             </div>
         </div>
         </div>
     </md-content>
-</section>

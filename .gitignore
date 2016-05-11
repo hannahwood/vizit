@@ -1,5 +1,6 @@
 .idea
 node_modules
+oauth.json
 npm-debug.log
 public
 .DS_Store
@@ -7,4 +8,3 @@ coverage
 /ptjavascript/node_modules
 /ptjavascript/node-v6.0.0-linux-x64
 .eslintrc
-oauth.json
