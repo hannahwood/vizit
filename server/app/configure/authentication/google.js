@@ -16,7 +16,6 @@ module.exports = function (app) {
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-        console.log(profile);
 
         UserModel.findOne({ 'google.id': profile.id }).exec()
             .then(function (user) {
@@ -67,7 +66,6 @@ module.exports = function (app) {
     app.get('/auth/google/callback',
         passport.authenticate('google', { failureRedirect: '/login' }),
         function (req, res) {
-            console.log(res);
             res.redirect('/');
         });
 
