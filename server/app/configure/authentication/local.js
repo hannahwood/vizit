@@ -62,6 +62,7 @@ module.exports = function (app) {
                 return next(error);
             }
             return User.create({
+                fullName: req.body.fullName,
                 email: req.body.email,
                 password: req.body.password
             });

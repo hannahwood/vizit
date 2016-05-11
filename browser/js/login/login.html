@@ -1,4 +1,4 @@
-<div id="signup">
+<div class="userModal">
 <md-dialog aria-label="Signup">
 <md-toolbar class="md-tall md-hue-2" layout-align="center center">
 <h2>Login</h2>
@@ -17,7 +17,7 @@
     </md-input-container>
 
     <p style="color: #D51300">{{error}}</p>
-
+    <button style="display: none" ng-click="sendLogin(login)"></button>
 </form>
 
 </md-content>
@@ -31,21 +31,21 @@
     </md-item>
   </md-button>
   <md-button class="md-hue-3">
-    <a href="/auth/github" class="unstyled">
-      <md-item>
-        <md-item-content md-ink-ripple layout="row" layout-align="left center">
-          <div class="inset"><ng-md-icon icon="github-box" style="fill: #fafafa"></ng-md-icon></div>
-          <div class="inset">Login with Github</div>
-        </md-item-content>
-      </md-item>
-    </a>
-  </md-button>
-  <md-button class="md-hue-3">
     <a href="/auth/google" class="unstyled">
       <md-item>
         <md-item-content md-ink-ripple layout="row" layout-align="left center">
           <div class="inset"><ng-md-icon icon="google-plus-box" style="fill: #fafafa"></ng-md-icon></div>
           <div class="inset">Login with Google</div>
+        </md-item-content>
+      </md-item>
+    </a>
+  </md-button>
+  <md-button class="md-hue-3">
+    <a href="/auth/facebook" class="unstyled">
+      <md-item>
+        <md-item-content md-ink-ripple layout="row" layout-align="left center">
+          <div class="inset"><ng-md-icon icon="facebook-box" style="fill: #fafafa"></ng-md-icon></div>
+          <div class="inset">Login with Facebook</div>
         </md-item-content>
       </md-item>
     </a>

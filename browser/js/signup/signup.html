@@ -1,4 +1,4 @@
-<div id="signup">
+<div class="userModal">
 <md-dialog aria-label="Signup">
 <md-toolbar class="md-tall md-hue-2" layout-align="center center">
 <h2>Signup</h2>
@@ -8,20 +8,23 @@
 
     <md-input-container class="md-block">
     <label>Full Name</label>
-    <input type="text" ng-model="signup.fullName">
+    <input type="text" ng-model="signup.fullName" name="fullName">
     </md-input-container>
 
     <md-input-container class="md-block">
     <label>Email Address</label>
-    <input type="email" ng-model="signup.email">
+    <input type="email" ng-model="signup.email" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/" name="email" required>
+    <span ng-show="signupForm.email.$invalid && signupForm.password.$touched">Please enter a valid email</span>
     </md-input-container>
 
     <md-input-container class="md-block">
     <label>Password</label>
-    <input type="password" ng-model="signup.password">
+    <input type="password" ng-model="signup.password" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/" name="password" required>
+    <span ng-show="signupForm.password.$invalid && (signupForm.password.$touched && signupForm.password.$dirty)">Your password must contain an uppercase and lowercase letter as well as a number.</span>
     </md-input-container>
 
-    <p>{{error}}</p>
+    <p style="color: #D51300">{{error}}</p>
+    <button style="display: none" ng-click="sendSignup(signup)"></button>
 </form>
 
 </md-content>
@@ -35,21 +38,21 @@
     </md-item>
   </md-button>
   <md-button class="md-hue-3">
-    <a href="/auth/github" class="unstyled">
-      <md-item>
-        <md-item-content md-ink-ripple layout="row" layout-align="left center">
-          <div class="inset"><ng-md-icon icon="github-box" style="fill: #fafafa"></ng-md-icon></div>
-          <div class="inset">Signup with Github</div>
-        </md-item-content>
-      </md-item>
-    </a>
-  </md-button>
-  <md-button class="md-hue-3">
     <a href="/auth/google" class="unstyled">
       <md-item>
         <md-item-content md-ink-ripple layout="row" layout-align="left center">
           <div class="inset"><ng-md-icon icon="google-plus-box" style="fill: #fafafa"></ng-md-icon></div>
           <div class="inset">Signup with Google</div>
+        </md-item-content>
+      </md-item>
+    </a>
+  </md-button>
+  <md-button class="md-hue-3">
+    <a href="/auth/facebook" class="unstyled">
+      <md-item>
+        <md-item-content md-ink-ripple layout="row" layout-align="left center">
+          <div class="inset"><ng-md-icon icon="facebook-box" style="fill: #fafafa"></ng-md-icon></div>
+          <div class="inset">Signup with Facebook</div>
         </md-item-content>
       </md-item>
     </a>

@@ -7,13 +7,17 @@ var schema = new mongoose.Schema({
     fullName: String,
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: String,
     salt: String,
     isAdmin: {
         type: Boolean,
         default: false
+    },
+    facebook: {
+        id: String
     },
     github: {
         id: String
