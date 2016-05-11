@@ -1,57 +1,109 @@
 #home {
-  fullstack-logo {
-    padding-top: 30px;
-    width: 150px;
-    margin: 0 auto;
-  }
-  h1 {
-    margin-top: 40px;
-    text-align: center;
-  }
+    fullstack-logo {
+        padding-top: 30px;
+        width: 150px;
+        margin: 0 auto;
+    }
+    h1 {
+        margin-top: 40px;
+        text-align: center;
+    }
 }
+
 .ace_editor {
-  height: 500px;
-  font-size: 18px !important;
-  font-family: 'Ubuntu Mono' !important;
+    height: 500px;
+    font-size: 18px !important;
+    font-family: 'Ubuntu Mono' !important;
 }
 
 $gray: #eee;
-
 md-content.md-default-theme {
-  background-color: $gray;
+    background-color: $gray;
 }
+
 md-card {
-  background-color: #fff;
-  h2:first-of-type {
-    margin-top: 0;
-  }
+    background-color: #fff;
+    h2:first-of-type {
+        margin-top: 0;
+    }
+    padding: 10px;
 }
+
 md-toolbar {
-  .md-button.md-default-theme {
-    border-radius: 99%; // round toolbar buttons
-  }
+    .md-button.md-default-theme {
+        border-radius: 99%; // round toolbar buttons
+    }
 }
+
 h2 {
-  font-weight: 400;
+    font-weight: 400;
 }
+
 .md-toolbar-tools-bottom {
-  font-size: small;
-  & :last-child {
-    opacity: 0.8;
-  }
+    font-size: small;
+    &:last-child {
+        opacity: 0.8;
+    }
 }
+
 md-toolbar:not(.md-hue-1),
 .md-fab {
-  fill: #fff;
-}
-md-sidenav {
-  fill: #737373;
-  ng-md-icon {
-    position: relative;
-    top: 5px; // adjust for svg viewbox
-  }
-}
-.user-avatar {
-  border-radius: 99%;
+    fill: #fff;
 }
 
+md-sidenav {
+    fill: #737373;
+    ng-md-icon {
+        position: relative;
+        top: 5px; // adjust for svg viewbox
+    }
+}
+
+.user-avatar {
+    border-radius: 99%;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+}
+
+table td,
+table th {
+    padding: 5px 10px;
+}
+
+table thead th {
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #36752D), color-stop(1, #36752D));
+    background: -moz-linear-gradient( center top, #36752D 5%, #36752D 100%);
+    background-color: #36752D;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    border-left: 1px solid #A8A8A8;
+}
+
+table thead th:first-child {
+    border: none;
+}
+
+table tbody td {
+    color: #000000;
+    border-left: 1px solid #D1C5C7;
+    font-size: 12px;
+    border-bottom: 1px solid #D1C5C7;
+    font-weight: normal;
+}
+
+table tbody td:first-child {
+    border-left: none;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+ #gutterTD {
+        padding: 0;
+    }
