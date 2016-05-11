@@ -1,3 +1,7 @@
+$gray: #eee;
+$dark: #263238;
+$light: #fff;
+
 #home {
   fullstack-logo {
     padding-top: 30px;
@@ -8,6 +12,21 @@
     margin-top: 40px;
     text-align: center;
   }
+  .full {
+    height: calc(100vh - 140px);
+  }
+}
+
+#toolbar {
+  position: fixed;
+  height: 40px !important;
+  top: 80px;
+  left: 0;
+  z-index: 9;
+  .tools {
+    color: $dark;
+    border: solid 2px $dark;
+  }
 }
 .ace_editor {
   height: 500px;
@@ -15,13 +34,11 @@
   font-family: 'Ubuntu Mono' !important;
 }
 
-$gray: #eee;
-
 md-content.md-default-theme {
   background-color: $gray;
 }
 md-card {
-  background-color: #fff;
+  background-color: $light;
   h2:first-of-type {
     margin-top: 0;
   }
@@ -42,10 +59,10 @@ h2 {
 }
 md-toolbar:not(.md-hue-1),
 .md-fab {
-  fill: #fff;
+  fill: $light;
 }
 md-sidenav {
-  fill: #737373;
+  fill: $dark;
   ng-md-icon {
     position: relative;
     top: 5px; // adjust for svg viewbox

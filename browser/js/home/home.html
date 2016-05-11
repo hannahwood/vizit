@@ -1,6 +1,16 @@
 <section id="home" ng-controller="HomeCtrl">
-    <md-content flex md-scroll-y>
-        <div layout="column" layout-fill layout-padding>
+  <md-toolbar class="md-accent" id="toolbar">
+    <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
+      <span flex></span>
+      <md-button class="tools"> Edit </md-button>
+      <md-button class="tools"> Visualize </md-button>
+      <md-button class="tools"> Analyze </md-button>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+
+    <md-content flex>
+        <div layout="column" layout-fill layout-padding class="full">
             <div layout="row" layout-xs="column">
                 <div flex>
                     <div id="ace" ng-model="code" ui-ace="{
@@ -36,4 +46,4 @@
         </div>
         </div>
     </md-content>
-</section>
+

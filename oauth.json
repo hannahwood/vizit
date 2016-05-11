@@ -1,0 +1,13 @@
+{
+   "SESSION_SECRET": "WienerWoodUngerStarr",
+   "GOOGLE": {
+      "clientID": "740347823144-volmf18tfk5osouo31ud1rii9vdt46mu.apps.googleusercontent.com",
+      "clientSecret": "CokgMrVmP8OkQujjdlj3YmVg",
+      "callbackURL": "http://127.0.0.1:1337/auth/google/callback"
+   },
+   "GITHUB": {
+      "clientID": "66fab6a8c22eccbc4942",
+      "clientSecret": "c946ded4d88ad229c4cbf082dd418cc112e0be6a",
+      "callbackURL": "http://127.0.0.1:1337/auth/github/callback"
+   }
+}
