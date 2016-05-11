@@ -2917,6 +2917,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         submitCode: function(code) {
             $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
+                  console.log('asdsa');
                     return new ExecutionVisualizer("pyOutputPane", response.data);
                 });
         }
