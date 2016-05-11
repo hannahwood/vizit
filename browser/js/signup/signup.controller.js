@@ -19,11 +19,11 @@ app.controller('SignUpCtrl', function($scope, $mdDialog, AuthService, $state) {
 
       $scope.error = null;
       
-      AuthService.login(signupInfo).then(function () {
+      AuthService.signup(signupInfo).then(function () {
           $mdDialog.hide();
           $state.go('home');
-      }).catch(function () {
-          $scope.error = 'Invalid login credentials.';
+      }).catch(function (err) {
+          $scope.error = err.data;
       });
 
   };

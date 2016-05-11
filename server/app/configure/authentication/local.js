@@ -52,4 +52,26 @@ module.exports = function (app) {
 
     });
 
+    app.post('/signup', function (req, res, next) {
+
+        User.findOne({email: req.body.email})
+        .then(function (user) {
+            if (user) {
+                var error = new Error('Email already connected to user');
+                error.status = 409;
+                return next(error);
+            }
+            return User.create({
+                email: req.body.email,
+                password: req.body.password
+            });
+        })
+        .then(function (newUser) {
+            res.status(201).send({
+                user: newUser.sanitize()
+            })
+        })
+        .catch(next)
+    })
+
 };

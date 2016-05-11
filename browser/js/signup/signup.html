@@ -21,6 +21,7 @@
     <input type="password" ng-model="signup.password">
     </md-input-container>
 
+    <p>{{error}}</p>
 </form>
 
 </md-content>
@@ -33,21 +34,25 @@
       </md-item-content>
     </md-item>
   </md-button>
-  <md-button ng-click="signupGitHub()" class="md-hue-3">
-    <md-item>
-      <md-item-content md-ink-ripple layout="row" layout-align="left center">
-        <div class="inset"><ng-md-icon icon="github-box" style="fill: #fafafa"></ng-md-icon></div>
-        <div class="inset">Signup with Github</div>
-      </md-item-content>
-    </md-item>
+  <md-button class="md-hue-3">
+    <a href="/auth/github" class="unstyled">
+      <md-item>
+        <md-item-content md-ink-ripple layout="row" layout-align="left center">
+          <div class="inset"><ng-md-icon icon="github-box" style="fill: #fafafa"></ng-md-icon></div>
+          <div class="inset">Signup with Github</div>
+        </md-item-content>
+      </md-item>
+    </a>
   </md-button>
-  <md-button ng-click="signupGoogle()" class="md-hue-3">
-    <md-item>
-      <md-item-content md-ink-ripple layout="row" layout-align="left center">
-        <div class="inset"><ng-md-icon icon="google-plus-box" style="fill: #fafafa"></ng-md-icon></div>
-        <div class="inset">Signup with Google</div>
-      </md-item-content>
-    </md-item>
+  <md-button class="md-hue-3">
+    <a href="/auth/google" class="unstyled">
+      <md-item>
+        <md-item-content md-ink-ripple layout="row" layout-align="left center">
+          <div class="inset"><ng-md-icon icon="google-plus-box" style="fill: #fafafa"></ng-md-icon></div>
+          <div class="inset">Signup with Google</div>
+        </md-item-content>
+      </md-item>
+    </a>
   </md-button>
 
 

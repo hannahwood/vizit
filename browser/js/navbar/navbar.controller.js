@@ -1,8 +1,5 @@
 app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, $state, $window, $rootScope, AuthService, AUTH_EVENTS){
 
-  $scope.userName = 'Hannah';
-  $scope.avatar = '/assets/users/user1.jpg';
-
   $scope.color = 'md-hue-2';
   $scope.height = '80px';
 

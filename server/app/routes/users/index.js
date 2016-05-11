@@ -20,7 +20,7 @@ router.param('userId', function(req, res, next, userId) {
 });
 
 router.get('/', Auth.assertAdmin, function(req,res,next) {
-    User.find({})
+    User.find({}).select('-salt')
         .then((users) => res.json(users))
     .catch(next);
 });
