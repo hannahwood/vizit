@@ -6,8 +6,6 @@ app.factory('VisualizeCodeFactory', function($http) {
     var curVisualizerID = 1; // global to uniquely identify each ExecutionVisualizer instance
 
     function ExecutionVisualizer(domRootID, dat) {
-        console.log(dat);
-        console.log("domRootID", domRootID);
 
         this.curInputCode = dat.code.rtrim(); // kill trailing spaces
         this.curTrace = dat.trace;
@@ -272,9 +270,6 @@ app.factory('VisualizeCodeFactory', function($http) {
          <button id="jmpLastInstr", type="button">&gt;&gt;</button>\
        </div>\
        <div id="errorOutput"/>\
-       <div id="stepAnnotationDiv">\
-         <div class="annotationText" id="stepAnnotationViewer"></div>\
-       </div>\
      </div>';
 
         var outputsHTML =
@@ -286,7 +281,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
         var codeVizHTML =
             '<div id="dataViz">\
-       <table id="stackHeapTable">\
+       <md-card><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -300,8 +295,8 @@ app.factory('VisualizeCodeFactory', function($http) {
              </div>\
            </td>\
          </tr>\
-       </table>\
-     </div></md-card>';
+       </table></md-card>\
+     </div>';
 
         // override
 
@@ -2913,14 +2908,14 @@ app.factory('VisualizeCodeFactory', function($http) {
     }
 
     return {
-    	// executionVisualizer: ExecutionVisualizer,
+        // executionVisualizer: ExecutionVisualizer,
         submitCode: function(code) {
-            $http.post('/api/pt/exec_js', { user_script: code })
+            return $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
-                  console.log('asdsa');
-                    return new ExecutionVisualizer("pyOutputPane", response.data);
+                    return response.data;
                 });
-        }
+        },
+        executionVisualizer: ExecutionVisualizer
     };
 
 
