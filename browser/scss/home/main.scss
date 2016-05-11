@@ -35,6 +35,12 @@ $light: #fff;
     font-family: 'Ubuntu Mono' !important;
 }
 
+#pyOutputPane {
+    height: 500px;
+    font-size: 18px !important;
+    font-family: 'Ubuntu Mono' !important;
+}
+
 md-content.md-default-theme {
     background-color: $gray;
 }

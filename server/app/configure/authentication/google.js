@@ -23,13 +23,26 @@ module.exports = function (app) {
                 if (user) {
                     return user;
                 } else {
+                    return UserModel.findOne({email: profile.emails[0].value});
+                }
+
+            })
+            .then(function (potentialUser) {
+                if (potentialUser) {
+                    potentialUser.google.id = profile.id;
+                    potentialUser.fullName = potentialUser.fullName || profile.displayName;
+                    potentialUser.photo = potentialUser.photo || profile._json.picture;
+                    return potentialUser.save();
+                } else {
                     return UserModel.create({
                         google: {
                             id: profile.id
-                        }
+                        },
+                        fullName: profile.displayName,
+                        email: profile.emails[0].value,
+                        photo: profile._json.picture
                     });
                 }
-
             })
             .then(function (userToLogin) {
                 done(null, userToLogin);

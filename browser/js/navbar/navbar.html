@@ -20,8 +20,8 @@
     <div layout="row" layout-padding layout-align="center center" ng-show="user">
     <md-list>
       <md-list-item layout-padding>
-        {{userName}}
-        <img ng-src="{{avatar}}" class="md-avatar" />
+        Welcome, {{user.fullName ? user.fullName.split(' ')[0] : user.email}}!
+        <img ng-src="{{user.photo}}" class="md-avatar" />
         <ng-md-icon icon="logout" size="26" aria-label="Logout" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
       </md-list-item>
     </md-list>
@@ -31,8 +31,8 @@
 <!--  No user -->
 
     <div layout="row" layout-margin layout-align="center center" ng-show="!user">
-      <md-button ng-click="showSignUp()">Login</md-button>
-      <md-button ng-click="showSignUp()">Signup</md-button>
+      <md-button id="login" ng-click="showLogin()">Login</md-button>
+      <md-button id="signup" ng-click="showSignUp()">Signup</md-button>
       <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
     </div>
 
