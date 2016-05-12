@@ -1,16 +1,18 @@
 app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
     $scope.code = '// input your code here and click on "Visualize"\
-    \nvar x =4;\
-	\nfunction y(num) {\
-    \n    return x*num;\
-	\n}\
-	\ny(34);\
-	\n\nconsole.log("asda");\
-	\n\nconsole.log("WHUTWHUT");\
-	\n\nconsole.log("sbdhjczkcbjhhxjskjnkjzxnckjznxkcjn");\
-	\n\nfor (var i = 0; i < 10; i++) {\
-    \n    console.log("I have " + i + " bananas!");\
-	\n}'
+    \nfunction fact(n) {\
+  \nif (n == 0) {\
+    \n   return 1;\
+  \n}\
+  \nelse {\
+    \n   console.log("THERE ARE  " + n + " oranges!!!");\
+    \n   return n * fact(n-1);\
+  \n}\
+\n}\
+\n\nfact(10);'
+
+	$scope.render = VisualizeCodeFactory.executionVisualizer.renderDataStructures;
+
     $scope.selection = 'edit';
     $scope.submitCode = function(code) {
         // debugger;
