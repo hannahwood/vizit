@@ -1668,38 +1668,6 @@ app.factory('VisualizeCodeFactory', function($http) {
             .remove();
 
 
-        // Render globals and then stack frames using d3:
-
-
-        // TODO: this sometimes seems buggy on Safari, so nix it for now:
-        // function highlightAliasedConnectors(d, i) {
-        //     // if this row contains a stack pointer, then highlight its arrow and
-        //     // ALL aliases that also point to the same heap object
-        //     var stackPtrId = $(this).find('div.stack_pointer').attr('id');
-        //     if (stackPtrId) {
-        //         var foundTargetId = null;
-        //         myViz.jsPlumbInstance.select({ source: stackPtrId }).each(function(c) { foundTargetId = c.targetId; });
-
-        //         // use foundTargetId to highlight ALL ALIASES
-        //         myViz.jsPlumbInstance.select().each(function(c) {
-        //             if (c.targetId == foundTargetId) {
-        //                 c.setHover(true);
-        //                 $(c.canvas).css("z-index", 2000); // ... and move it to the VERY FRONT
-        //             } else {
-        //                 c.setHover(false);
-        //             }
-        //         });
-        //     }
-        // }
-
-        // function unhighlightAllConnectors(d, i) {
-        //     myViz.jsPlumbInstance.select().each(function(c) {
-        //         c.setHover(false);
-        //     });
-        // }
-
-
-
         // TODO: coalesce code for rendering globals and stack frames,
         // since there's so much copy-and-paste grossness right now
 
@@ -2863,6 +2831,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         submitCode: function(code) {
             return $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
+                  // console.log(response);
                     return response.data;
                 });
         },

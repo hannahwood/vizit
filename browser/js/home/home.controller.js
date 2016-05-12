@@ -1,4 +1,4 @@
-app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
+app.controller('HomeCtrl', function($scope, VisualizeCodeFactory, $document) {
 
     $scope.code = '// input your code here and click on "Visualize"\
     \nfunction fact(n) {\
@@ -14,37 +14,28 @@ app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
 
 	// $scope.render = VisualizeCodeFactory.executionVisualizer.renderDataStructures;
       $scope.selection = 'edit';
-      $scope.trace = [];
-      $scope.data = [];
-      $scope.renderer = 'bar';
+      // $scope.trace = [];
+      // $scope.data = [];
+      // $scope.renderer = 'bar';
       $scope.submitCode = function(code) {
         VisualizeCodeFactory.submitCode(code)
         .then(function(response) {
-          debugger;
+        	console.log(response.trace[0]);
+        	if (response.trace[0].event === "uncaught_exception") {
+        		throw new Error(response.trace[0].exception_msg);
+        	}
           $scope.trace = response.trace;
-          $scope.graphData = $scope.makeGraphData();
           return new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
+        })
+        .catch(function(err) {
+			$('#error').html('<div class="error">' + err + '</div>');
         });
       };
 
       $scope.set = function(selection) {
-        debugger;
         $scope.selection = selection;
       };
 
-      $scope.makeGraphData = function(){
-        debugger;
-        var visData = [];
-        $scope.trace
-        .forEach(function(el,i){
-          debugger;
-          visData.push({
-            x: i,
-            y: el.stack_to_render.length
-          })
-        })
-        return visData;
-      } 
     });
 
 app.directive('visualize', function() {

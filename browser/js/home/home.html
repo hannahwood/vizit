@@ -29,14 +29,10 @@
                   }">
                     </div>
                 </div>
-                <visualize ng-show="selection === 'visualize'"></visualize>
-                <analyze ng-show="selection === 'analyze'"
-                data="graphData"
-                color="steelblue"
-               renderer="renderer"
-               width="750"
-               height="450">
-               </analyze>
+                <visualize ng-show="selection === 'visualize'">
+                  <div id="error"></div>
+                </visualize>
+                <analyze ng-show="selection === 'analyze'"></analyze>
             </div>
         </div>
         </div>

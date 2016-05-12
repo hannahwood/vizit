@@ -29,7 +29,8 @@ $light: #fff;
 }
 
 .ace_editor {
-    height: calc(100vh - 200px);;
+    height: calc(100vh - 200px);
+    width: 50vw;
     font-size: 18px !important;
     font-family: 'Ubuntu Mono' !important;
 }
