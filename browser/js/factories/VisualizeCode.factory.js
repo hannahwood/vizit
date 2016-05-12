@@ -1545,7 +1545,6 @@ app.factory('VisualizeCodeFactory', function($http) {
     ExecutionVisualizer.prototype.renderDataStructures = function(curEntry, curToplevelLayout) {
         var myViz = this; // to prevent confusion of 'this' inside of nested functions
         myViz.resetJsPlumbManager(); // very important!!!
-
         // for simplicity (but sacrificing some performance), delete all
         // connectors and redraw them from scratch. doing so avoids mysterious
         // jsPlumb connector alignment issues when the visualizer's enclosing
@@ -1673,31 +1672,31 @@ app.factory('VisualizeCodeFactory', function($http) {
 
 
         // TODO: this sometimes seems buggy on Safari, so nix it for now:
-        function highlightAliasedConnectors(d, i) {
-            // if this row contains a stack pointer, then highlight its arrow and
-            // ALL aliases that also point to the same heap object
-            var stackPtrId = $(this).find('div.stack_pointer').attr('id');
-            if (stackPtrId) {
-                var foundTargetId = null;
-                myViz.jsPlumbInstance.select({ source: stackPtrId }).each(function(c) { foundTargetId = c.targetId; });
+        // function highlightAliasedConnectors(d, i) {
+        //     // if this row contains a stack pointer, then highlight its arrow and
+        //     // ALL aliases that also point to the same heap object
+        //     var stackPtrId = $(this).find('div.stack_pointer').attr('id');
+        //     if (stackPtrId) {
+        //         var foundTargetId = null;
+        //         myViz.jsPlumbInstance.select({ source: stackPtrId }).each(function(c) { foundTargetId = c.targetId; });
 
-                // use foundTargetId to highlight ALL ALIASES
-                myViz.jsPlumbInstance.select().each(function(c) {
-                    if (c.targetId == foundTargetId) {
-                        c.setHover(true);
-                        $(c.canvas).css("z-index", 2000); // ... and move it to the VERY FRONT
-                    } else {
-                        c.setHover(false);
-                    }
-                });
-            }
-        }
+        //         // use foundTargetId to highlight ALL ALIASES
+        //         myViz.jsPlumbInstance.select().each(function(c) {
+        //             if (c.targetId == foundTargetId) {
+        //                 c.setHover(true);
+        //                 $(c.canvas).css("z-index", 2000); // ... and move it to the VERY FRONT
+        //             } else {
+        //                 c.setHover(false);
+        //             }
+        //         });
+        //     }
+        // }
 
-        function unhighlightAllConnectors(d, i) {
-            myViz.jsPlumbInstance.select().each(function(c) {
-                c.setHover(false);
-            });
-        }
+        // function unhighlightAllConnectors(d, i) {
+        //     myViz.jsPlumbInstance.select().each(function(c) {
+        //         c.setHover(false);
+        //     });
+        // }
 
 
 
