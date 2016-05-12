@@ -1,5 +1,16 @@
 app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
-    $scope.code = '// input your code here and click on "Visualize"';
+    $scope.code = '// input your code here and click on "Visualize"\
+    \nvar x =4;\
+	\nfunction y(num) {\
+    \n    return x*num;\
+	\n}\
+	\ny(34);\
+	\n\nconsole.log("asda");\
+	\n\nconsole.log("WHUTWHUT");\
+	\n\nconsole.log("sbdhjczkcbjhhxjskjnkjzxnckjznxkcjn");\
+	\n\nfor (var i = 0; i < 10; i++) {\
+    \n    console.log("I have " + i + " bananas!");\
+	\n}'
     $scope.selection = 'edit';
     $scope.submitCode = function(code) {
         // debugger;

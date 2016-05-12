@@ -1,0 +1,52 @@
+#stackHeapTable {
+    #stackHeader,
+    #heapHeader {
+        text-align: center;
+    }
+    .stackFrame,
+    .heapRow,
+    .heapObject {
+        margin-top: 20px;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        width: 250px;
+        max-height: 100%;
+        .stackFrameHeader {
+            padding: 10px;
+        }
+    }
+    #stack_td {
+        padding-right: 30px;
+        .stackFrame {
+            .stackFrameHeader {
+                background-color: #F5F5F5;
+            }
+        }
+        .highlightedStackFrame {
+            .stackFrameHeader {
+                background-color: #F9ED10;
+            }
+            .stackFrameVarTable {
+                background-color: white;
+                border-color: gray;
+                border: 2px;
+            }
+        }
+        td {
+            color: #00496B;
+            border-left: 2px solid #eee;
+            font-size: 16px;
+            border-bottom: 2px solid #eee;
+            font-weight: normal;
+        }
+    }
+    #heap_td {
+        padding-left: 30px;
+    }
+    #stackheader {
+        background-color: red;
+    }
+    td {
+        padding: 10px 20px 10px 20px;
+    }
+}
