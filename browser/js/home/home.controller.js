@@ -1,23 +1,43 @@
 app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
-    $scope.code = '// input your code here and click on "Visualize"';
-    $scope.selection = 'edit';
-    $scope.submitCode = function(code) {
+  $scope.code = '// input your code here and click on "Visualize"';
+  $scope.selection = 'edit';
+  $scope.trace = [];
+  $scope.graphData = [];
+  $scope.renderer = 'bar';
+  $scope.submitCode = function(code) {
         // debugger;
         VisualizeCodeFactory.submitCode(code)
-            .then(function(response) {
-                $scope.trace = response.trace;
-                return new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
-            });
-    };
-    $scope.set = function(selection) {
-        $scope.selection = selection;
-    };
+        .then(function(response) {
+          debugger;
+          $scope.trace = response.trace;
+          $scope.graphData = $scope.makeGraphData();
+          console.log($scope.graphData)
+          return new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
+        });
+      };
 
-});
+      $scope.set = function(selection) {
+        $scope.selection = selection;
+      };
+
+      $scope.makeGraphData = function(){
+        debugger;
+        var visData = [];
+        $scope.trace
+        .forEach(function(el,i){
+          debugger;
+          visData.push({
+            x: i,
+            y: el.stack_to_render.length
+          })
+        })
+        return visData;
+      } 
+     });
 
 app.directive('visualize', function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'js/home/visualize.html'
-    };
+  return {
+    restrict: 'E',
+    templateUrl: 'js/home/visualize.html'
+  };
 });
