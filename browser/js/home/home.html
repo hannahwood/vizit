@@ -1,4 +1,5 @@
-<section id="home" ng-controller="HomeCtrl">
+<section id="home" ng-controller="HomeCtrl" ng-style="{'padding-top': '80px'}">
+
   <md-toolbar class="md-accent" id="toolbar">
     <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
       <span flex></span>
@@ -9,41 +10,6 @@
     </div>
   </md-toolbar>
 
-    <md-content flex>
-        <div layout="column" layout-fill layout-padding class="full">
-            <div layout="row" layout-xs="column">
-                <div flex>
-                    <div id="ace" ng-model="code" ui-ace="{
-                  require: ['ace/ext/language_tools'],
-                  useWrapMode : true,
-                  splitMode: true,
-                  showGutter: true,
-                  theme:'solarized_dark',
-                  mode: 'javascript',
-                  firstLineNumber: 1,
-                    advanced: {
-                      enableSnippets: true,
-                      enableBasicAutocompletion: true,
-                      enableLiveAutocompletion: true
-                    }
-                  }">
-                    </div>
-                    <md-button id="executeBtn" ng-click="submitCode(code)"> Visualize Code</md-button>
-                </div>
-                <div flex >
-                  <md-card>
-                    <div flex id="pyInputPane">
-                        <div flex id="codeInputPane"></div>
-                        <!-- populate with a CodeMirror or Ace code editor instance -->
-                        <div flex id="frontendErrorOutput"></div>
-                        <!-- <div id="surveyPane"></div> -->
-                    </div>
-                    <div id="pyOutputPane">
-                    </div>
-                    </md-card>
-                </div>
-            </div>
-        </div>
-        </div>
-    </md-content>
+  <main code=""></main>
 
+</section>

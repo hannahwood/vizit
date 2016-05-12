@@ -4,6 +4,8 @@ const Auth = require('../../../utils/auth.middleware');
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Code = mongoose.model('Code');
+
 
 router.param('userId', function(req, res, next, userId) {
     User.findById(userId)
@@ -27,6 +29,12 @@ router.get('/', Auth.assertAdmin, function(req,res,next) {
 
 router.get('/:userId', Auth.assertAdminOrSelf, function(req, res) {
     res.json(req.requestedUser);
+});
+
+router.get('/:userId/code', Auth.assertAdminOrSelf, function(req, res) {
+    Code.find({
+        author: req.requestedUser._id})
+    .then((code) => res.json(code))
 });
 
 router.post('/', function(req,res,next) {
