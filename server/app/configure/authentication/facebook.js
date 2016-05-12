@@ -11,24 +11,38 @@ module.exports = function (app) {
     var facebookCredentials = {
         clientID: facebookConfig.clientID,
         clientSecret: facebookConfig.clientSecret,
-        callbackURL: facebookConfig.callbackURL
+        callbackURL: facebookConfig.callbackURL,
+        profileFields: ['id', 'displayName', 'photos', 'emails']
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-
+        
         UserModel.findOne({ 'facebook.id': profile.id }).exec()
             .then(function (user) {
 
                 if (user) {
                     return user;
                 } else {
-                    return UserModel.create({
-                        facebook: {
-                            id: profile.id
-                        }
-                    });
+                    return UserModel.findOne({email: profile.emails[0].value});
                 }
 
+            })
+            .then(function (potentialUser) {
+                if (potentialUser) {
+                    potentialUser.facebook.id = profile.id;
+                    potentialUser.fullName = potentialUser.fullName || profile.displayName;
+                    potentialUser.photo = potentialUser.photo || profile.photos[0].value;
+                    return potentialUser.save();
+                } else {
+                    return UserModel.create({
+                        google: {
+                            id: profile.id
+                        },
+                        fullName: profile.displayName,
+                        email: profile.emails[0].value,
+                        photo: profile.photos[0].value
+                    });
+                }
             })
             .then(function (userToLogin) {
                 done(null, userToLogin);
@@ -42,7 +56,7 @@ module.exports = function (app) {
 
     passport.use(new FacebookStrategy(facebookCredentials, verifyCallback));
 
-    app.get('/auth/facebook', passport.authenticate('facebook'));
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', { failureRedirect: '/login' }),

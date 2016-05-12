@@ -1,76 +1,101 @@
 $gray: #eee;
 $dark: #263238;
 $light: #fff;
-
 #home {
-  fullstack-logo {
-    padding-top: 30px;
-    width: 150px;
-    margin: 0 auto;
-  }
-  h1 {
-    margin-top: 40px;
-    text-align: center;
-  }
-  .full {
-    height: calc(100vh - 140px);
-  }
+    fullstack-logo {
+        padding-top: 30px;
+        width: 150px;
+        margin: 0 auto;
+    }
+    h1 {
+        margin-top: 40px;
+        text-align: center;
+    }
+    .full {
+        height: calc(100vh - 140px);
+    }
 }
 
 #toolbar {
-  position: fixed;
-  height: 40px !important;
-  top: 80px;
-  left: 0;
-  z-index: 9;
-  .tools {
-    color: $dark;
-    border: solid 2px $dark;
-  }
+    position: fixed;
+    height: 40px !important;
+    top: 80px;
+    left: 0;
+    z-index: 9;
+    .tools {
+        color: $dark;
+        border: solid 2px $dark;
+    }
 }
+
 .ace_editor {
-  height: 500px;
-  font-size: 18px !important;
-  font-family: 'Ubuntu Mono' !important;
+    height: calc(100vh - 200px);;
+    font-size: 18px !important;
+    font-family: 'Ubuntu Mono' !important;
 }
 
 md-content.md-default-theme {
-  background-color: $gray;
+    background-color: $gray;
 }
+
 md-card {
-  background-color: $light;
-  h2:first-of-type {
-    margin-top: 0;
-  }
+    background-color: $light;
+    h2:first-of-type {
+        margin-top: 0;
+    }
 }
+
 md-toolbar {
-  .md-button.md-default-theme {
-    border-radius: 99%; // round toolbar buttons
-  }
+    .md-button.md-default-theme {
+        border-radius: 99%; // round toolbar buttons
+    }
+    .tools {
+        background-color: white;
+    }
+    .active {
+        background-color: #37474F;
+        color: white !important;
+        &:hover {
+            background-color: #2A353A !important;
+        }
+    }
+    .md-toolbar-tools {
+        .tools {
+            border: none !important;
+            width: 150px;
+        }
+    }
 }
+
 h2 {
-  font-weight: 400;
+    font-weight: 400;
 }
+
 .md-toolbar-tools-bottom {
-  font-size: small;
-  & :last-child {
-    opacity: 0.8;
-  }
+    font-size: small;
+    &:last-child {
+        opacity: 0.8;
+    }
 }
+
 md-toolbar:not(.md-hue-1),
 .md-fab {
-  fill: $light;
+    fill: $light;
 }
+
 md-sidenav {
-  fill: $dark;
-  ng-md-icon {
-    position: relative;
-    top: 5px; // adjust for svg viewbox
-  }
+    fill: $dark;
+    ng-md-icon {
+        position: relative;
+        top: 5px; // adjust for svg viewbox
+    }
 }
+
 .user-avatar {
-  border-radius: 99%;
+    border-radius: 99%;
 }
 
-
+#gutterTD {
+    padding: 0;
+}
 

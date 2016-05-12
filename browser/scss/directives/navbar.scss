@@ -42,15 +42,19 @@
   box-sizing: border-box;
 }
 
-#signup {
+.userModal {
   md-dialog {
     min-width: 400px !important;
+    width: 400px;
     border-radius: 0;
   }
   .md-button {
     border-radius: 0;
     background-color: #263238;
     color: #fafafa;
+    &:hover {
+      background-color: #263238 !important;
+    }
   }
 }
 

@@ -6,9 +6,6 @@ app.factory('VisualizeCodeFactory', function($http) {
     var curVisualizerID = 1; // global to uniquely identify each ExecutionVisualizer instance
 
     function ExecutionVisualizer(domRootID, dat) {
-        console.log(dat);
-        debugger;
-        console.log("domRootID", domRootID);
 
         this.curInputCode = dat.code.rtrim(); // kill trailing spaces
         this.curTrace = dat.trace;
@@ -261,39 +258,30 @@ app.factory('VisualizeCodeFactory', function($http) {
 
         var codeDisplayHTML =
             '<div id="codeDisplayDiv">\
-       <div id="langDisplayDiv"></div>\
-       <div id="pyCodeOutputDiv"/>\
-       <div id="editCodeLinkDiv"><a id="editBtn">Edit code</a></div>\
-       <div id="executionSlider"/>\
-       <div id="executionSliderFooter"/>\
        <div id="vcrControls">\
-         <button id="jmpFirstInstr", type="button">&lt;&lt; First</button>\
-         <button id="jmpStepBack", type="button">&lt; Back</button>\
+         <button id="jmpFirstInstr", type="button"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></button>\
+         <button id="jmpStepBack", type="button"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>\
          <span id="curInstr">Step ? of ?</span>\
-         <button id="jmpStepFwd", type="button">Forward &gt;</button>\
-         <button id="jmpLastInstr", type="button">Last &gt;&gt;</button>\
+         <button id="jmpStepFwd", type="button"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>\
+         <button id="jmpLastInstr", type="button"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\
        </div>\
-       <div id="rawUserInputDiv">\
-         <span id="userInputPromptStr"/>\
-         <input type="text" id="raw_input_textbox" size="30"/>\
-         <button id="raw_input_submit_btn">Submit</button>\
-       </div>\
+       <div id="pyCodeOutputDiv"/>\
+       <div id="help"><p>*To step-through more quickly, use your arrow keys.<p></div>\
        <div id="errorOutput"/>\
-       <div id="stepAnnotationDiv">\
-         <div class="annotationText" id="stepAnnotationViewer"></div>\
-       </div>\
+       <div id="progOutputs">\
+       Program output:<br/>\
+       <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
+     </div>\
      </div>';
 
-        var outputsHTML =
-            '<div id="htmlOutputDiv"></div>\
-     <div id="progOutputs">\
-       Program output:<br/>\
-       <textarea id="pyStdout" cols="50" rows="10" wrap="off" readonly></textarea>\
-     </div>';
+        //    var outputsHTML =
+        // '<div id="progOutputs">\
+        //   Program output:<br/>\
+        //   <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
+        // </div>';
 
         var codeVizHTML =
-            '<div id="dataViz">\
-       <table id="stackHeapTable">\
+            '<div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -312,31 +300,12 @@ app.factory('VisualizeCodeFactory', function($http) {
 
         // override
 
-        var vizHeaderHTML = '<div id="vizHeader"></div>';
 
-        this.domRoot.html(vizHeaderHTML + '<table border="0" class="visualizer"><tr><td class="vizLayoutTd" id="vizLayoutTdFirst">' +
-            codeDisplayHTML + '</td><td class="vizLayoutTd" id="vizLayoutTdSecond">' +
-            codeVizHTML + '</td></tr></table>');
+        this.domRoot.html('<div class="vizLayoutTd" id="vizLayoutTdFirst">' +
+            codeDisplayHTML + codeVizHTML + '</table>');
 
-        this.domRoot.find('#vizLayoutTdFirst').append(outputsHTML);
+        // this.domRoot.find('#vizLayoutTdFirst').append(outputsHTML);
 
-        if (this.params.editCodeBaseURL) {
-            var pyVer = 'js';
-
-            var urlStr = $.param.fragment(this.params.editCodeBaseURL, { code: this.curInputCode, py: pyVer },
-                2);
-            this.domRoot.find('#editBtn').attr('href', urlStr);
-        } else {
-            this.domRoot.find('#editCodeLinkDiv').hide(); // just hide for simplicity!
-            this.domRoot.find('#editBtn').attr('href', "#");
-            this.domRoot.find('#editBtn').click(function() {
-                return false;
-            }); // DISABLE the link!
-        }
-
-        if (this.params.lang !== undefined) {
-            this.domRoot.find('#langDisplayDiv').html('JavaScript');
-        }
 
         // not enough room for these extra buttons ...
         if (this.params.codeDivWidth &&
@@ -384,20 +353,32 @@ app.factory('VisualizeCodeFactory', function($http) {
             this.domRoot.find('#progOutputs').hide();
         }
 
-        this.domRoot.find("#jmpFirstInstr").click(function() {
+        this.domRoot.find("#jmpFirstInstr").mousedown(function() {
             myViz.renderStep(0);
         });
 
-        this.domRoot.find("#jmpLastInstr").click(function() {
+        this.domRoot.find("#jmpLastInstr").mousedown(function() {
             myViz.renderStep(myViz.curTrace.length - 1);
         });
 
-        this.domRoot.find("#jmpStepBack").click(function() {
+        this.domRoot.find("#jmpStepBack").mousedown(function() {
             myViz.stepBack();
         });
 
-        this.domRoot.find("#jmpStepFwd").click(function() {
-            myViz.stepForward();
+        var timeout;
+        $("#jmpStepFwd").mousedown(function() {
+            timeout = setInterval(myViz.stepForward(), 100);
+        });
+        $("#jmpStepFwd").mouseup(function() {
+            clearInterval(timeout);
+        });
+
+        $("body").keydown(function(e) {
+            if (e.keyCode == 37) {
+              myViz.stepBack();
+            } else if (e.keyCode == 39) { // right
+              myViz.stepForward();
+            }
         });
 
         // disable controls initially ...
@@ -469,15 +450,6 @@ app.factory('VisualizeCodeFactory', function($http) {
             this.renderPyCodeOutput();
         }
 
-        var ruiDiv = myViz.domRoot.find('#rawUserInputDiv');
-        ruiDiv.find('#userInputPromptStr').html(myViz.userInputPromptStr);
-        ruiDiv.find('#raw_input_submit_btn').click(function() {
-            var userInput = ruiDiv.find('#raw_input_textbox').val();
-            // advance instruction count by 1 to get to the NEXT instruction
-            myViz.executeCodeWithRawInputFunc(userInput, myViz.curInstr + 1);
-        });
-
-
         this.updateOutput();
 
         this.hasRendered = true;
@@ -542,10 +514,6 @@ app.factory('VisualizeCodeFactory', function($http) {
     ExecutionVisualizer.prototype.stepForward = function() {
         var myViz = this;
 
-        if (myViz.editAnnotationMode) {
-            return;
-        }
-
         if (myViz.curInstr < myViz.curTrace.length - 1) {
             // if there is a next breakpoint, then jump to it ...
             if (myViz.sortedBreakpointsList.length > 0) {
@@ -567,10 +535,6 @@ app.factory('VisualizeCodeFactory', function($http) {
     // returns true if action successfully taken
     ExecutionVisualizer.prototype.stepBack = function() {
         var myViz = this;
-
-        if (myViz.editAnnotationMode) {
-            return;
-        }
 
         if (myViz.curInstr > 0) {
             // if there is a prev breakpoint, then jump to it ...
@@ -618,7 +582,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 return (d === 0) ? 0 : xrange(d) - 1;
             })
             .attr('y', 0)
-            .attr('width', 2)
+            .attr('width', 20)
             .attr('height', 12)
             .style('fill', function(d) {
                 return breakpointColor;
@@ -867,14 +831,6 @@ app.factory('VisualizeCodeFactory', function($http) {
             if (myViz.codeHorizontalOverflow < 0) {
                 myViz.codeHorizontalOverflow = 0;
             }
-
-
-            // TODO: don't do this since it screws with other stuff, and we're not
-            // activating annotation bubbles right now ...
-            // crucial resets for annotations (TODO: kludgy)
-            //myViz.destroyAllAnnotationBubbles();
-            //myViz.initStepAnnotation();
-
 
             var prevDataVizHeight = myViz.domRoot.find('#dataViz').height();
 
@@ -1230,36 +1186,13 @@ app.factory('VisualizeCodeFactory', function($http) {
                 // scroll to bottom, though:
                 myViz.domRoot.find("#pyStdout").scrollTop(myViz.domRoot.find("#pyStdout")[0].scrollHeight);
             } else {
-                this.domRoot.find('#progOutputs').hide();
+                this.domRoot.find('#progOutputs').show();
             }
-
-
-            // inject user-specified HTML/CSS/JS output:
-            // YIKES -- HUGE CODE INJECTION VULNERABILITIES :O
-            myViz.domRoot.find("#htmlOutputDiv").empty();
-            if (curEntry.html_output) {
-                if (curEntry.css_output) {
-                    myViz.domRoot.find("#htmlOutputDiv").append('<style type="text/css">' + curEntry.css_output + '</style>');
-                }
-                myViz.domRoot.find("#htmlOutputDiv").append(curEntry.html_output);
-
-                // inject and run JS *after* injecting HTML and CSS
-                if (curEntry.js_output) {
-                    // NB: when jQuery injects JS, it executes the code immediately
-                    // and then removes the entire <script> block from the DOM
-                    // http://stackoverflow.com/questions/610995/jquery-cant-append-script-element
-                    myViz.domRoot.find("#htmlOutputDiv").append('<script type="text/javascript">' + curEntry.js_output + '</script>');
-                }
-            }
-
 
             // finally, render all of the data structures
             var curEntry = this.curTrace[this.curInstr];
             var curToplevelLayout = this.curTraceLayouts[this.curInstr];
             this.renderDataStructures(curEntry, curToplevelLayout);
-
-            //this.enterViewAnnotationsMode(); // ... and render optional annotations (if any exist)
-
 
             // call the callback if necessary (BEFORE rendering)
             if (myViz.domRoot.find('#dataViz').height() != prevDataVizHeight) {
@@ -1268,9 +1201,6 @@ app.factory('VisualizeCodeFactory', function($http) {
                 }
             }
 
-            // handle raw user input
-            var ruiDiv = myViz.domRoot.find('#rawUserInputDiv');
-            ruiDiv.hide(); // hide by default
 
             if (isLastInstr && myViz.executeCodeWithRawInputFunc) {
                 if (myViz.promptForUserInput) {
@@ -1286,8 +1216,6 @@ app.factory('VisualizeCodeFactory', function($http) {
         var curEntry = this.curTrace[this.curInstr];
         var curToplevelLayout = this.curTraceLayouts[this.curInstr];
         this.renderDataStructures(curEntry, curToplevelLayout);
-
-        //this.enterViewAnnotationsMode(); // ... and render optional annotations (if any exist)
     }
 
 
@@ -1617,7 +1545,6 @@ app.factory('VisualizeCodeFactory', function($http) {
     ExecutionVisualizer.prototype.renderDataStructures = function(curEntry, curToplevelLayout) {
         var myViz = this; // to prevent confusion of 'this' inside of nested functions
         myViz.resetJsPlumbManager(); // very important!!!
-
         // for simplicity (but sacrificing some performance), delete all
         // connectors and redraw them from scratch. doing so avoids mysterious
         // jsPlumb connector alignment issues when the visualizer's enclosing
@@ -1745,31 +1672,31 @@ app.factory('VisualizeCodeFactory', function($http) {
 
 
         // TODO: this sometimes seems buggy on Safari, so nix it for now:
-        function highlightAliasedConnectors(d, i) {
-            // if this row contains a stack pointer, then highlight its arrow and
-            // ALL aliases that also point to the same heap object
-            var stackPtrId = $(this).find('div.stack_pointer').attr('id');
-            if (stackPtrId) {
-                var foundTargetId = null;
-                myViz.jsPlumbInstance.select({ source: stackPtrId }).each(function(c) { foundTargetId = c.targetId; });
+        // function highlightAliasedConnectors(d, i) {
+        //     // if this row contains a stack pointer, then highlight its arrow and
+        //     // ALL aliases that also point to the same heap object
+        //     var stackPtrId = $(this).find('div.stack_pointer').attr('id');
+        //     if (stackPtrId) {
+        //         var foundTargetId = null;
+        //         myViz.jsPlumbInstance.select({ source: stackPtrId }).each(function(c) { foundTargetId = c.targetId; });
 
-                // use foundTargetId to highlight ALL ALIASES
-                myViz.jsPlumbInstance.select().each(function(c) {
-                    if (c.targetId == foundTargetId) {
-                        c.setHover(true);
-                        $(c.canvas).css("z-index", 2000); // ... and move it to the VERY FRONT
-                    } else {
-                        c.setHover(false);
-                    }
-                });
-            }
-        }
+        //         // use foundTargetId to highlight ALL ALIASES
+        //         myViz.jsPlumbInstance.select().each(function(c) {
+        //             if (c.targetId == foundTargetId) {
+        //                 c.setHover(true);
+        //                 $(c.canvas).css("z-index", 2000); // ... and move it to the VERY FRONT
+        //             } else {
+        //                 c.setHover(false);
+        //             }
+        //         });
+        //     }
+        // }
 
-        function unhighlightAllConnectors(d, i) {
-            myViz.jsPlumbInstance.select().each(function(c) {
-                c.setHover(false);
-            });
-        }
+        // function unhighlightAllConnectors(d, i) {
+        //     myViz.jsPlumbInstance.select().each(function(c) {
+        //         c.setHover(false);
+        //     });
+        // }
 
 
 
@@ -2932,13 +2859,14 @@ app.factory('VisualizeCodeFactory', function($http) {
     }
 
     return {
-    	// executionVisualizer: ExecutionVisualizer,
+        // executionVisualizer: ExecutionVisualizer,
         submitCode: function(code) {
-            $http.post('/api/pt/exec_js', { user_script: code })
+            return $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
-                    return new ExecutionVisualizer("pyOutputPane", response.data);
+                    return response.data;
                 });
-        }
+        },
+        executionVisualizer: ExecutionVisualizer
     };
 
 

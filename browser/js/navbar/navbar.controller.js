@@ -1,8 +1,5 @@
 app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, $state, $window, $rootScope, AuthService, AUTH_EVENTS){
 
-  $scope.userName = 'Hannah';
-  $scope.avatar = '/assets/users/user1.jpg';
-
   $scope.color = 'md-hue-2';
   $scope.height = '80px';
 
@@ -76,12 +73,30 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
     });
   };
 
+  $scope.showLogin = function(ev) {
+    $mdDialog.show({
+      controller: 'LoginCtrl',
+      templateUrl: 'js/login/login.html',
+      targetEvent: ev,
+      clickOutsideToClose: true,
+      openFrom: '#login',
+      closeTo: '#login'
+    })
+    .then(function(answer) {
+      $scope.alert = 'You said the information was "' + answer + '".';
+    }, function() {
+      $scope.alert = 'You cancelled the dialog.';
+    });
+  };
+
   $scope.showSignUp = function(ev) {
     $mdDialog.show({
-      controller: 'SignUpController',
+      controller: 'SignUpCtrl',
       templateUrl: 'js/signup/signup.html',
       targetEvent: ev,
       clickOutsideToClose: true,
+      openFrom: '#signup',
+      closeTo: '#signup'
     })
     .then(function(answer) {
       $scope.alert = 'You said the information was "' + answer + '".';
