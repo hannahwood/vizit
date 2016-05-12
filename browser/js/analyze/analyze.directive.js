@@ -6,8 +6,7 @@ app.directive('analyze', function () {
 			data: '=',
 			renderer: '='
 		},
-		link: function postLink(scope, element, attrs) {
-			
+		link: function(scope, element, attrs) {
 			scope.$watchCollection('[data, renderer]', function(newVal, oldVal){
 				debugger;
 				if(!newVal[0]){

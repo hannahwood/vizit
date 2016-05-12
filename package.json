@@ -22,6 +22,7 @@
     "angular-material-icons": "^0.7.0",
     "angular-messages": "^1.5.5",
     "angular-mocks": "^1.4.0",
+    "angular-nvd3": "^1.0.7",
     "angular-route": "^1.5.5",
     "angular-ui-ace": "^0.2.3",
     "angular-ui-bootstrap": "^0.14.3",

@@ -29,14 +29,13 @@
                     </div>
                 </div>
                 <visualize ng-show="selection === 'visualize'"></visualize>
-                <analyze 
-                  ng-show="selection === 'analyze'" 
-                  data="graphData"
-                  color="blue"
-                  renderer="renderer"
-                  width="750"
-                  height="450">
-                </analyze>
+                <analyze ng-show="selection === 'analyze'"
+                data="graphData"
+                color="steelblue"
+               renderer="renderer"
+               width="750"
+               height="450">
+               </analyze>
             </div>
         </div>
         </div>
