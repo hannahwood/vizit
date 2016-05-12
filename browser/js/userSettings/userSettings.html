@@ -1,0 +1,24 @@
+<code>{{user}}</code><br/>
+<code>{{original}}</code>
+
+<uib-accordion id="settings" close-others="oneAtATime">
+   <uib-accordion-group heading="My Account" is-open="open">
+      <form name="userInfo" ng-submit="user.email === emailDuplicate && updateUser(user)" novalidate>
+         <input type="text" name="fullName" ng-model="user.fullName" />
+         <input type="email" name="email" ng-model="user.email" />
+         <input type="email" name="emailDuplicate" ng-model="emailDuplicate" ng-show="user.email !== original.email" />
+         <button type="submit" ng-click="updateUser(user)" ng-disabled="user.email !== emailDuplicate">Submit</button>
+      </form>
+   </uib-accordion-group>
+   <uib-accordion-group heading="Change Password">
+      <form name="passwordInfo" ng-submit="user.oldPassword && user.newPassword === user.newPasswordDuplicate" novalidate>
+         <input type="text" name="oldPassword" ng-model="user.oldPassword" />
+         <input type="text" name="newPassword" ng-model="user.newPassword" />
+         <input type="text" name="newPasswordDuplicate" ng-model="user.newPasswordDuplicate" />
+         <button type="submit" ng-click="updatePassword(user._id, user.oldPassword, user.newPassword)" ng-disabled="!user.oldPassword || user.newPassword !== user.newPasswordDuplicate">Submit</button>
+      </form>
+      <flash-message duration="10000" show-close="true"></flash-message>
+   </uib-accordion-group>
+   <uib-accordion-group heading="Connect Accounts">
+   </uib-accordion-group>
+</uib-accordion>

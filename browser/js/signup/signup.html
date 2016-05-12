@@ -20,7 +20,7 @@
     <md-input-container class="md-block">
     <label>Password</label>
     <input type="password" ng-model="signup.password" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/" name="password" required>
-    <span ng-show="signupForm.password.$invalid && (signupForm.password.$touched && signupForm.password.$dirty)">Your password must contain an uppercase and lowercase letter as well as a number.</span>
+    <span ng-show="signupForm.password.$invalid && (signupForm.password.$touched && signupForm.password.$dirty)">Your password must only contain an uppercase and lowercase letter as well as a number.</span>
     </md-input-container>
 
     <p style="color: #D51300">{{error}}</p>

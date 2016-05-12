@@ -42,13 +42,30 @@ router.delete('/:userId', Auth.assertAdmin, function(req,res,next) {
 });
 
 router.put('/:userId', Auth.assertAdminOrSelf, function(req,res,next) {
-    User.findById(req.params.userId)
-        .then(function(user) {
-            user.set(req.body);
-            return user.save();
-        })
-        .then((user) => res.status(204).json(user))
+    delete req.body.__v;
+    Object.keys(req.body).forEach(k => req.requestedUser[k] = req.body[k]);
+    req.requestedUser.save()
+    .then((user) => {
+        console.log(user);
+        res.status(201).json(user.sanitize());
+    })
     .catch(next);
+});
+
+router.put('/:userId/updatePassword', Auth.assertAdminOrSelf, function(req,res,next) {
+    if (!req.requestedUser.correctPassword(req.body.oldPassword)) {
+        let err = new Error('Old password incorrect');
+        err.status = 401;
+        return next(err);
+    } else if (req.requestedUser.correctPassword(req.body.oldPassword)) {
+        req.requestedUser.password = req.body.newPassword;
+        req.requestedUser.save()
+        .then((user) => {
+            console.log(user);
+            res.status(201).json(user.sanitize());
+        })
+        .catch(next);
+    }
 });
 
 module.exports = router;
