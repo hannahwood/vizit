@@ -9,6 +9,12 @@ app.config(function ($stateProvider) {
                 return AuthService.getLoggedInUser()
                 .then(function (user) {
                     return UserFactory.getAllTheCodez(user._id);
+                })
+                .then(function (codes) {
+                    return codes.map(function (code) {
+                        code.isOpen = false;
+                        return code;
+                    });
                 });
             }
         }

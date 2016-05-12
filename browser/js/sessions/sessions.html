@@ -36,12 +36,12 @@
 
               <div class="inset">
                 <div layout="row">
-                  <ng-md-icon icon="{{icon}}" size="16" ng-click="clickIconMorph($index)"></ng-md-icon>
+                  <ng-md-icon icon="{{code.isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}" size="16" ng-click="clickIconMorph($index)"></ng-md-icon>
                   <h3>{{code.revisions.length}} Revisions </h3>
                 </div>
                 <div class="inset">
 
-                  <div ng-repeat="revision in code.revisions track by $index" ng-if="isOpen">
+                  <div ng-repeat="revision in code.revisions track by $index" ng-if="code.isOpen">
                     <a ui-sref="revision({codeId: code._id, revisionNum: $index})">Revision {{$index + 1}} - {{revision.date.slice(0,10) | timefromnow }}</a>
                   </div>
 
