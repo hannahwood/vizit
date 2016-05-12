@@ -26,6 +26,7 @@ app.controller('SideNavCtrl', function($scope, $mdSidenav, $state, $rootScope, A
   $scope.logout = function () {
     AuthService.logout().then(function () {
        $state.go('home');
+       $scope.toggleSidenav();
     });
   };
 
@@ -74,5 +75,9 @@ app.controller('SideNavCtrl', function($scope, $mdSidenav, $state, $rootScope, A
       icon: 'settings'
     }
   ];
+  $scope.goToSettings = function () {
+    $state.go('settings');
+    $scope.toggleSidenav();
+  };
 
 });

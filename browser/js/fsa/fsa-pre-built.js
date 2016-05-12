@@ -109,6 +109,14 @@
                 });
         };
 
+        this.updateUser = function (userId) {
+            return $http.get('/api/users/'+userId)
+                .then(res => res.data)
+                .catch(function (err) {
+                    return $q.reject(err);
+                });
+        }
+
     });
 
     app.service('Session', function ($rootScope, AUTH_EVENTS) {

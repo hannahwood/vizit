@@ -4,6 +4,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
+var querystring = require('querystring');
 
 module.exports = function (app) {
 
@@ -56,7 +57,7 @@ module.exports = function (app) {
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
 
-    app.get('/auth/google', passport.authenticate('google', {
+    app.get('/auth/google', checkReturnTo, passport.authenticate('google', {
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email'
@@ -64,9 +65,15 @@ module.exports = function (app) {
     }));
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', { failureRedirect: '/login' }),
-        function (req, res) {
-            res.redirect('/');
-        });
+        passport.authenticate('google', { successReturnToOrRedirect: '/', failureRedirect: '/' }));
+
+    function checkReturnTo (req,res,next) {
+        var returnTo = req.query.returnTo;
+        if (returnTo) {
+            req.session = req.session || {};
+            req.session.returnTo = returnTo;
+        }
+        next();
+    }
 
 };
