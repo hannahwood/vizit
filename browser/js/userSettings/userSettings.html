@@ -9,7 +9,7 @@
             <div layout="row" layout-xs="column">
                <div flex>
                   <div class="upload" ng-class="{'img-back': user.photo, 'gray-back': !user.photo}">
-                     
+
                   </div>
                </div>
                <div flex>
@@ -64,13 +64,13 @@
          <div layout="row" layout-xs="column">
             <div flex>
                <h4>Google</h4>
-               <button type="button" ng-if="user.google" ng-click="disconnect('google')">Disconnect Google</button>
-               <button type="button" ng-if="!user.google" ng-click="connect('google')">Connect Google</button>
+               <md-button class="md-raised md-primary" type="button" ng-if="user.google" ng-click="disconnect('google')">Disconnect Google</md-button>
+               <md-button class="md-raised md-primary" type="button" ng-if="!user.google"><a href="/auth/google?returnTo=/settings" class="unstyled">Connect Google</a></md-button>
             </div>
             <div flex>
                <h4>Facebook</h4>
-               <button type="button" ng-if="user.facebook" ng-click="disconnect('facebook')">Disconnect Facebook</button>
-               <button type="button" ng-if="!user.facebook" ng-click="connect('facebook')">Connect Facebook</button>
+               <md-button class="md-raised md-primary" type="button" ng-if="user.facebook" ng-click="disconnect('facebook')">Disconnect Facebook</md-button>
+               <md-button class="md-raised md-primary" type="button" ng-if="!user.facebook"><a href="/auth/facebook?returnTo=/settings" class="unstyled">Connect Facebook</a></md-button>
             </div>
          </div>
       </uib-accordion-group>

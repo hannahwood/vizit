@@ -61,8 +61,8 @@ app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, Flas
       .catch(passwordFail);
    }
 
-   $scope.connect = function (provider) {
-      UserAuthFactory.connect($scope.user, provider)
+   $scope.disconnect = function (provider) {
+      UserAuthFactory.disconnect($scope.user, provider)
       .then(function (updatedUser) {
          $scope.user = updatedUser;
       })

@@ -17,7 +17,6 @@ app.factory('UserAuthFactory', function (AuthService, $state, $http, $q, Flash) 
   }
 
   UserAuthFactory.updatePassword = function (userId, passObj) {
-    console.log('hi');
     return $http.put('/api/users/'+userId+'/updatePassword', passObj)
     .then(parseData)
     .catch(function (err) {

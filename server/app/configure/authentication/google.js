@@ -57,6 +57,15 @@ module.exports = function (app) {
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
 
+    function checkReturnTo (req,res,next) {
+        var returnTo = req.query.returnTo;
+        if (returnTo) {
+            req.session = req.session || {};
+            req.session.returnTo = returnTo;
+        }
+        next();
+    }
+
     app.get('/auth/google', checkReturnTo, passport.authenticate('google', {
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
@@ -67,13 +76,5 @@ module.exports = function (app) {
     app.get('/auth/google/callback',
         passport.authenticate('google', { successReturnToOrRedirect: '/', failureRedirect: '/' }));
 
-    function checkReturnTo (req,res,next) {
-        var returnTo = req.query.returnTo;
-        if (returnTo) {
-            req.session = req.session || {};
-            req.session.returnTo = returnTo;
-        }
-        next();
-    }
 
 };
