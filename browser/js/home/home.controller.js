@@ -63,10 +63,6 @@ app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
         $scope.selection = selection;
     };
 
-    $scope.run = function() {
-        return $scope.newViz.renderDataStructures();
-    };
-
 });
 
 app.directive('visualize', function() {
