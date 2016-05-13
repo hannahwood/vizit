@@ -281,7 +281,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // </div>';
 
         var codeVizHTML =
-            '<div id="dataViz"><table id="stackHeapTable">\
+            '<div id="dataVizOuter"><div id="graphPlaceholder" style="height:300px;"></div><div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -296,7 +296,7 @@ app.factory('VisualizeCodeFactory', function($http) {
            </td>\
          </tr>\
        </table>\
-     </div>';
+     </div></div>';
 
         // override
 
@@ -2867,7 +2867,8 @@ app.factory('VisualizeCodeFactory', function($http) {
                     return response.data;
                 });
         },
-        executionVisualizer: ExecutionVisualizer
+        executionVisualizer: ExecutionVisualizer,
+        update: ExecutionVisualizer.prototype.updateOutputFull
     };
 
 
