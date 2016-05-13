@@ -1,3 +1,9 @@
+app.filter( 'titlecase', function() {
+        return function( input ) {
+            return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+    });
+
 app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
     $scope.code = '// input your code here and click on "Visualize"\
     \nfunction fact(n) {\
