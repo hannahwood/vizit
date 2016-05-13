@@ -27,6 +27,9 @@ app.config(function($stateProvider){
         resolve: {
             revision: function (CodeFactory, $stateParams) {
                 return CodeFactory.getRevision($stateParams.codeId, $stateParams.revisionNum);
+            },
+            code: function ($stateParams, CodeFactory) {
+                return CodeFactory.getCode($stateParams.codeId);
             }
         }
     })

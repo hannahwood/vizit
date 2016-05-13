@@ -17,7 +17,7 @@
               <span md-highlight-text="searchText" md-highlight-flags="^i"> {{code._id.slice(code_id.length-5, code_id.length)}} </span>
             </span>
             <span class="item-metadata">
-                <strong>{{code.revisions[code.revisions.length-1].date.slice(0,10) | timefromnow}}</strong>
+                <strong>{{code.revisions[code.revisions.length-1].date | timefromnow}}</strong>
             </span>
           </md-item-template>
         </md-autocomplete>
@@ -28,7 +28,7 @@
     <md-divider></md-divider>
 
     <md-list>
-        <md-list-item class="md-2-line"  md-ink-ripple="#FFEB3B" ng-repeat="code in codes" layout-align="space-between start">
+        <md-list-item class="md-2-line"  md-ink-ripple="#FFEB3B" ng-repeat="code in codes | orderBy:mostRecent:true" layout-align="space-between start">
 
             <div class="md-list-item-text">
 
@@ -36,13 +36,13 @@
 
               <div class="inset">
                 <div layout="row">
-                  <ng-md-icon icon="{{code.isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}" size="16" ng-click="clickIconMorph($index)"></ng-md-icon>
+                  <ng-md-icon icon="{{code.isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}" size="16" ng-click="clickIconMorph(code._id)"></ng-md-icon>
                   <h3>{{code.revisions.length}} Revisions </h3>
                 </div>
                 <div class="inset">
 
-                  <div ng-repeat="revision in code.revisions track by $index" ng-if="code.isOpen">
-                    <a ui-sref="revision({codeId: code._id, revisionNum: $index})">Revision {{$index + 1}} - {{revision.date.slice(0,10) | timefromnow }}</a>
+                  <div ng-repeat="revision in code.revisions | orderBy:'-date'" ng-if="code.isOpen">
+                    <a ui-sref="revision({codeId: code._id, revisionNum: $index})">Revision {{code.revisions.length-$index}} - {{revision.date | timefromnow }}</a>
                   </div>
 
                 </div>
@@ -52,7 +52,7 @@
             </div>
 
             <div class="md-list-item-text date">
-              <h3>{{code.revisions[code.revisions.length-1].date.slice(0,10) | timefromnow}}</h3>
+              <h3>{{code.revisions[code.revisions.length-1].date | timefromnow}}</h3>
             </div>
 
             <ng-md-icon icon="more_vert" ng-click="showSettings" aria-label="Open Settings" ng-style="{'margin-top': '20px'}"></ng-md-icon>

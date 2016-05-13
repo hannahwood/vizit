@@ -28,8 +28,23 @@
         <md-list>
           <md-list-item layout-padding>
             <h3>{{user.email}}</h3>
+
+            <div uib-dropdown keyboard-nav>
+
+            <a><span class="caret" id="simple-btn-keyboard-nav" uib-dropdown-toggle ng-style="{'margin-left': '-10px'}"></span></a>
+
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+                <li role="menuitem"><a ui-sref="sessions">Sessions</a></li>
+                <li role="menuitem1"><a ui-sref="settings">Settings</a></li>
+                <li role="menuitem2"><a ui-sref="profile">Profile</a></li>
+                <li class="divider"></li>
+                <li role="menuitem3" ng-click="logout()"><a>Logout</a></li>
+            </ul>
+
+            </div>
+
             <img ng-src="{{user.photo}}" class="md-avatar" />
-            <ng-md-icon icon="keyboard_arrow_down" size="14" aria-label="User Menu" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
+
           </md-list-item>
         </md-list>
         <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>

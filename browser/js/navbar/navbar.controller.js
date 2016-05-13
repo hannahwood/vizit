@@ -49,9 +49,11 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
 
   var removeUser = function () {
     $scope.user = null;
+    $rootScope.$emit('loggedOut');
   };
 
   setUser();
+
 
   $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);

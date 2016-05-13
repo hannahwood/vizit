@@ -4,7 +4,7 @@ app.filter( 'titlecase', function() {
         }
     });
 
-app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
+app.controller('HomeCtrl', function($scope, VisualizeCodeFactory, AuthService, $rootScope, CodeFactory, $state) {
     $scope.code = '// input your code here and click on "Visualize"\
     \nfunction fact(n) {\
   \nif (n == 0) {\
@@ -31,6 +31,21 @@ app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
     $scope.set = function(selection) {
         $scope.selection = selection;
     };
+
+    $scope.user;
+
+    AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+    });
+
+    $rootScope.$on('loggedOut', function(){
+        $scope.user = null;
+    });
+
+    $scope.save = function(code){
+        CodeFactory.saveCode(code, $scope.user._id)
+        .then(code => $state.go('revision', {codeId: code._id, revisionNum: 0}));
+    }
 
 });
 
