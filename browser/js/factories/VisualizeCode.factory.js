@@ -121,6 +121,8 @@ app.factory('VisualizeCodeFactory', function($http) {
 
         this.hasRendered = false;
 
+        console.log('inside giant function');
+
         this.render(); // go for it!
     }
 
@@ -902,7 +904,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             var isLastInstr = (this.curInstr == (totalInstrs - 1));
 
             var vcrControls = myViz.domRoot.find("#vcrControls");
-
+            console.log("IOHGIOHEGOIHEGIOHEGIOHGIO")
             if (isLastInstr) {
                 if (this.promptForUserInput || this.promptForMouseInput) {
                     vcrControls.find("#curInstr").html('<b><font color="' + brightRed + '">Enter user input:</font></b>');
@@ -916,7 +918,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                     String(this.curInstr + 1) +
                     " of " + String(totalInstrs - 1));
             }
-
+            console.log('insideOutputFull');
 
             vcrControls.find("#jmpFirstInstr").attr("disabled", false);
             vcrControls.find("#jmpStepBack").attr("disabled", false);

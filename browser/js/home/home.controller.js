@@ -12,35 +12,43 @@ app.controller('HomeCtrl', function($scope, VisualizeCodeFactory, $document) {
 \n}\
 \n\nfact(10);'
 
-	// $scope.render = VisualizeCodeFactory.executionVisualizer.renderDataStructures;
-      $scope.selection = 'edit';
-      // $scope.trace = [];
-      // $scope.data = [];
-      // $scope.renderer = 'bar';
-      $scope.submitCode = function(code) {
+    // $scope.render = VisualizeCodeFactory.executionVisualizer.renderDataStructures;
+    $scope.selection = 'edit';
+    // $scope.trace = [];
+    // $scope.data = [];
+    // $scope.renderer = 'bar';
+    $scope.submitCode = function(code) {
+        $scope.hasError = false;
         VisualizeCodeFactory.submitCode(code)
-        .then(function(response) {
-        	console.log(response.trace[0]);
-        	if (response.trace[0].event === "uncaught_exception") {
-        		throw new Error(response.trace[0].exception_msg);
-        	}
-          $scope.trace = response.trace;
-          return new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
-        })
-        .catch(function(err) {
-			$('#error').html('<div class="error">' + err + '</div>');
-        });
-      };
+            .then(function(response) {
+				$scope.set('visualize');
+                if (response.trace[0].event === "uncaught_exception") {
+                    $scope.hasError = true;
+                    $scope.errorMessage = response.trace[0].exception_msg;
+                    $scope.set('edit');
+                    throw new Error(response.trace[0].exception_msg);
+                }
+                // $scope.trace = response.trace;
+                const s = new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
+                console.log(s);
+                return s;
+            })
+            .catch(function(err) {
+                $scope.set('edit');
+                $scope.hasError = true;
+                $scope.errorMessage = err.toString();
+            });
+    };
 
-      $scope.set = function(selection) {
+    $scope.set = function(selection) {
         $scope.selection = selection;
-      };
+    };
 
-    });
+});
 
 app.directive('visualize', function() {
-  return {
-    restrict: 'E',
-    templateUrl: 'js/home/visualize.html'
-  };
+    return {
+        restrict: 'E',
+        templateUrl: 'js/home/visualize.html'
+    };
 });

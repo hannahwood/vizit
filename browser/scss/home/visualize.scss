@@ -86,7 +86,7 @@ textarea {
     #dataViz {
         text-align: center;
         margin: 20px 20px;
-        max-width: 800px;
+        // max-width: 800px;
         overflow-x: scroll;
         overflow-y: scroll;
         // this allows the viz to be basically full-height without 
@@ -100,12 +100,12 @@ textarea {
         /* firefox */
         height: 100%;
         // this allows the CodePane to be full-width
-        width: calc(45vw);
-        width: -o-calc(45vw);
+        min-width: calc(45vw);
+        min-width: -o-calc(45vw);
         /* opera */
-        width: -webkit-calc(45vw);
+        min-width: -webkit-calc(45vw);
         /* google, safari */
-        width: -moz-calc(45vw);
+        min-width: -moz-calc(45vw);
         /* firefox */
         resize: both;
         svg {
