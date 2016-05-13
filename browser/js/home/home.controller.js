@@ -57,12 +57,11 @@ app.controller('HomeCtrl', function($scope, VisualizeCodeFactory) {
                 $scope.errorMessage = err.toString();
             });
     };
-
+    //
     // selection: 'edit', 'visualize', or 'analyze'
     $scope.set = function(selection) {
         $scope.selection = selection;
     };
-
 });
 
 app.directive('visualize', function() {
