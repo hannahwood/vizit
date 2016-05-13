@@ -18,13 +18,13 @@ function seed(files) {
 	});
 
 	var code = [];
-	files.forEach(function(file){
+	files.forEach(function(file, i){
 		var codeObj = {};
-		codeObj.user = users[((Math.random() * users.length) | 0)]._id;
+		i >= files.length-3 ? codeObj.author = users.find(function (user) { return user.email === 'Laura'}) : codeObj.author = users[((Math.random() * users.length) | 0)]._id;
 		var numRevisions = (Math.random() * 8 | 0) + 1;
 		codeObj.revisions = [];
-		for (var i = 0; i < numRevisions; i++){
-			codeObj.revisions.push(file + '\n//' + 'revision #' + i);
+		for (var j = 0; j < numRevisions; j++){
+			codeObj.revisions.push({content: file + '\n//' + 'revision #' + j, date: Date.now()});
 		}
 		code.push(new Code(codeObj));
 	})

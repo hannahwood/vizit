@@ -1,18 +1,10 @@
 $gray: #eee;
 $dark: #263238;
 $light: #fff;
-#home {
-    fullstack-logo {
-        padding-top: 30px;
-        width: 150px;
-        margin: 0 auto;
-    }
-    h1 {
-        margin-top: 40px;
-        text-align: center;
-    }
-    .full {
-        height: calc(100vh - 140px);
+
+vizit-logo {
+    img {
+        margin: 10px;
     }
 }
 
@@ -28,8 +20,10 @@ $light: #fff;
     }
 }
 
-.error {
-  text-align: center;
+#error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .ace_editor {
@@ -37,6 +31,9 @@ $light: #fff;
     width: 50vw;
     font-size: 18px !important;
     font-family: 'Ubuntu Mono' !important;
+}
+md-progress-linear {
+    // width: 50vw;
 }
 
 md-content.md-default-theme {

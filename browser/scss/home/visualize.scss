@@ -14,12 +14,12 @@
     resize: vertical;
     background-color: #002B36;
     // this allows the CodePane to be full-width
-    width: calc(45vw);
-    width: -o-calc(45vw);
+    width: calc(40vw);
+    width: -o-calc(40vw);
     /* opera */
-    width: -webkit-calc(45vw);
+    width: -webkit-calc(40vw);
     /* google, safari */
-    width: -moz-calc(45vw);
+    width: -moz-calc(40vw);
     /* firefox */
     height: 100%;
     table td,
@@ -87,8 +87,8 @@ textarea {
         text-align: center;
         margin: 20px 20px;
         // max-width: 800px;
-        overflow-x: scroll;
-        overflow-y: scroll;
+        // overflow-x: scroll;
+        // overflow-y: scroll;
         // this allows the viz to be basically full-height without 
         // causing page to scroll
         max-height: calc(100vh - 200px);
@@ -100,12 +100,12 @@ textarea {
         /* firefox */
         height: 100%;
         // this allows the CodePane to be full-width
-        min-width: calc(45vw);
-        min-width: -o-calc(45vw);
+        min-width: calc(40vw);
+        min-width: -o-calc(40vw);
         /* opera */
-        min-width: -webkit-calc(45vw);
+        min-width: -webkit-calc(40vw);
         /* google, safari */
-        min-width: -moz-calc(45vw);
+        min-width: -moz-calc(40vw);
         /* firefox */
         resize: both;
         svg {

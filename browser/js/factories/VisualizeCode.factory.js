@@ -205,6 +205,7 @@ app.factory('VisualizeCodeFactory', function($http) {
     // before every call to renderDataStructures, or else all hell breaks
     // loose. yeah, this is kludgy and stateful, but at least all of the
     // relevant state gets shoved into one unified place
+    // HANNAH ARROWS
     ExecutionVisualizer.prototype.resetJsPlumbManager = function() {
         this.jsPlumbManager = {
             heap_pointer_src_id: 1, // increment this to be unique for each heap_pointer_src_*
@@ -259,7 +260,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         var myViz = this; // to prevent confusion of 'this' inside of nested functions
 
         var codeDisplayHTML =
-            '<div id="codeDisplayDiv">\
+            '<div id="outer"><div id="codeDisplayDiv">\
        <div id="vcrControls">\
          <button id="jmpFirstInstr", type="button"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></button>\
          <button id="jmpStepBack", type="button"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>\
@@ -274,7 +275,7 @@ app.factory('VisualizeCodeFactory', function($http) {
        Program output:<br/>\
        <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
      </div>\
-     </div>';
+     </div></div>';
 
         //    var outputsHTML =
         // '<div id="progOutputs">\
