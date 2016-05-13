@@ -4,6 +4,11 @@ app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, Flas
    $scope.oneAtATime = true;
    $scope.update = {};
    $scope.pass = {};
+   $scope.peek = {
+      old: false,
+      new: false,
+      newConfirm: false
+   };
 
    function passwordSuccess () {
       $mdToast.show($mdToast.simple()
@@ -40,8 +45,24 @@ app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, Flas
       $scope.update = {};
    }
 
+   function disconnectSuccess (updatedUser, provider) {
+      $mdToast.show($mdToast.simple()
+         .content('Disconnected from '+provider)
+         .position('top right')
+         .parent($document[0].querySelector('#connect')));
+      $rootScope.$emit('userUpdated', updatedUser._id);
+      $scope.user = updatedUser;
+   }
+
+   function disconnectFail (err, provider) {
+      $mdToast.show($mdToast.simple()
+         .content(provider+': '+err)
+         .position('top left')
+         .parent($document[0].querySelector('#connect')));
+   }
+
    $scope.updateUser = function (userInfo) {
-      delete userInfo.emailDuplicate;
+      delete userInfo.emailConfirm;
       var update = {};
 
       Object.keys(userInfo).forEach(function (k) {
@@ -62,13 +83,12 @@ app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, Flas
    }
 
    $scope.disconnect = function (provider) {
-      UserAuthFactory.disconnect($scope.user, provider)
+      UserAuthFactory.disconnect($scope.user._id, provider.toLowerCase())
       .then(function (updatedUser) {
-         $scope.user = updatedUser;
+         disconnectSuccess(updatedUser, provider);
       })
       .catch(function (err) {
-         Flash.create('danger', '<strong>'+err+'</strong>',5000,{id: 'connect'}, true);
-         $scope.user = $scope.original;
+         disconnectFail(err, provider);
       })
    }
 })

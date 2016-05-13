@@ -67,4 +67,11 @@ router.put('/:userId/updatePassword', Auth.assertAdminOrSelf, function(req,res,n
     }
 });
 
+router.put('/:userId/disconnectProvider', Auth.assertAdminOrSelf, function (req, res, next) {
+    req.requestedUser[req.body.provider] = undefined;
+    req.requestedUser.save()
+    .then(user => res.status(201).json(user.sanitize()))
+    .catch(next);
+})
+
 module.exports = router;

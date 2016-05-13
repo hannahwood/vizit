@@ -1,6 +1,7 @@
 app.factory('UserAuthFactory', function (AuthService, $state, $http, $q, Flash) {
   var UserAuthFactory = {};
   var parseData = res => res.data;
+  var rejErr = err => $q.reject(err.data);
 
   UserAuthFactory.logout = function () {
     AuthService.logout().then(function () {
@@ -11,25 +12,19 @@ app.factory('UserAuthFactory', function (AuthService, $state, $http, $q, Flash) 
   UserAuthFactory.updateUser = function (userId, updateInfo) {
     return $http.put('/api/users/'+userId, updateInfo)
     .then(parseData)
-    .catch(function (err) {
-      return $q.reject(err.data);
-    });
+    .catch(rejErr);
   }
 
   UserAuthFactory.updatePassword = function (userId, passObj) {
     return $http.put('/api/users/'+userId+'/updatePassword', passObj)
     .then(parseData)
-    .catch(function (err) {
-      return $q.reject(err.data);
-    })
+    .catch(rejErr)
   }
 
-  UserAuthFactory.connect = function (user, provider) {
-
-  }
-
-  UserAuthFactory.disconnect = function (user, provider) {
-    
+  UserAuthFactory.disconnect = function (userId, provider) {
+    return $http.put('/api/users/'+userId+'/disconnectProvider', {provider: provider})
+    .then(parseData)
+    .catch(rejErr)
   }
 
   return UserAuthFactory;
