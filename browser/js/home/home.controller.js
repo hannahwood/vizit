@@ -1,11 +1,23 @@
+app.filter( 'titlecase', function() {
+        return function( input ) {
+            return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+    });
+
 app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
-  $scope.code = '// input your code here and click on "Visualize"\
-  \nvar x =4;\
-  \nfunction y(num) {\
-    \n    return x*num;\
-    \n}\
-    \ny(34);\
-    '
+    $scope.code = '// input your code here and click on "Visualize"\
+    \nfunction fact(n) {\
+  \nif (n == 0) {\
+    \n   return 1;\
+  \n}\
+  \nelse {\
+    \n   console.log("THERE ARE  " + n + " oranges!!!");\
+    \n   return n * fact(n-1);\
+  \n}\
+\n}\
+\n\nfact(10);'
+
+	$scope.render = VisualizeCodeFactory.executionVisualizer.renderDataStructures;
     $scope.selection = 'edit';
     $scope.trace = [];
     $scope.data = [];
@@ -46,6 +58,7 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
         // console.log('element: ' + e.value);
         // console.dir(e.point);
       });
+      debugger;
       var el = $compile(graph)( $scope );
       angular.element(graphPlaceholder).prepend(el);
       VisualizeCodeFactory.update();

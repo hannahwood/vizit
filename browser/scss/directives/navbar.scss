@@ -16,6 +16,10 @@
   .md-toolbar-tools {
     font-size: 16px;
   }
+  .center {
+    text-align: center;
+    margin: auto;
+  }
 }
 
 #sidenav {
@@ -34,10 +38,8 @@
 #logo {
   position: absolute;
   top: 0px;
-  left: 50%;
-  margin: 0 0 0 -80px;
+  left: 2%;
   box-sizing: border-box;
-  padding: 10px;
 }
 
 .userModal {

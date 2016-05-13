@@ -45,7 +45,7 @@ gulp.task('buildJS', ['lintJS'], function () {
     return gulp.src(['./browser/js/app.js', './browser/js/**/*.js'])
         .pipe(plumber())
         .pipe(sourcemaps.init())
-        .pipe(concat('main.js'))
+        .pipe(concat('main.js', {newLine: ';'}))
         .pipe(babel({
             presets: ['es2015']
         }))

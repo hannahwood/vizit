@@ -2,24 +2,9 @@
   box-sizing: border-box;
 }
 
-.tick {
-  opacity: 0;
-}
-
 body {
   background: #fdfdfd;
   height: 100vh
-}
-
-.rickshaw_graph .x_tick .title {
-  opacity: 1 !important;
-  position: relative !important;
-  color: #646464;
-  margin-top:10px;
-}
-.rickshaw_graph .y_ticks text {
-  opacity: 1 !important;
-  position: relative !important;
 }
 
 @mixin clearfix {
@@ -40,6 +25,7 @@ body {
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
-
+@import 'users/main';
 @import 'home/visualize';
 @import 'home/vizTables';
+

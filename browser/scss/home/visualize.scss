@@ -1,11 +1,27 @@
 #pyCodeOutputDiv {
     overflow-x: scroll;
     overflow-y: scroll;
-    max-width: 500px;
+    min-width: 500px;
     max-height: 100%;
     height: 320px;
+    max-height: calc(100vh - 400px);
+        max-height: -o-calc(100vh - 400px);
+        /* opera */
+        max-height: -webkit-calc(100vh - 400px);
+        /* google, safari */
+        max-height: -moz-calc(100vh - 400px);
+        /* firefox */
     resize: vertical;
     background-color: #002B36;
+    // this allows the CodePane to be full-width
+    width: calc(45vw);
+    width: -o-calc(45vw);
+    /* opera */
+    width: -webkit-calc(45vw);
+    /* google, safari */
+    width: -moz-calc(45vw);
+    /* firefox */
+    height: 100%;
     table td,
     table th {
         background-color: #002B36;
@@ -35,6 +51,7 @@
         width: 50px;
     }
 }
+
 textarea {
     width: 100%;
     // resize: none;
@@ -46,9 +63,9 @@ textarea {
 }
 
 #help {
-	p {
-		font-size: 10pt;
-	}
+    p {
+        font-size: 10pt;
+    }
 }
 
 #pyOutputPane {
@@ -61,14 +78,39 @@ textarea {
     flex-wrap: wrap;
     justify-content: center;
     #codeDisplayDiv {
-        margin: 20px;
+        margin: 20px 20px;
         #progOutputs {
             margin-top: 20px;
         }
     }
     #dataViz {
-        margin: 20px;
-        max-width: 600px;
+        text-align: center;
+        margin: 20px 20px;
+        max-width: 800px;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        // this allows the viz to be basically full-height without 
+        // causing page to scroll
+        max-height: calc(100vh - 200px);
+        max-height: -o-calc(100vh - 200px);
+        /* opera */
+        max-height: -webkit-calc(100vh - 200px);
+        /* google, safari */
+        max-height: -moz-calc(100vh - 200px);
+        /* firefox */
+        height: 100%;
+        // this allows the CodePane to be full-width
+        width: calc(45vw);
+        width: -o-calc(45vw);
+        /* opera */
+        width: -webkit-calc(45vw);
+        /* google, safari */
+        width: -moz-calc(45vw);
+        /* firefox */
+        resize: both;
+        svg {
+            position: absolute !important;
+        }
     }
 }
 
@@ -80,21 +122,22 @@ textarea {
     font-size: 12pt;
     color: white;
     button {
-    	border: none;
-    	border-radius: 5%;
+        border: none;
+        border-radius: 5%;
     }
     .glyphicon {
-    	font-size: 10pt;
-    	color: #073D49;
+        font-size: 10pt;
+        color: #073D49;
     }
     span {
-    	padding: 5px;
+        padding: 5px;
     }
     #curInstr {
         display: inline-block;
         min-width: 200px;
     }
 }
+
 .visualizer {
     background-color: blue;
 }
