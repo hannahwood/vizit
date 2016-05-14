@@ -2826,16 +2826,13 @@ app.factory('VisualizeCodeFactory', function($http) {
     }
 
     return {
-        // executionVisualizer: ExecutionVisualizer,
         submitCode: function(code) {
             return $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
-                  // console.log(response);
                     return response.data;
                 });
         },
-        executionVisualizer: ExecutionVisualizer,
-        update: ExecutionVisualizer.prototype.updateOutputFull
+        executionVisualizer: ExecutionVisualizer
     };
 
 

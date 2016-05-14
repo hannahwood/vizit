@@ -68,36 +68,42 @@ textarea {
 }
 
 .vizLayoutTd {
+    // background-color: gray;
     display: flex;
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     justify-content: center;
     #placeholder {
         width: 40vw;
+        min-width: 500px;
         height: 80vh;
         margin: 20px 20px;
     }
     #codeDisplayDiv {
+        // background-color: white;
         position: fixed;
-        margin: 20px 20px;
+        padding: 20px 20px;
         #progOutputs {
             margin-top: 20px;
         }
     }
-    #dataViz {
-        text-align: center;
-        margin: 20px 20px;
-        max-height: calc(100vh - 200px);
-        max-height: -o-calc(100vh - 200px);
-        /* opera */
-        max-height: -webkit-calc(100vh - 200px);
-        /* google, safari */
-        max-height: -moz-calc(100vh - 200px);
-        /* firefox */
-        height: 100%;
-        min-width: 40vw;
-        resize: both;
-        svg {
-            position: absolute !important;
+    #dataVizOuter {
+        // background-color: red;
+        #dataViz {
+            text-align: center;
+            margin: 20px 20px;
+            max-height: calc(100vh - 200px);
+            max-height: -o-calc(100vh - 200px);
+            /* opera */
+            max-height: -webkit-calc(100vh - 200px);
+            /* google, safari */
+            max-height: -moz-calc(100vh - 200px);
+            /* firefox */
+            height: 100%;
+            min-width: 40vw;
+            resize: both;
+            svg {
+                position: absolute !important;
+            }
         }
     }
 }
@@ -126,9 +132,9 @@ textarea {
     }
 }
 
-.visualizer {
-    background-color: blue;
-}
+// .visualizer {
+//     background-color: blue;
+// }
 
 table td,
 table th {

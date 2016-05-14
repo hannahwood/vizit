@@ -90,7 +90,6 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
         graph.on('elementClick', function(e) {});
         var el = $compile(graph)($scope);
         angular.element(graphPlaceholder).prepend(el);
-        VisualizeCodeFactory.update();
     };
 
     $scope.set = function(selection) {
