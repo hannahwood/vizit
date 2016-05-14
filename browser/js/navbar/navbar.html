@@ -18,8 +18,8 @@
 
       <!--  No user -->
       <div flex layout="row" layout-margin layout-align="end center" ng-show="!user">
-          <md-button ng-click="showSignUp()">Login</md-button>
-          <md-button ng-click="showSignUp()">Signup</md-button>
+          <md-button id="login" ng-click="showLogin()">Login</md-button>
+          <md-button id="signup" ng-click="showSignUp()">Signup</md-button>
           <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
       </div>
 
