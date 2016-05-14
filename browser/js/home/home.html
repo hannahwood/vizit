@@ -1,3 +1,7 @@
+
+
+<!--   <main code=""></main> -->
+
 <section id="home" ng-controller="HomeCtrl">
     <md-toolbar class="md-accent" id="toolbar">
         <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
@@ -5,6 +9,7 @@
             <md-button class="tools" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
             <md-button class="tools" ng-class="{'active': selection === 'visualize'}" ng-click="set('visualize'); submitCode(code)"> Visualize </md-button>
             <md-button class="tools" ng-class="{'active': selection === 'analyze'}" ng-click="set('analyze')"> Analyze </md-button>
+            <md-button class="tools" ng-click="render()"> dzfjhsdbf </md-button>
             <span flex></span>
         </div>
     </md-toolbar>
@@ -27,10 +32,9 @@
                     }
                   }">
                     </div>
-                    <!-- <md-button id="executeBtn" ng-click="submitCode(code)"> Visualize Code</md-button> -->
                 </div>
                 <visualize ng-show="selection === 'visualize'"></visualize>
-                <analyze ng-show="selection === 'analyze'">ANALYZE</analyze>
+                <analyze ng-show="selection === 'analyze'"></analyze>
             </div>
         </div>
         </div>

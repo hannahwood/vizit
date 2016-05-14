@@ -8,7 +8,7 @@ const Code = mongoose.model('Code');
 const User = mongoose.model('User');
 const Auth = require('../../../utils/auth.middleware');
 
-// get all for testing purposes 
+// get all for testing purposes
 router.get('/', function(req,res,next) {
     Code.find({})
         .then((code) => res.json(code))
@@ -26,7 +26,7 @@ router.get('/', function(req,res,next) {
 router.get('/:codeId', function(req,res,next) {
     Code.findById(req.params.codeId)
         .then((code) => {
-            res.json(code.revisions);
+            res.json(code);
         })
     .catch(next);
 });
@@ -40,7 +40,7 @@ router.post('/', Auth.assertAuthenticated, function(req, res, next) {
 router.put('/:codeId', function(req, res, next) {
     Code.findById(req.params.codeId)
         .then(code => {
-            code.revisions.push(req.body.revisedCode); 
+            code.revisions.push(req.body.revisedCode);
             // be sure to include 'revisedCode' in the $http request body
             return code.save();
         })
@@ -60,7 +60,7 @@ router.delete('/:codeId/:revisionIndex', Auth.assertAdminOrSelf, function(req, r
     Code.findById(req.params.codeId)
         .then(code => {
             var index = parseInt(req.params.revisionIndex);
-            code.revisions.splice(index, 1); 
+            code.revisions.splice(index, 1);
             // be sure to include 'revisedCode' in the $http request body
             return code.save();
         })

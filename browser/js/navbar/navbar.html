@@ -2,42 +2,39 @@
 
   <md-toolbar class="{{color}}" ng-controller="NavCtrl" ng-style="{'height': height, 'transition': 'height 0.15s', 'transition-timing-function': 'linear'}">
 
-    <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
+    <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center">
 
-    <div id="menu">
-    <ng-md-icon icon="{{icon}}" size="42" ng-click="toggleSidenav()" aria-label="Menu" ng-style="{'margin-top': '-5px'}"></ng-md-icon>
-    </div>
+      <div flex>
+        <div id="logo">
+          <a ui-sref="home">
+          <vizit-logo></vizit-logo>
+          </a>
+        </div>
+      </div>
 
+      <div flex layout-align="center center" hide-xs>
+          <h2 ng-style="{'text-align': 'center'}">{{currentState() | titlecase}}</h2>
+      </div>
 
-<!-- <h2>{{currentState() | uppercase}}</h2> -->
-    <div id="logo" hide-xs>
-      <vizit-logo></vizit-logo>
-    </div>
-    <span flex></span>
+      <!--  No user -->
+      <div flex layout="row" layout-margin layout-align="end center" ng-show="!user">
+          <md-button id="login" ng-click="showSignUp()">Login</md-button>
+          <md-button id="signup" ng-click="showSignUp()">Signup</md-button>
+          <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
+      </div>
 
-<!-- Active user -->
-
-    <div layout="row" layout-padding layout-align="center center" ng-show="user">
-    <md-list>
-      <md-list-item layout-padding>
-        Welcome, {{user.fullName ? user.fullName.split(' ')[0] : user.email}}!
-        <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" />
-        <ng-md-icon icon="logout" size="26" aria-label="Logout" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
-      </md-list-item>
-    </md-list>
-    <ng-md-icon icon="more_vert" size="26" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
-    </div>
-
-<!--  No user -->
-
-    <div layout="row" layout-margin layout-align="center center" ng-show="!user">
-      <md-button id="login" ng-click="showLogin()">Login</md-button>
-      <md-button id="signup" ng-click="showSignUp()">Signup</md-button>
-      <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
-    </div>
-
+      <!-- Active user -->
+      <div flex layout="row" layout-margin layout-align="end center" ng-show="user">
+        <md-list>
+          <md-list-item layout-padding>
+            <h3>{{user.fullName? user.fullName : user.email}}</h3>
+            <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" />
+            <ng-md-icon icon="keyboard_arrow_down" size="14" aria-label="User Menu" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
+          </md-list-item>
+        </md-list>
+        <ng-md-icon icon="more_vert" ng-click="showBottomSheet($event)" aria-label="Open Settings"></ng-md-icon>
+      </div>
 
     </div>
   </md-toolbar>
-
 </div>
