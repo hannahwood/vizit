@@ -21,7 +21,7 @@
     <md-list>
       <md-list-item layout-padding>
         Welcome, {{user.fullName ? user.fullName.split(' ')[0] : user.email}}!
-        <img ng-src="{{user.photo}}" class="md-avatar" />
+        <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" />
         <ng-md-icon icon="logout" size="26" aria-label="Logout" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
       </md-list-item>
     </md-list>

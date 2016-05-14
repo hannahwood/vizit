@@ -8,7 +8,7 @@
             <div layout="row" layout-xs="column">
                <div flex>
                   <div style="padding: 3em;">
-                     <img style="margin-left: auto; margin-right: auto; height: 250px;" ng-src="{{user.photo}}">
+                     <img ng-mouseover="hover = !hover" style="margin-left: auto; margin-right: auto; height: 250px;" ng-src="{{user.photo ? user.photo : user.gravatar}}">
                   </div>
                </div>
                <div flex>

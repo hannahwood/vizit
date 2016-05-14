@@ -24,7 +24,7 @@ module.exports = function (app) {
                 if (user) {
                     return user;
                 } else {
-                    return UserModel.findOne({email: profile.emails[0].value});
+                    return UserModel.findOne({email: profile.emails[0].value.toLowerCase()});
                 }
 
             })
@@ -32,7 +32,6 @@ module.exports = function (app) {
                 if (potentialUser) {
                     potentialUser.google.id = profile.id;
                     potentialUser.fullName = potentialUser.fullName || profile.displayName;
-                    potentialUser.photo = potentialUser.photo || profile._json.picture;
                     return potentialUser.save();
                 } else {
                     return UserModel.create({
@@ -40,8 +39,7 @@ module.exports = function (app) {
                             id: profile.id
                         },
                         fullName: profile.displayName,
-                        email: profile.emails[0].value,
-                        photo: profile._json.picture
+                        email: profile.emails[0].value.toLowerCase(),
                     });
                 }
             })
