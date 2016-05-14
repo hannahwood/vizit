@@ -9,17 +9,6 @@ body {
   height: 100vh
 }
 
-.rickshaw_graph .x_tick .title {
-  opacity: 1 !important;
-  position: relative !important;
-  color: #646464;
-  margin-top:10px;
-}
-.rickshaw_graph .y_ticks text {
-  opacity: 1 !important;
-  position: relative !important;
-}
-
 @mixin clearfix {
   &:after {
     content: "";

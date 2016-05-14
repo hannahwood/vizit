@@ -11,7 +11,6 @@
               <span ng-hide="progress">Visualize</span>
             </md-button>
             <md-button class="tools" ng-class="{'active': selection === 'analyze'}" ng-click="set('analyze')"> Analyze </md-button>
-            <md-button class="tools" ng-click="run()"> RUN </md-button>
             <span flex></span>
         </div>
     <md-progress-linear ng-show="progress" md-mode="indeterminate"></md-progress-linear>
@@ -36,11 +35,12 @@
                   }">
 
                     </div>
-                <div id="error" ng-show="hasError"> {{ errorMessage }}</div>
+                <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
                 <visualize ng-if="selection === 'visualize'">
                 </visualize>
                 <analyze ng-if="selection === 'analyze'"></analyze>
+
             </div>
         </div>
         </div>

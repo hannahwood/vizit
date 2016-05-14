@@ -260,7 +260,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         var myViz = this; // to prevent confusion of 'this' inside of nested functions
 
         var codeDisplayHTML =
-            '<div id="outer"><div id="codeDisplayDiv">\
+            '<div id="codeDisplayDiv">\
        <div id="vcrControls">\
          <button id="jmpFirstInstr", type="button"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></button>\
          <button id="jmpStepBack", type="button"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>\
@@ -275,7 +275,7 @@ app.factory('VisualizeCodeFactory', function($http) {
        Program output:<br/>\
        <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
      </div>\
-     </div></div>';
+     </div>';
 
         //    var outputsHTML =
         // '<div id="progOutputs">\
@@ -284,7 +284,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // </div>';
 
         var codeVizHTML =
-            '<div id="dataViz"><table id="stackHeapTable">\
+            '<div id="placeholder"></div><div id="dataVizOuter"><div id="graphPlaceholder" style="height:300px;"></div><div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -299,7 +299,7 @@ app.factory('VisualizeCodeFactory', function($http) {
            </td>\
          </tr>\
        </table>\
-     </div>';
+     </div></div>';
 
         // override
 
@@ -2838,7 +2838,8 @@ app.factory('VisualizeCodeFactory', function($http) {
                     return response.data;
                 });
         },
-        executionVisualizer: ExecutionVisualizer
+        executionVisualizer: ExecutionVisualizer,
+        update: ExecutionVisualizer.prototype.updateOutputFull
     };
 
 
