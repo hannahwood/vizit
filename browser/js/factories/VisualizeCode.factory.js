@@ -203,6 +203,7 @@ app.factory('VisualizeCodeFactory', function($http) {
     // before every call to renderDataStructures, or else all hell breaks
     // loose. yeah, this is kludgy and stateful, but at least all of the
     // relevant state gets shoved into one unified place
+    // HANNAH ARROWS
     ExecutionVisualizer.prototype.resetJsPlumbManager = function() {
         this.jsPlumbManager = {
             heap_pointer_src_id: 1, // increment this to be unique for each heap_pointer_src_*
@@ -281,7 +282,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // </div>';
 
         var codeVizHTML =
-            '<div id="dataVizOuter"><div id="graphPlaceholder" style="height:300px;"></div><div id="dataViz"><table id="stackHeapTable">\
+            '<div id="placeholder"></div><div id="dataVizOuter"><div id="graphPlaceholder" style="height:300px;"></div><div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -902,7 +903,6 @@ app.factory('VisualizeCodeFactory', function($http) {
             var isLastInstr = (this.curInstr == (totalInstrs - 1));
 
             var vcrControls = myViz.domRoot.find("#vcrControls");
-
             if (isLastInstr) {
                 if (this.promptForUserInput || this.promptForMouseInput) {
                     vcrControls.find("#curInstr").html('<b><font color="' + brightRed + '">Enter user input:</font></b>');
@@ -916,7 +916,6 @@ app.factory('VisualizeCodeFactory', function($http) {
                     String(this.curInstr + 1) +
                     " of " + String(totalInstrs - 1));
             }
-
 
             vcrControls.find("#jmpFirstInstr").attr("disabled", false);
             vcrControls.find("#jmpStepBack").attr("disabled", false);
@@ -1666,38 +1665,6 @@ app.factory('VisualizeCodeFactory', function($http) {
                 $(this).empty(); // crucial for garbage collecting jsPlumb connectors!
             })
             .remove();
-
-
-        // Render globals and then stack frames using d3:
-
-
-        // TODO: this sometimes seems buggy on Safari, so nix it for now:
-        // function highlightAliasedConnectors(d, i) {
-        //     // if this row contains a stack pointer, then highlight its arrow and
-        //     // ALL aliases that also point to the same heap object
-        //     var stackPtrId = $(this).find('div.stack_pointer').attr('id');
-        //     if (stackPtrId) {
-        //         var foundTargetId = null;
-        //         myViz.jsPlumbInstance.select({ source: stackPtrId }).each(function(c) { foundTargetId = c.targetId; });
-
-        //         // use foundTargetId to highlight ALL ALIASES
-        //         myViz.jsPlumbInstance.select().each(function(c) {
-        //             if (c.targetId == foundTargetId) {
-        //                 c.setHover(true);
-        //                 $(c.canvas).css("z-index", 2000); // ... and move it to the VERY FRONT
-        //             } else {
-        //                 c.setHover(false);
-        //             }
-        //         });
-        //     }
-        // }
-
-        // function unhighlightAllConnectors(d, i) {
-        //     myViz.jsPlumbInstance.select().each(function(c) {
-        //         c.setHover(false);
-        //     });
-        // }
-
 
 
         // TODO: coalesce code for rendering globals and stack frames,
@@ -2863,6 +2830,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         submitCode: function(code) {
             return $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
+                  // console.log(response);
                     return response.data;
                 });
         },

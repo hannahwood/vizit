@@ -877,7 +877,7 @@ catch (e) {
     errorTraceEntry.event = 'uncaught_exception';
     errorTraceEntry.exception_msg = originalErrorMsg;
     if (isNaN(lineNo)) {
-      errorTraceEntry.exception_msg = originalErrorMsg + "\n(sorry, we can't find the line number)";
+      errorTraceEntry.exception_msg = originalErrorMsg;
     } else {
       errorTraceEntry.line = lineNo - NUM_ADDED_LINES; // adjust to account for code that we injected -- subtle!
     }

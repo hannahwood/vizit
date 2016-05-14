@@ -7,11 +7,13 @@
         <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
             <span flex></span>
             <md-button class="tools" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
-            <md-button class="tools" ng-class="{'active': selection === 'visualize'}" ng-click="set('visualize'); submitCode(code)"> Visualize </md-button>
+            <md-button class="tools" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layou-align="space-around">
+              <span ng-hide="progress">Visualize</span>
+            </md-button>
             <md-button class="tools" ng-class="{'active': selection === 'analyze'}" ng-click="set('analyze')"> Analyze </md-button>
-            <md-button class="tools" ng-click="render()"> dzfjhsdbf </md-button>
             <span flex></span>
         </div>
+    <md-progress-linear ng-show="progress" md-mode="indeterminate"></md-progress-linear>
     </md-toolbar>
     <md-content flex>
         <div layout="column" layout-fill layout-padding class="full">
@@ -31,10 +33,14 @@
                       enableLiveAutocompletion: true
                     }
                   }">
+
                     </div>
+                <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
-                <visualize ng-show="selection === 'visualize'"></visualize>
-                <analyze ng-show="selection === 'analyze'"></analyze>
+                <visualize ng-if="selection === 'visualize'">
+                </visualize>
+                <analyze ng-if="selection === 'analyze'"></analyze>
+
             </div>
         </div>
         </div>
