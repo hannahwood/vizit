@@ -1,4 +1,8 @@
 $greyBackground: #F5F5F5;
+$textBlueColor: #00496B;
+$yellowBackgroundColor: #F9ED10;
+$darkBlueBackgroundColor: #002B36;
+
 circle {
     display: none;
 }
@@ -18,35 +22,26 @@ circle {
         font-weight: bold;
         font-size: 12pt;
     }
-    .stackFrame, // .heapRow,
+    .stackFrame,
     .heapObject {
         margin: 0px !important;
         table {
             margin-bottom: 20px;
         }
         td {
-            color: #00496B;
+            color: $textBlueColor;
             border: 1px solid #eee;
-            // font-size: 16px;
-            // border-bottom: 2px solid #eee;
-            // font-weight: normal;
         }
-        .funcCod, .funcCode {
+        .funcCod,
+        .funcCode {
             color: #93A1A1;
             border: none;
-            background-color: #002B36;
+            background-color: $darkBlueBackgroundColor;
             font-size: 7pt;
             font-weight: normal;
         }
         .stackFrameHeader {
             padding: 10px;
-        }
-        ._jsPlumb_endpoint {
-            -webkit-transition: none !important;
-            -moz-transition: none !important;
-            -o-transition: none !important;
-            -ms-transition: none !important;
-            transition: none !important;
         }
     }
     #stack_td {
@@ -62,7 +57,7 @@ circle {
         }
         .highlightedStackFrame {
             .stackFrameHeader {
-                background-color: #F9ED10;
+                background-color: $yellowBackgroundColor;
             }
             .stackFrameVarTable {
                 background-color: white;
@@ -71,11 +66,8 @@ circle {
             }
         }
         td {
-            color: #00496B;
+            color: $textBlueColor;
             border-left: 2px solid #eee;
-            // font-size: 16px;
-            border-bottom: 2px solid #eee;
-            // font-weight: normal;
         }
     }
     #heap_td {
@@ -88,11 +80,5 @@ circle {
                 margin: 0;
             }
         }
-    }
-    // #stackheader {
-    //     background-color: red;
-    // }
-    td {
-        // padding: 10px 20px 10px 20px;
     }
 }

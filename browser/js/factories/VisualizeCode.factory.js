@@ -1,5 +1,7 @@
 app.factory('VisualizeCodeFactory', function($http) {
 
+    // global variable of current step
+    // used in Home Controller for timeline graph
     var curInstruction;
 
     var SVG_ARROW_POLYGON = '0,3 12,3 12,0 18,5 12,10 12,7 0,7';
@@ -7,7 +9,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
     var curVisualizerID = 1; // global to uniquely identify each ExecutionVisualizer instance
 
-    function ExecutionVisualizer(domRootID, dat) {
+    function ExecutionVisualizer(domRootID, dat, instNum) {
 
         this.curInputCode = dat.code.rtrim(); // kill trailing spaces
         this.curTrace = dat.trace;
@@ -27,8 +29,8 @@ app.factory('VisualizeCodeFactory', function($http) {
                 this.curTrace.pop() // kill last entry so that it doesn't get displayed
             }
         }
-
-        this.curInstr = 0;
+        if (instNum) this.curInstr = instraNum;
+        else this.curInstr = 0;
         curInstruction = this.curInstr;
 
         // if (!params) {
@@ -275,10 +277,11 @@ app.factory('VisualizeCodeFactory', function($http) {
          <button id="jmpLastInstr", type="button"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\
        </div>\
        <div id="pyCodeOutputDiv"/>\
-       <div id="help"><p>*To step-through more quickly, use your arrow keys.<p></div>\
+       <div>Call Stack:</div>\
+       <div id="graphPlaceholder"></div>\
        <div id="errorOutput"/>\
        <div id="progOutputs">\
-       Program output:<br/>\
+       <p>Program output:</p>\
        <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
      </div>\
      </div>';
@@ -290,7 +293,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // </div>';
 
         var codeVizHTML =
-            '<div id="placeholder"></div><div id="dataVizOuter"><div id="graphPlaceholder" style="height:200px;"></div><div id="dataViz"><table id="stackHeapTable">\
+            '<div id="placeholder"></div><div id="dataVizOuter"><div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -378,23 +381,9 @@ app.factory('VisualizeCodeFactory', function($http) {
             myViz.stepForward();
         });
 
-        // $("#graphPlaceholder").mousedown(function() {
-        //     // alert( "graphPlaceholder" );
-        //     console.log(this);
-        //     var num = $(this).children('text').text();
-        //     console.log('num', num);
-        //     // myViz.renderStep(parseInt(num));
-        //     myViz.renderStep(10);
-        // });
-
-        // alert( this );
-        //    console.log(this);
-        //    var num = $(this).children('text').text();
-        //    console.log(num);
-        //    myViz.renderStep(parseInt(num));
-
+        // for arrow keys
         $("body").keydown(function(e) {
-            if (e.keyCode == 37) {
+            if (e.keyCode == 37) { // left
                 myViz.stepBack();
             } else if (e.keyCode == 39) { // right
                 myViz.stepForward();
