@@ -1,44 +1,63 @@
+$greyBackground: #F5F5F5;
+$textBlueColor: #00496B;
+$yellowBackgroundColor: #F9ED10;
+$darkBlueBackgroundColor: #002B36;
+
+circle {
+    display: none;
+}
+
 #stackHeapTable {
-    font-size: 12pt;
+    font-size: 9pt;
     margin-bottom: 15px;
+    font-weight: bold;
+    .stackFrameVar,
+    .instKey {
+        text-align: right;
+        background-color: $greyBackground;
+    }
     #stackHeader,
     #heapHeader {
         text-align: center;
+        font-weight: bold;
+        font-size: 12pt;
     }
     .stackFrame,
-    .heapRow,
     .heapObject {
-        margin-top: 20px;
-        overflow-x: scroll;
-        overflow-y: scroll;
-        width: 250px;
-        max-height: 200px;
+        margin: 0px !important;
+        table {
+            margin-bottom: 20px;
+        }
+        td {
+            color: $textBlueColor;
+            border: 1px solid #eee;
+        }
+        .funcCod,
         .funcCode {
             color: #93A1A1;
             border: none;
-        background-color: #002B36;
+            background-color: $darkBlueBackgroundColor;
+            font-size: 7pt;
+            font-weight: normal;
         }
         .stackFrameHeader {
             padding: 10px;
-        }
-        ._jsPlumb_endpoint {
-            -webkit-transition: none !important;
-            -moz-transition: none !important;
-            -o-transition: none !important;
-            -ms-transition: none !important;
-            transition: none !important;
         }
     }
     #stack_td {
         padding-right: 30px;
         .stackFrame {
+            table {
+                width: 100%;
+                min-width: 150px;
+            }
             .stackFrameHeader {
-                background-color: #F5F5F5;
+                background-color: $greyBackground;
             }
         }
         .highlightedStackFrame {
             .stackFrameHeader {
-                background-color: #F9ED10;
+                background-color: $yellowBackgroundColor;
             }
             .stackFrameVarTable {
                 background-color: white;
@@ -47,20 +66,19 @@
             }
         }
         td {
-            color: #00496B;
+            color: $textBlueColor;
             border-left: 2px solid #eee;
-            // font-size: 16px;
-            border-bottom: 2px solid #eee;
-            font-weight: normal;
         }
     }
     #heap_td {
         padding-left: 30px;
-    }
-    #stackheader {
-        background-color: red;
-    }
-    td {
-        // padding: 10px 20px 10px 20px;
+        table {
+            margin-bottom: 15px;
+        }
+        .classTbl {
+            table {
+                margin: 0;
+            }
+        }
     }
 }

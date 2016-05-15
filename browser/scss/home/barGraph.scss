@@ -1,0 +1,17 @@
+.tick {
+    display: none;
+    height: 0;
+}
+
+.nvd3 text {
+    font: inherit;
+    font-size: 8pt;
+}
+
+#graphPlaceholder {
+    .nvd3-svg {
+        width: 38vw !important;
+        margin: 0;
+        padding: 0;
+    }
+}

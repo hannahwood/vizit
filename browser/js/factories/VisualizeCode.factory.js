@@ -1,11 +1,15 @@
 app.factory('VisualizeCodeFactory', function($http) {
 
+    // global variable of current step
+    // used in Home Controller for timeline graph
+    var curInstruction;
+
     var SVG_ARROW_POLYGON = '0,3 12,3 12,0 18,5 12,10 12,7 0,7';
     var SVG_ARROW_HEIGHT = 10; // must match height of SVG_ARROW_POLYGON
 
     var curVisualizerID = 1; // global to uniquely identify each ExecutionVisualizer instance
 
-    function ExecutionVisualizer(domRootID, dat) {
+    function ExecutionVisualizer(domRootID, dat, instNum) {
 
         this.curInputCode = dat.code.rtrim(); // kill trailing spaces
         this.curTrace = dat.trace;
@@ -25,8 +29,9 @@ app.factory('VisualizeCodeFactory', function($http) {
                 this.curTrace.pop() // kill last entry so that it doesn't get displayed
             }
         }
-
-        this.curInstr = 0;
+        if (instNum) this.curInstr = instraNum;
+        else this.curInstr = 0;
+        curInstruction = this.curInstr;
 
         // if (!params) {
         this.params = {}; // make it an empty object by default
@@ -158,6 +163,11 @@ app.factory('VisualizeCodeFactory', function($http) {
 
      NB: If multiple functions are added to a hook, the oldest goes first.
     */
+    ExecutionVisualizer.prototype.currentStep = function() {
+        // console.log(curInstruction);
+        return curInstruction;
+    };
+
     ExecutionVisualizer.prototype.add_pytutor_hook = function(hook_name, func) {
         if (this.pytutor_hooks[hook_name])
             this.pytutor_hooks[hook_name].push(func);
@@ -267,10 +277,11 @@ app.factory('VisualizeCodeFactory', function($http) {
          <button id="jmpLastInstr", type="button"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\
        </div>\
        <div id="pyCodeOutputDiv"/>\
-       <div id="help"><p>*To step-through more quickly, use your arrow keys.<p></div>\
+       <div>Call Stack:</div>\
+       <div id="graphPlaceholder"></div>\
        <div id="errorOutput"/>\
        <div id="progOutputs">\
-       Program output:<br/>\
+       <p>Program output:</p>\
        <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
      </div>\
      </div>';
@@ -282,7 +293,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // </div>';
 
         var codeVizHTML =
-            '<div id="placeholder"></div><div id="dataVizOuter"><div id="graphPlaceholder" style="height:300px;"></div><div id="dataViz"><table id="stackHeapTable">\
+            '<div id="placeholder"></div><div id="dataVizOuter"><div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -366,19 +377,16 @@ app.factory('VisualizeCodeFactory', function($http) {
             myViz.stepBack();
         });
 
-        var timeout;
-        $("#jmpStepFwd").mousedown(function() {
-            timeout = setInterval(myViz.stepForward(), 100);
-        });
-        $("#jmpStepFwd").mouseup(function() {
-            clearInterval(timeout);
+        this.domRoot.find("#jmpStepFwd").mousedown(function() {
+            myViz.stepForward();
         });
 
+        // for arrow keys
         $("body").keydown(function(e) {
-            if (e.keyCode == 37) {
-              myViz.stepBack();
+            if (e.keyCode == 37) { // left
+                myViz.stepBack();
             } else if (e.keyCode == 39) { // right
-              myViz.stepForward();
+                myViz.stepForward();
             }
         });
 
@@ -433,10 +441,12 @@ app.factory('VisualizeCodeFactory', function($http) {
             assert(0 <= this.params.startingInstruction &&
                 this.params.startingInstruction < this.curTrace.length);
             this.curInstr = this.params.startingInstruction;
+            curInstruction = this.curInstr;
         }
 
         if (this.params.jumpToEnd) {
             this.curInstr = this.curTrace.length - 1;
+            curInstruction = this.curInstr;
         }
 
         if (this.params.hideCode) {
@@ -519,13 +529,15 @@ app.factory('VisualizeCodeFactory', function($http) {
             // if there is a next breakpoint, then jump to it ...
             if (myViz.sortedBreakpointsList.length > 0) {
                 var nextBreakpoint = myViz.findNextBreakpoint();
-                if (nextBreakpoint != -1)
+                if (nextBreakpoint != -1) {
                     myViz.curInstr = nextBreakpoint;
-                else
+                } else {
                     myViz.curInstr += 1; // prevent "getting stuck" on a solitary breakpoint
+                }
             } else {
                 myViz.curInstr += 1;
             }
+            curInstruction = myViz.curInstr;
             myViz.updateOutput(true);
             return true;
         }
@@ -548,6 +560,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             } else {
                 myViz.curInstr -= 1;
             }
+            curInstruction = myViz.curInstr;
             myViz.updateOutput();
             return true;
         }
@@ -1228,6 +1241,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         }
 
         this.curInstr = step;
+        curInstruction = this.curInstr;
         this.updateOutput();
     }
 

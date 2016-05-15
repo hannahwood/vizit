@@ -7,43 +7,90 @@ app.filter('titlecase', function() {
 });
 
 app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
-    $scope.code = '// input your code here and click on "Visualize"\
-    \nfunction fact(n) {\
-  \nif (n == 0) {\
-    \n   return 1;\
-  \n}\
-  \nelse {\
-    \n   console.log("THERE ARE  " + n + " oranges!!!");\
-    \n   return n * fact(n-1);\
-  \n}\
-\n}\
-\n\nfact(10);'
-    $scope.render = VisualizeCodeFactory.executionVisualizer.renderDataStructures;
+    $scope.code = '// Adapted from Effective JavaScript\
+        \nfunction Actor(x, y) {\
+        \n  this.x = x;\
+        \n  this.y = y;\
+        \n}\
+        \n\
+        \nActor.prototype.moveTo = function(x, y) {\
+        \n  this.x = x;\
+        \n  this.y = y;\
+        \n}\
+        \n\
+        \nfunction SpaceShip(x, y) {\
+        \n  Actor.call(this, x, y);\
+        \n  this.points = 0;\
+        \n}\
+        \n\
+        \nSpaceShip.prototype = Object.create(Actor.prototype); // inherit!\
+        \nSpaceShip.prototype.type = "spaceship";\
+        \nSpaceShip.prototype.scorePoint = function() {\
+        \n  this.points++;\
+        \n}\
+        \n\
+        \nvar s = new SpaceShip(10, 20);\
+        \ns.moveTo(30, 40);\
+        \ns.scorePoint();\
+        \ns.scorePoint();'
+
+    // selections: edit, visualize, analyze
     $scope.selection = 'edit';
+    $scope.set = function(selection) {
+        $scope.selection = selection;
+    };
+
+    // boolean for the progress bar ng-if
     $scope.progress = false;
+
+    // PythonTutor trace
     $scope.trace = [];
     $scope.data = [];
+
+    // set color for timeline graph
+    $scope.colorFunction = function() {
+        return function(d, i) {
+            var color = i === VisualizeCodeFactory.executionVisualizer.prototype.currentStep() ? 'red' : '#DDDDDD';
+            return color;
+        };
+    };
+
+    // options for timeline graph
     $scope.options = {
+        interactive: true,
         chart: {
+            margin: {
+                bottom: 0,
+                left: 0
+            },
+            width: 400,
+            height: 100,
+            duration: 0,
             type: 'discreteBarChart',
             x: function(d) {
-                return d.step
+                return d.step;
             },
             y: function(d) {
-                return d.height
+                return d.height;
             },
-            showValues: true,
-            transitionDuration: 500,
+            showValues: false,
+            transitionDuration: 50,
+            showYAxis: false,
+            showXAxis: false,
             xAxis: {
-                axisLabel: 'X Axis'
+                tickPadding: 0,
+                // axisLabel: 'Call Stack',
+                tickFormat: d3.format(',f')
             },
             yAxis: {
-                axisLabel: 'Y Axis',
-                axisLabelDistance: 30
-            }
+                tickPadding: 0,
+                // axisLabel: 'Call\nStack\nSize',
+                tickFormat: d3.format(',f')
+            },
+            color: $scope.colorFunction()
         }
     };
-    $scope.renderer = 'bar';
+
     // giant function run on 'Visualize'
     $scope.submitCode = function(code) {
         $scope.progress = true;
@@ -68,14 +115,16 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
                 return VisualizeCodeFactory.submitCode(code);
 
             }).then(function(response) {
+                // for making timeline graph
                 $scope.trace = response.trace;
                 $scope.data = $scope.makeGraphData();
                 $scope.newViz = new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
                 $scope.add();
+
                 $scope.progress = false;
+
                 return $scope.newViz;
             }).catch(function(err) {
-                // $scope.set('edit');
                 $scope.hasError = true;
                 $scope.progress = false;
                 // show caught error on 'visualize' page
@@ -85,16 +134,26 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
 
     $scope.add = function() {
         var graph = angular.element(document.createElement('nvd3'));
-        graph[0].setAttribute('options', 'options')
-        graph[0].setAttribute('data', 'data')
-        graph.on('elementClick', function(e) {});
+        graph[0].setAttribute('options', 'options');
+        graph[0].setAttribute('data', 'data');
+        graph[0].setAttribute('api', 'api');
         var el = $compile(graph)($scope);
+
         angular.element(graphPlaceholder).prepend(el);
     };
 
-    $scope.set = function(selection) {
-        $scope.selection = selection;
-    };
+    // re-render graph on arrow key presses
+    // must be on keyUP to allow viz functions to run on keyDOWN
+    $("body").keyup(function(e) {
+        if (e.keyCode == 37 || e.keyCode == 39) {
+            $scope.api.refresh();
+        }
+    });
+
+    // re-render graph on clicks (for buttons)
+    $("body").mouseup(function() {
+        $scope.api.refresh();
+    });
 
     $scope.makeGraphData = function() {
         var visData = [{
@@ -109,12 +168,5 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
                 })
             })
         return visData;
-    }
-});
-
-app.directive('visualize', function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'js/home/visualize.html'
     };
 });
