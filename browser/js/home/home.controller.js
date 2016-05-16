@@ -57,18 +57,18 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
 
     // options for timeline graph
     $scope.options = {
-        interactive: true,
         chart: {
+        tooltipContent: function(key, y, e, graph) { return 'Some String' },
             margin: {
                 bottom: 0,
                 left: 0
             },
-            width: 400,
+            // width: 400,
             height: 100,
             duration: 0,
             type: 'discreteBarChart',
             x: function(d) {
-                return d.step;
+                return (d.step + 1);
             },
             y: function(d) {
                 return d.height;
@@ -119,12 +119,14 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
                 $scope.trace = response.trace;
                 $scope.data = $scope.makeGraphData();
                 $scope.newViz = new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
-                $scope.add();
+                var sum = $scope.data[0].values.reduce((prev,curr)=> prev+curr.height,0);
+                sum && $scope.add();
 
                 $scope.progress = false;
 
                 return $scope.newViz;
             }).catch(function(err) {
+                $scope.set('edit');
                 $scope.hasError = true;
                 $scope.progress = false;
                 // show caught error on 'visualize' page
@@ -134,12 +136,15 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
 
     $scope.add = function() {
         var graph = angular.element(document.createElement('nvd3'));
+        var title = angular.element(document.createElement('div'));
+        title.text('Call Stack:');            
         graph[0].setAttribute('options', 'options');
         graph[0].setAttribute('data', 'data');
         graph[0].setAttribute('api', 'api');
         var el = $compile(graph)($scope);
-
+        var head = $compile(title)($scope);
         angular.element(graphPlaceholder).prepend(el);
+        angular.element(graphPlaceholder).prepend(head);
     };
 
     // re-render graph on arrow key presses

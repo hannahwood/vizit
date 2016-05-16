@@ -10,13 +10,14 @@ vizit-logo {
 
 #toolbar {
     position: fixed;
-    height: 40px !important;
+    height: 30px !important;
     top: 80px;
     left: 0;
     z-index: 9;
     .tools {
         color: $dark;
         border: solid 2px $dark;
+        height: 10px !important;
     }
 }
 
@@ -86,13 +87,13 @@ md-toolbar:not(.md-hue-1),
     fill: $light;
 }
 
-md-sidenav {
-    fill: $dark;
-    ng-md-icon {
-        position: relative;
-        top: 5px; // adjust for svg viewbox
-    }
-}
+// md-sidenav {
+//     fill: $dark;
+//     ng-md-icon {
+//         position: relative;
+//         top: 5px; // adjust for svg viewbox
+//     }
+// }
 
 .user-avatar {
     border-radius: 99%;

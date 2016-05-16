@@ -14,7 +14,7 @@
     letter-spacing: 0.1em;
   }
   .md-toolbar-tools {
-    font-size: 16px;
+    font-size: 14px;
   }
   .center {
     text-align: center;
@@ -22,18 +22,18 @@
   }
 }
 
-#sidenav {
-  background-color: #263238;
-  .inset {
-    color: #fafafa;
-    font-size: 1.1em;
-    letter-spacing: 0.1em;
-    text-transform: none;
-  }
-  .md-button {
-    margin: 0 0;
-  }
-}
+// #sidenav {
+//   background-color: #263238;
+//   .inset {
+//     color: #fafafa;
+//     font-size: 1.1em;
+//     letter-spacing: 0.1em;
+//     text-transform: none;
+//   }
+//   .md-button {
+//     margin: 0 0;
+//   }
+// }
 
 #logo {
   position: absolute;
@@ -68,9 +68,9 @@ ng-md-icon {
   outline: none;
 }
 
-md-sidenav {
-  height: 100vh;
-}
+// md-sidenav {
+//   height: 100vh;
+// }
 
 body, h1, h2, h3, h4, h5 {
   font-family: 'Roboto', sans-serif;
