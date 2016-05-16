@@ -4,6 +4,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
+var querystring = require('querystring');
 
 module.exports = function (app) {
 
@@ -23,7 +24,7 @@ module.exports = function (app) {
                 if (user) {
                     return user;
                 } else {
-                    return UserModel.findOne({email: profile.emails[0].value});
+                    return UserModel.findOne({email: profile.emails[0].value.toLowerCase()});
                 }
 
             })
@@ -31,7 +32,6 @@ module.exports = function (app) {
                 if (potentialUser) {
                     potentialUser.google.id = profile.id;
                     potentialUser.fullName = potentialUser.fullName || profile.displayName;
-                    potentialUser.photo = potentialUser.photo || profile._json.picture;
                     return potentialUser.save();
                 } else {
                     return UserModel.create({
@@ -39,8 +39,7 @@ module.exports = function (app) {
                             id: profile.id
                         },
                         fullName: profile.displayName,
-                        email: profile.emails[0].value,
-                        photo: profile._json.picture
+                        email: profile.emails[0].value.toLowerCase(),
                     });
                 }
             })
@@ -56,7 +55,16 @@ module.exports = function (app) {
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
 
-    app.get('/auth/google', passport.authenticate('google', {
+    function checkReturnTo (req,res,next) {
+        var returnTo = req.query.returnTo;
+        if (returnTo) {
+            req.session = req.session || {};
+            req.session.returnTo = returnTo;
+        }
+        next();
+    }
+
+    app.get('/auth/google', checkReturnTo, passport.authenticate('google', {
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email'
@@ -64,9 +72,7 @@ module.exports = function (app) {
     }));
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', { failureRedirect: '/login' }),
-        function (req, res) {
-            res.redirect('/');
-        });
+        passport.authenticate('google', { successReturnToOrRedirect: '/', failureRedirect: '/' }));
+
 
 };

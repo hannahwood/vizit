@@ -15,7 +15,7 @@
             <div layout="column" class="md-toolbar-tools-bottom inset" ng-show="!user">
             </div>
         </md-toolbar>
-        <md-button class="md-hue-3" ng-repeat="item in menu">
+        <!-- <md-button class="md-hue-3" ng-repeat="item in menu">
             <md-item>
                 <md-item-content md-ink-ripple layout="row" layout-align="left center">
                     <div class="inset">
@@ -25,8 +25,19 @@
                 </md-item-content>
             </md-item>
             <md-divider></md-divider>
+        </md-button> -->
+        <md-button class="md-hue-3" ng-show="user" ng-click="goToSettings()">
+            <md-item>
+                <md-item-content md-ink-ripple layout="row" layout-align="left center">
+                    <div class="inset">
+                        <ng-md-icon icon="settings" style="fill: #fafafa"></ng-md-icon>
+                    </div>
+                    <div class="inset">User Settings
+                    </div>
+                </md-item-content>
+            </md-item>
         </md-button>
-        <md-button class="md-hue-3" ng-repeat="item in admin">
+        <!-- <md-button class="md-hue-3" ng-repeat="item in admin">
             <md-item>
                 <md-item-content md-ink-ripple layout="row" layout-align="left center">
                     <div class="inset">
@@ -37,7 +48,7 @@
                 </md-item-content>
             </md-item>
             <md-divider></md-divider>
-        </md-button>
+        </md-button> -->
         <md-button class="md-hue-3" ng-show="user" ng-click="logout()">
             <md-item>
                 <md-item-content md-ink-ripple layout="row" layout-align="left center">

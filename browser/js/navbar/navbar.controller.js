@@ -36,6 +36,12 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
     });
   };
 
+  var updateUser = function (userId) {
+    AuthService.updateUser(userId).then(function (user) {
+      $scope.user = user;
+    })
+  }
+
   var removeUser = function () {
     $scope.user = null;
   };
@@ -45,6 +51,11 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
   $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
   $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
+  $rootScope.$on('userUpdated', function (e, userId) {
+    AuthService.updateUser(userId).then(function (user) {
+      $scope.user = user;
+    })
+  });
 
   $scope.toggleSidenav = function() {
     $mdSidenav('left').toggle();
