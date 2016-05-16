@@ -1,10 +1,8 @@
 'use strict';
-
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
-var querystring = require('querystring');
 
 module.exports = function (app) {
 
@@ -73,6 +71,5 @@ module.exports = function (app) {
 
     app.get('/auth/google/callback',
         passport.authenticate('google', { successReturnToOrRedirect: '/', failureRedirect: '/' }));
-
 
 };
