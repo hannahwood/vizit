@@ -1,14 +1,14 @@
 app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, $state, $window, $rootScope, AuthService, AUTH_EVENTS){
 
   $scope.color = 'md-hue-2';
-  $scope.height = '80px';
+  $scope.height = '60px';
 
   angular.element($window).bind("scroll", function() {
     if ($window.pageYOffset > 80) {
-        $scope.height = '80px';
+        $scope.height = '60px';
         $scope.color = 'md-hue';
      } else {
-       $scope.height = '80px';
+       $scope.height = '60px';
        $scope.color = 'md-hue-2';
      }
      $scope.$apply();
