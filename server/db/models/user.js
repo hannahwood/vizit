@@ -2,6 +2,7 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var querystring = require('querystring');
 
 var schema = new mongoose.Schema({
     fullName: String,
@@ -25,7 +26,8 @@ var schema = new mongoose.Schema({
     google: {
         id: String
     },
-    photo: String
+    photo: String,
+    gravatar: String
 });
 
 // method to remove sensitive information from user objects before sending them out
@@ -47,10 +49,16 @@ var encryptPassword = function (plainText, salt) {
 };
 
 schema.pre('save', function (next) {
-
     if (this.isModified('password')) {
         this.salt = this.constructor.generateSalt();
         this.password = this.constructor.encryptPassword(this.password, this.salt);
+    }
+
+    if (this.isModified('email')) {
+        var md5 = crypto.createHash('md5');
+        this.email = this.email.toLowerCase();
+        md5.update(this.email);
+        this.gravatar = 'http://www.gravatar.com/avatar/'+md5.digest('hex')+'?'+querystring.stringify({s: 300, d: 'http://i.imgur.com/RHjWlqX.png'});
     }
 
     next();

@@ -1,35 +1,39 @@
 $gray: #eee;
 $dark: #263238;
 $light: #fff;
-#home {
-    fullstack-logo {
-        padding-top: 30px;
-        width: 150px;
-        margin: 0 auto;
-    }
-    h1 {
-        margin-top: 40px;
-        text-align: center;
-    }
-    .full {
-        height: calc(100vh - 140px);
+
+vizit-logo {
+    img {
+        margin: 10px;
     }
 }
 
 #toolbar {
     position: fixed;
-    height: 40px !important;
+    height: 30px !important;
     top: 80px;
     left: 0;
     z-index: 8;
     .tools {
         color: $dark;
         border: solid 2px $dark;
+        height: 10px !important;
+    }
+}
+
+#error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+    .glyphicon {
+        // font-weight: 4000;
+        width: 20px;
     }
 }
 
 .ace_editor {
-    height: calc(100vh - 200px);;
+    height: calc(100vh - 200px);
+    width: 95vw;
     font-size: 18px !important;
     font-family: 'Ubuntu Mono' !important;
 }
@@ -83,13 +87,13 @@ md-toolbar:not(.md-hue-1),
     fill: $light;
 }
 
-md-sidenav {
-    fill: $dark;
-    ng-md-icon {
-        position: relative;
-        top: 5px; // adjust for svg viewbox
-    }
-}
+// md-sidenav {
+//     fill: $dark;
+//     ng-md-icon {
+//         position: relative;
+//         top: 5px; // adjust for svg viewbox
+//     }
+// }
 
 .user-avatar {
     border-radius: 99%;
@@ -98,4 +102,3 @@ md-sidenav {
 #gutterTD {
     padding: 0;
 }
-

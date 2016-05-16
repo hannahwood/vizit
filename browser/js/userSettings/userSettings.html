@@ -1,0 +1,82 @@
+<section ng-if="user" style="max-width: 1080px; margin: auto; padding: 20px;">
+   <uib-accordion id="settings" close-others="oneAtATime">
+      <uib-accordion-group heading="My Account" is-open="open">
+   <!-- <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="My Account"> -->
+         <md-content id="account" layout-padding>
+            <form name="userInfo" ng-submit="userInfo.$dirty && userInfo.$valid && update.email === update.emailConfirm && updateUser(update)" novalidate>
+               <md-input-container class="md-block">
+                  <label>{{user.fullName ? 'Change' : 'Add'}} Name</label>
+                  <input type="text" name="fullName" ng-model="update.fullName">
+               </md-input-container>
+               <md-input-container class="md-block">
+                  <label>New Email Address</label>
+                  <input type="email" name="email" ng-model="update.email" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/">
+                  <div ng-messages="userInfo.email.$touched && userInfo.email.$error">
+                     <div ng-message="pattern">This is an invalid email.</div>
+                  </div>
+               </md-input-container>
+               <md-input-container class="md-block">
+                  <label>Confirm Email Address</label>
+                  <input type="email" name="emailConfirm" ng-model="update.emailConfirm" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/">
+                  <div ng-messages="userInfo.emailConfirm.$touched && userInfo.emailConfirm.$error">
+                     <div ng-message="pattern">This is an invalid email.</div>
+                  </div>
+               </md-input-container>
+               <md-button class="md-raised md-primary" type="submit" ng-disabled="userInfo.$pristine || userInfo.$invalid || update.email !== update.emailConfirm || !update.fullName && !update.email && !update.emailConfirm">Save Changes</md-button>
+            </form>
+         </md-content>
+      </uib-accordion-group>
+      <uib-accordion-group heading="Change Password">
+      <!-- </md-tab>
+      <md-tab label="Change Password"> -->
+         <md-content id="password" layout-padding>
+            <form name="passwordInfo" ng-submit="pass.oldPassword && pass.newPassword === pass.newPasswordDuplicate && pass.oldPassword !== pass.newPassword && updatePassword(pass)" novalidate>
+               <md-input-container class="md-block">
+                  <label>Old Password</label>
+                  <input type="{{peek.old ? 'text' : 'password'}}" name="oldPassword" ng-model="pass.oldPassword"><br>
+                  <md-switch ng-model="peek.old">Peek</md-switch>
+               </md-input-container>
+               <md-input-container class="md-block">
+                  <label>New Password</label>
+                  <input type="{{peek.new ? 'text' : 'password'}}" name="newPassword" ng-model="pass.newPassword" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/"><br>
+                  <md-switch ng-model="peek.new">Peek</md-switch>
+                  <div ng-messages="passwordInfo.newPassword.$touched && passwordInfo.newPassword.$error">
+                     <div ng-message="pattern">Must contain one lower & uppercase letter, and one number.</div>
+                  </div>
+               </md-input-container>
+               <md-input-container class="md-block">
+                  <label>Retype New Password</label>
+                  <input type="{{peek.newConfirm ? 'text' : 'password'}}" name="newPasswordDuplicate" ng-model="pass.newPasswordDuplicate"><br>
+                  <md-switch ng-model="peek.newConfirm">Peek</md-switch>
+               </md-input-container>
+               <md-button class="md-raised md-primary" type="submit" ng-disabled="!pass.oldPassword || pass.newPassword !== pass.newPasswordDuplicate || !(pass.oldPassword && pass.newPassword && pass.newPasswordDuplicate) || pass.oldPassword === pass.newPassword">Update Password</md-button>
+            </form>
+         </md-content>
+      </uib-accordion-group>
+      <uib-accordion-group  heading="Connect Accounts">
+      <!-- </md-tab>
+      <md-tab label="Connect Accounts"> -->
+         <md-content id="connect" layout-padding>
+            <div layout="row" layout-xs="column">
+               <div flex style="padding: 3rem;">
+                  <div class="providerBox">
+                     <h4>Google</h4>
+                     <md-button class="md-raised disconnect connect" type="button" ng-if="user.google" ng-click="disconnect('Google')">Disconnect Google</md-button>
+                     <md-button class="md-raised md-primary connect" type="button" ng-if="!user.google" href="/auth/google?returnTo=/settings">Connect Google</md-button>
+                  </div>
+               </div>
+               <div flex style="padding: 3rem;">
+                  <div class="providerBox">
+                     <h4>Facebook</h4>
+                     <md-button class="md-raised disconnect connect" type="button" ng-if="user.facebook" ng-click="disconnect('Facebook')">Disconnect Facebook</md-button>
+                     <md-button class="md-raised md-primary connect" type="button" ng-if="!user.facebook" href="/auth/facebook?returnTo=/settings">Connect Facebook</md-button>
+                  </div>
+               </div>
+            </div>
+         </md-content>
+      </uib-accordion-group>
+   </uib-accordion>
+      <!-- </md-tab>
+   </md-tabs> -->
+</section>

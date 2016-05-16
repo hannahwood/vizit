@@ -23,7 +23,7 @@ module.exports = function (app) {
                 if (user) {
                     return user;
                 } else {
-                    return UserModel.findOne({email: profile.emails[0].value});
+                    return UserModel.findOne({email: profile.emails[0].value.toLowerCase()});
                 }
 
             })
@@ -31,7 +31,6 @@ module.exports = function (app) {
                 if (potentialUser) {
                     potentialUser.facebook.id = profile.id;
                     potentialUser.fullName = potentialUser.fullName || profile.displayName;
-                    potentialUser.photo = potentialUser.photo || profile.photos[0].value;
                     return potentialUser.save();
                 } else {
                     return UserModel.create({
@@ -39,8 +38,7 @@ module.exports = function (app) {
                             id: profile.id
                         },
                         fullName: profile.displayName,
-                        email: profile.emails[0].value,
-                        photo: profile.photos[0].value
+                        email: profile.emails[0].value.toLowerCase()
                     });
                 }
             })
@@ -54,14 +52,20 @@ module.exports = function (app) {
 
     };
 
+    function checkReturnTo (req,res,next) {
+        var returnTo = req.query.returnTo;
+        if (returnTo) {
+            req.session = req.session || {};
+            req.session.returnTo = returnTo;
+        }
+        next();
+    }
+
     passport.use(new FacebookStrategy(facebookCredentials, verifyCallback));
 
-    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+    app.get('/auth/facebook', checkReturnTo, passport.authenticate('facebook', {scope: 'email'}));
 
     app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { failureRedirect: '/login' }),
-        function (req, res) {
-            res.redirect('/');
-        });
+        passport.authenticate('facebook', { successReturnToOrRedirect: '/',failureRedirect: '/login' }));
 
 };

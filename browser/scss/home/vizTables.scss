@@ -1,86 +1,63 @@
+$greyBackground: #F5F5F5;
+$textBlueColor: #00496B;
+$yellowBackgroundColor: #F9ED10;
+$darkBlueBackgroundColor: #002B36;
+
+circle {
+    display: none;
+}
+
 #stackHeapTable {
+    font-size: 9pt;
+    margin-bottom: 15px;
+    font-weight: bold;
+    .stackFrameVar,
+    .instKey {
+        text-align: right;
+        background-color: $greyBackground;
+    }
     #stackHeader,
     #heapHeader {
         text-align: center;
+        font-weight: bold;
+        font-size: 12pt;
     }
     .stackFrame,
-    .heapRow,
     .heapObject {
-        margin-top: 20px;
-        overflow-x: scroll;
-        overflow-y: scroll;
-        width: 250px;
-        max-height: 100%;
+        margin: 0px !important;
+        table {
+            margin-bottom: 20px;
+        }
+        td {
+            color: $textBlueColor;
+            border: 1px solid #eee;
+        }
+        .funcCod,
+        .funcCode {
+            color: #93A1A1;
+            border: none;
+            background-color: $darkBlueBackgroundColor;
+            font-size: 7pt;
+            font-weight: normal;
+        }
         .stackFrameHeader {
             padding: 10px;
-        }
-        .stackframe {
-        @-webkit-keyframes fadeIn {
-            from {
-                opacity: 0;
-                opacity: 1\9;
-                /* IE9 only */
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        @-moz-keyframes fadeIn {
-            from {
-                opacity: 0;
-                opacity: 1\9;
-                /* IE9 only */
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                opacity: 1\9;
-                /* IE9 only */
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        opacity: 0;
-        /* make things invisible upon start */
-        -webkit-animation: fadeIn ease-in 1;
-        /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-        -moz-animation: fadeIn ease-in 1;
-        animation: fadeIn ease-in 1;
-        -webkit-animation-fill-mode: forwards;
-        /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-        -moz-animation-fill-mode: forwards;
-        animation-fill-mode: forwards;
-        -webkit-animation-duration: .3s;
-        -moz-animation-duration: .3s;
-        animation-duration: .3s;
-        }
-        ._jsPlumb_endpoint {
-            -webkit-transition: none !important;
-            -moz-transition: none !important;
-            -o-transition: none !important;
-            -ms-transition: none !important;
-            transition: none !important;
-        }
-        .heapObject {
-        	max-height: 200px;
         }
     }
     #stack_td {
         padding-right: 30px;
         .stackFrame {
+            table {
+                width: 100%;
+                min-width: 150px;
+            }
             .stackFrameHeader {
-                background-color: #F5F5F5;
+                background-color: $greyBackground;
             }
         }
         .highlightedStackFrame {
             .stackFrameHeader {
-                background-color: #F9ED10;
+                background-color: $yellowBackgroundColor;
             }
             .stackFrameVarTable {
                 background-color: white;
@@ -89,20 +66,19 @@
             }
         }
         td {
-            color: #00496B;
+            color: $textBlueColor;
             border-left: 2px solid #eee;
-            font-size: 16px;
-            border-bottom: 2px solid #eee;
-            font-weight: normal;
         }
     }
     #heap_td {
         padding-left: 30px;
-    }
-    #stackheader {
-        background-color: red;
-    }
-    td {
-        padding: 10px 20px 10px 20px;
+        table {
+            margin-bottom: 15px;
+        }
+        .classTbl {
+            table {
+                margin: 0;
+            }
+        }
     }
 }

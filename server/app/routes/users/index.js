@@ -28,7 +28,7 @@ router.get('/', Auth.assertAdmin, function(req,res,next) {
 });
 
 router.get('/:userId', Auth.assertAdminOrSelf, function(req, res) {
-    res.json(req.requestedUser);
+    res.json(req.requestedUser.sanitize());
 });
 
 router.get('/:userId/code', Auth.assertAdminOrSelf, function(req, res) {
@@ -39,7 +39,7 @@ router.get('/:userId/code', Auth.assertAdminOrSelf, function(req, res) {
 
 router.post('/', function(req,res,next) {
     User.create(req.body)
-        .then((user) => res.json(user))
+        .then((user) => res.json(user.sanitize()))
     .catch(next);
 });
 
@@ -50,13 +50,36 @@ router.delete('/:userId', Auth.assertAdmin, function(req,res,next) {
 });
 
 router.put('/:userId', Auth.assertAdminOrSelf, function(req,res,next) {
-    User.findById(req.params.userId)
-        .then(function(user) {
-            user.set(req.body);
-            return user.save();
-        })
-        .then((user) => res.status(204).json(user))
+    delete req.body.__v;
+    Object.keys(req.body).forEach(k => req.requestedUser[k] = req.body[k]);
+    req.requestedUser.save()
+    .then((user) => {
+        res.status(201).json(user.sanitize());
+    })
     .catch(next);
 });
+
+router.put('/:userId/updatePassword', Auth.assertAdminOrSelf, function(req,res,next) {
+    console.log(req.requestedUser.correctPassword(req.body.oldPassword))
+    if (!req.requestedUser.correctPassword(req.body.oldPassword)) {
+        let err = new Error('There was an error updating your password');
+        err.status = 401;
+        return next(err);
+    } else if (req.requestedUser.correctPassword(req.body.oldPassword)) {
+        req.requestedUser.password = req.body.newPassword;
+        req.requestedUser.save()
+        .then((user) => {
+            res.status(201).json(user.sanitize());
+        })
+        .catch(next);
+    }
+});
+
+router.put('/:userId/disconnectProvider', Auth.assertAdminOrSelf, function (req, res, next) {
+    req.requestedUser[req.body.provider] = undefined;
+    req.requestedUser.save()
+    .then(user => res.status(201).json(user.sanitize()))
+    .catch(next);
+})
 
 module.exports = router;

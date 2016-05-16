@@ -18,12 +18,14 @@ app.controller('LoginCtrl', function ($scope, $mdDialog, AuthService, $state) {
     $scope.sendLogin = function (loginInfo) {
 
         $scope.error = null;
+        loginInfo.email = loginInfo.email.toLowerCase();
 
         AuthService.login(loginInfo).then(function () {
             $mdDialog.hide();
             $state.go('home');
-        }).catch(function () {
-            $scope.error = 'The email and/or password you have entered is invalid';
+        }).catch(function (err) {
+            $scope.error = err.message;
+            $scope.login.password = '';
         });
 
     };

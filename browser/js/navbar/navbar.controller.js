@@ -3,17 +3,6 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
   $scope.color = 'md-hue-2';
   $scope.height = '80px';
 
-  angular.element($window).bind("scroll", function() {
-    if ($window.pageYOffset > 80) {
-        $scope.height = '80px';
-        $scope.color = 'md-hue';
-     } else {
-       $scope.height = '80px';
-       $scope.color = 'md-hue-2';
-     }
-     $scope.$apply();
-  });
-
   $scope.currentState = function(){
     return $state.current.name
   }
@@ -47,6 +36,12 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
     });
   };
 
+  var updateUser = function (userId) {
+    AuthService.updateUser(userId).then(function (user) {
+      $scope.user = user;
+    })
+  }
+
   var removeUser = function () {
     $scope.user = null;
     $rootScope.$emit('loggedOut');
@@ -58,6 +53,11 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
   $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
   $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
+  $rootScope.$on('userUpdated', function (e, userId) {
+    AuthService.updateUser(userId).then(function (user) {
+      $scope.user = user;
+    })
+  });
 
   $scope.toggleSidenav = function() {
     $mdSidenav('left').toggle();

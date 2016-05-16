@@ -27,7 +27,6 @@
       <div flex layout="row" layout-margin layout-align="end center" ng-show="user">
         <md-list>
           <md-list-item layout-padding>
-            <h3>{{user.email}}</h3>
 
             <div uib-dropdown keyboard-nav>
 
@@ -43,7 +42,9 @@
 
             </div>
 
-            <img ng-src="{{user.photo}}" class="md-avatar" />
+            <h3>{{user.fullName? user.fullName : user.email}}</h3>
+            <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" />
+            <ng-md-icon icon="keyboard_arrow_down" size="14" aria-label="User Menu" ng-style="{'margin-left': '-20px'}" ng-click="logout()"></ng-md-icon>
 
           </md-list-item>
         </md-list>
