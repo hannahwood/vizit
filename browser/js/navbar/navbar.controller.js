@@ -1,12 +1,17 @@
 app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, $state, $window, $rootScope, AuthService, AUTH_EVENTS){
 
-  $scope.color = 'md-hue-2';
-  $scope.height = '80px';
+  // height of navbar
+  $scope.height = '50px';
 
+  // current state
   $scope.currentState = function(){
     return $state.current.name
   }
 
+  // morphing user settings icon
+  $rootScope.$on('toggledUserNav', function(){
+    $scope.clickIconMorph();
+  });
 
   $scope.icon = "menu";
   $scope.clickIconMorph = function() {
@@ -59,20 +64,18 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
     })
   });
 
-  $scope.toggleSidenav = function() {
-    $mdSidenav('left').toggle();
-  };
-
   $scope.alert = '';
-  $scope.showBottomSheet = function($event) {
-    $scope.alert = '';
-    $mdBottomSheet.show({
-      templateUrl: 'js/bottom-sheet/bottom-sheet.html',
-      controller: 'BottomSheetCtrl',
-      targetEvent: $event
-    }).then(function(clickedItem) {
-      $scope.alert = clickedItem.name + ' clicked!';
-    });
+
+  $scope.showUserMenu = function(ev) {
+    $mdDialog.show({
+      controller: 'UserNavCtrl',
+      templateUrl: 'js/usernav/usernav.html',
+      targetEvent: ev,
+      clickOutsideToClose: true,
+      openFrom: '#usernav',
+      closeTo: '#usernav',
+      hasBackdrop: false
+    })
   };
 
   $scope.showLogin = function(ev) {

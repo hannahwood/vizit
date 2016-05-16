@@ -13,7 +13,7 @@ app.config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) 
     });
     $mdThemingProvider.definePalette('neon', {
         '50': 'FAFAFA',
-        '100': 'F5F5F5',
+        '100': 'F9ED10',
         '200': 'EEEEEE',
         '300': 'E0E0E0',
         '400': 'BDBDBD',

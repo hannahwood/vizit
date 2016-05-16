@@ -1,0 +1,30 @@
+<div id="userNavModal">
+<md-dialog aria-label="User Navigation Menu">
+<md-toolbar class="md-hue-3" layout-align="center center">
+  <h4 class="dark-text">User Nav</h4>
+</md-toolbar>
+<md-content class="dark">
+  <md-button class="md-hue-3" ng-repeat="item in admin">
+      <md-item ng-click="goToNewState(item.state)">
+          <md-item-content ui-sref="{{item.state}}" md-ink-ripple layout="row" layout-align="left center">
+              <div class="inset">
+                  <ng-md-icon icon="{{item.icon}}" style="fill: #fafafa" size="14"></ng-md-icon>
+              </div>
+              <div class="inset">{{item.title}}</div>
+          </md-item-content>
+      </md-item>
+      <md-divider></md-divider>
+  </md-button>
+  <md-button class="md-hue-3" ng-click="logout()">
+      <md-item>
+          <md-item-content md-ink-ripple layout="row" layout-align="left center">
+              <div class="inset">
+              <ng-md-icon icon="logout" size="14" style="fill: #fafafa"></ng-md-icon>
+              </div>
+              <div class="inset">Logout</div>
+          </md-item-content>
+      </md-item>
+  </md-button>
+  </md-content>
+</md-dialog>
+</div>
