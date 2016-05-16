@@ -1,8 +1,6 @@
 <section ng-if="user" style="max-width: 1080px; margin: auto; padding: 20px;">
-   <uib-accordion id="settings" close-others="oneAtATime">
-      <uib-accordion-group heading="My Account" is-open="open">
-   <!-- <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="My Account"> -->
+   <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="My Account">
          <md-content id="account" layout-padding>
             <form name="userInfo" ng-submit="userInfo.$dirty && userInfo.$valid && update.email === update.emailConfirm && updateUser(update)" novalidate>
                <md-input-container class="md-block">
@@ -26,10 +24,8 @@
                <md-button class="md-raised md-primary" type="submit" ng-disabled="userInfo.$pristine || userInfo.$invalid || update.email !== update.emailConfirm || !update.fullName && !update.email && !update.emailConfirm">Save Changes</md-button>
             </form>
          </md-content>
-      </uib-accordion-group>
-      <uib-accordion-group heading="Change Password">
-      <!-- </md-tab>
-      <md-tab label="Change Password"> -->
+      </md-tab>
+      <md-tab label="Change Password">
          <md-content id="password" layout-padding>
             <form name="passwordInfo" ng-submit="pass.oldPassword && pass.newPassword === pass.newPasswordDuplicate && pass.oldPassword !== pass.newPassword && updatePassword(pass)" novalidate>
                <md-input-container class="md-block">
@@ -53,10 +49,8 @@
                <md-button class="md-raised md-primary" type="submit" ng-disabled="!pass.oldPassword || pass.newPassword !== pass.newPasswordDuplicate || !(pass.oldPassword && pass.newPassword && pass.newPasswordDuplicate) || pass.oldPassword === pass.newPassword">Update Password</md-button>
             </form>
          </md-content>
-      </uib-accordion-group>
-      <uib-accordion-group  heading="Connect Accounts">
-      <!-- </md-tab>
-      <md-tab label="Connect Accounts"> -->
+      </md-tab>
+      <md-tab label="Connect Accounts">
          <md-content id="connect" layout-padding>
             <div layout="row" layout-xs="column">
                <div flex style="padding: 3rem;">
@@ -75,8 +69,6 @@
                </div>
             </div>
          </md-content>
-      </uib-accordion-group>
-   </uib-accordion>
-      <!-- </md-tab>
-   </md-tabs> -->
+      </md-tab>
+   </md-tabs>
 </section>

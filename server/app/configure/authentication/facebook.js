@@ -52,6 +52,8 @@ module.exports = function (app) {
 
     };
 
+    passport.use(new FacebookStrategy(facebookCredentials, verifyCallback));
+    
     function checkReturnTo (req,res,next) {
         var returnTo = req.query.returnTo;
         if (returnTo) {
@@ -61,7 +63,6 @@ module.exports = function (app) {
         next();
     }
 
-    passport.use(new FacebookStrategy(facebookCredentials, verifyCallback));
 
     app.get('/auth/facebook', checkReturnTo, passport.authenticate('facebook', {scope: 'email'}));
 
