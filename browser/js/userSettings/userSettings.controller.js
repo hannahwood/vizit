@@ -1,4 +1,4 @@
-app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, Flash, $rootScope, $mdToast, $document) {
+app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, $rootScope, $mdToast, $document, Upload) {
    $scope.user = user;
    $scope.open = true;
    $scope.oneAtATime = true;
@@ -41,7 +41,6 @@ app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, Flas
          .content(err)
          .position('top left')
          .parent($document[0].querySelector('#account')));
-      $scope.user = $scope.original;
       $scope.update = {};
    }
 

@@ -1,40 +1,30 @@
 <section ng-if="user" style="max-width: 1080px; margin: auto; padding: 20px;">
-   <code>{{user}}</code>
    <uib-accordion id="settings" close-others="oneAtATime">
       <uib-accordion-group heading="My Account" is-open="open">
    <!-- <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="My Account"> -->
          <md-content id="account" layout-padding>
-            <div layout="row" layout-xs="column">
-               <div flex>
-                  <div style="padding: 3em;">
-                     <img ng-mouseover="hover = !hover" style="margin-left: auto; margin-right: auto; height: 250px;" ng-src="{{user.photo ? user.photo : user.gravatar}}">
+            <form name="userInfo" ng-submit="userInfo.$dirty && userInfo.$valid && update.email === update.emailConfirm && updateUser(update)" novalidate>
+               <md-input-container class="md-block">
+                  <label>{{user.fullName ? 'Change' : 'Add'}} Name</label>
+                  <input type="text" name="fullName" ng-model="update.fullName">
+               </md-input-container>
+               <md-input-container class="md-block">
+                  <label>New Email Address</label>
+                  <input type="email" name="email" ng-model="update.email" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/">
+                  <div ng-messages="userInfo.email.$touched && userInfo.email.$error">
+                     <div ng-message="pattern">This is an invalid email.</div>
                   </div>
-               </div>
-               <div flex>
-                  <form name="userInfo" ng-submit="userInfo.$dirty && userInfo.$valid && update.email === update.emailConfirm && updateUser(update)" novalidate>
-                     <md-input-container class="md-block">
-                        <label>{{user.fullName ? 'Change' : 'Add'}} Name</label>
-                        <input type="text" name="fullName" ng-model="update.fullName">
-                     </md-input-container>
-                     <md-input-container class="md-block">
-                        <label>New Email Address</label>
-                        <input type="email" name="email" ng-model="update.email" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/">
-                        <div ng-messages="userInfo.email.$touched && userInfo.email.$error">
-                           <div ng-message="pattern">This is an invalid email.</div>
-                        </div>
-                     </md-input-container>
-                     <md-input-container class="md-block">
-                        <label>Confirm Email Address</label>
-                        <input type="email" name="emailConfirm" ng-model="update.emailConfirm" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/">
-                        <div ng-messages="userInfo.emailConfirm.$touched && userInfo.emailConfirm.$error">
-                           <div ng-message="pattern">This is an invalid email.</div>
-                        </div>
-                     </md-input-container>
-                     <md-button class="md-raised md-primary" type="submit" ng-disabled="userInfo.$pristine || userInfo.$invalid || update.email !== update.emailConfirm || !update.fullName && !update.email && !update.emailConfirm">Submit</md-button>
-                  </form>
-               </div>
-            </div>
+               </md-input-container>
+               <md-input-container class="md-block">
+                  <label>Confirm Email Address</label>
+                  <input type="email" name="emailConfirm" ng-model="update.emailConfirm" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/">
+                  <div ng-messages="userInfo.emailConfirm.$touched && userInfo.emailConfirm.$error">
+                     <div ng-message="pattern">This is an invalid email.</div>
+                  </div>
+               </md-input-container>
+               <md-button class="md-raised md-primary" type="submit" ng-disabled="userInfo.$pristine || userInfo.$invalid || update.email !== update.emailConfirm || !update.fullName && !update.email && !update.emailConfirm">Save Changes</md-button>
+            </form>
          </md-content>
       </uib-accordion-group>
       <uib-accordion-group heading="Change Password">
@@ -60,7 +50,7 @@
                   <input type="{{peek.newConfirm ? 'text' : 'password'}}" name="newPasswordDuplicate" ng-model="pass.newPasswordDuplicate"><br>
                   <md-switch ng-model="peek.newConfirm">Peek</md-switch>
                </md-input-container>
-               <md-button class="md-raised md-primary" type="submit" ng-disabled="!pass.oldPassword || pass.newPassword !== pass.newPasswordDuplicate || !(pass.oldPassword && pass.newPassword && pass.newPasswordDuplicate) || pass.oldPassword === pass.newPassword">Submit</md-button>
+               <md-button class="md-raised md-primary" type="submit" ng-disabled="!pass.oldPassword || pass.newPassword !== pass.newPasswordDuplicate || !(pass.oldPassword && pass.newPassword && pass.newPasswordDuplicate) || pass.oldPassword === pass.newPassword">Update Password</md-button>
             </form>
          </md-content>
       </uib-accordion-group>

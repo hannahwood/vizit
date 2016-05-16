@@ -4,32 +4,36 @@
 <h2>Signup</h2>
 </md-toolbar>
 <md-content class="md-padding">
-<form name="signupForm" ng-submit="signupForm.$valid && sendSignup(signup)" novalidate>
+  <form name="signupForm" ng-submit="signupForm.$valid && sendSignup(signup)" novalidate>
 
     <md-input-container class="md-block">
-    <label>Full Name</label>
-    <input type="text" ng-model="signup.fullName" name="fullName">
+      <label>Full Name</label>
+      <input type="text" ng-model="signup.fullName" name="fullName">
     </md-input-container>
 
     <md-input-container class="md-block">
-    <label>Email Address</label>
-    <input type="email" ng-model="signup.email" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/" name="email" required>
-    <span ng-show="signupForm.email.$invalid && signupForm.password.$touched">Please enter a valid email</span>
+      <label>Email Address</label>
+      <input type="email" ng-model="signup.email" ng-pattern="/^[\w\.]*\@\w*\.\w{2,}$/" name="email" required>
+      <div ng-messages="signupForm.email.$error">
+        <div ng-message="pattern">Please enter a valid email</div>
+      </div>
     </md-input-container>
 
     <md-input-container class="md-block">
-    <label>Password</label>
-    <input type="password" ng-model="signup.password" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/" name="password" required>
-    <span ng-show="signupForm.password.$invalid && (signupForm.password.$touched && signupForm.password.$dirty)">Your password must only contain an uppercase and lowercase letter as well as a number.</span>
+      <label>Password</label>
+      <input type="password" ng-model="signup.password" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/" name="password" required>
+      <div ng-messages="signupForm.password.$error">
+        <div ng-message="pattern">Your password must be at least 8 characters long and must contain an uppercase and lowercase letter as well as a number</div>
+      </div>
     </md-input-container>
 
     <p style="color: #D51300">{{error}}</p>
-    <button style="display: none" ng-click="sendSignup(signup)"></button>
-</form>
-
+    <button style="display: none" ng-click="signForm.$valid && sendSignup(signup)"></button>
+  
+  </form>
 </md-content>
 
-  <md-button ng-click="sendSignup(signup)" class="md-hue-3">
+  <md-button ng-click="signupForm.$valid && sendSignup(signup)" class="md-hue-3">
     <md-item>
       <md-item-content md-ink-ripple layout="row" layout-align="left center">
         <div class="inset"><ng-md-icon icon="login" style="fill: #fafafa"></ng-md-icon></div>

@@ -49,13 +49,13 @@ var encryptPassword = function (plainText, salt) {
 };
 
 schema.pre('save', function (next) {
-    var md5 = crypto.createHash('md5');
     if (this.isModified('password')) {
         this.salt = this.constructor.generateSalt();
         this.password = this.constructor.encryptPassword(this.password, this.salt);
     }
 
     if (this.isModified('email')) {
+        var md5 = crypto.createHash('md5');
         this.email = this.email.toLowerCase();
         md5.update(this.email);
         this.gravatar = 'http://www.gravatar.com/avatar/'+md5.digest('hex')+'?'+querystring.stringify({s: 300, d: 'http://i.imgur.com/RHjWlqX.png'});

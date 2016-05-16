@@ -23,8 +23,9 @@ app.controller('LoginCtrl', function ($scope, $mdDialog, AuthService, $state) {
         AuthService.login(loginInfo).then(function () {
             $mdDialog.hide();
             $state.go('home');
-        }).catch(function () {
-            $scope.error = 'Invalid email or password';
+        }).catch(function (err) {
+            $scope.error = err.message;
+            $scope.login.password = '';
         });
 
     };

@@ -1,4 +1,4 @@
-app.factory('UserAuthFactory', function (AuthService, $state, $http, $q, Flash) {
+app.factory('UserAuthFactory', function (AuthService, $state, $http, $q) {
   var UserAuthFactory = {};
   var parseData = res => res.data;
   var rejErr = err => $q.reject(err.data);
