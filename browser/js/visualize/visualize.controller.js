@@ -136,8 +136,7 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory) {
         graph[0].setAttribute('api', 'api');
         var el = $compile(graph)($scope);
         var head = $compile(title)($scope);
-        const elmm = $('#graphPlaceholder');
-        console.log(elmm);
+
         angular.element(graphPlaceholder).prepend(el);
         angular.element(graphPlaceholder).prepend(head);
     };
