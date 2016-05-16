@@ -3,17 +3,6 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
   $scope.color = 'md-hue-2';
   $scope.height = '80px';
 
-  angular.element($window).bind("scroll", function() {
-    if ($window.pageYOffset > 80) {
-        $scope.height = '80px';
-        $scope.color = 'md-hue';
-     } else {
-       $scope.height = '80px';
-       $scope.color = 'md-hue-2';
-     }
-     $scope.$apply();
-  });
-
   $scope.currentState = function(){
     return $state.current.name
   }

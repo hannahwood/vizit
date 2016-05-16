@@ -1,11 +1,15 @@
 app.factory('VisualizeCodeFactory', function($http) {
 
+    // global variable of current step
+    // used in Home Controller for timeline graph
+    var curInstruction;
+
     var SVG_ARROW_POLYGON = '0,3 12,3 12,0 18,5 12,10 12,7 0,7';
     var SVG_ARROW_HEIGHT = 10; // must match height of SVG_ARROW_POLYGON
 
     var curVisualizerID = 1; // global to uniquely identify each ExecutionVisualizer instance
 
-    function ExecutionVisualizer(domRootID, dat) {
+    function ExecutionVisualizer(domRootID, dat, instNum) {
 
         this.curInputCode = dat.code.rtrim(); // kill trailing spaces
         this.curTrace = dat.trace;
@@ -15,18 +19,19 @@ app.factory('VisualizeCodeFactory', function($http) {
         // end of the trace
         if (this.curTrace.length > 0) {
             var lastEntry = this.curTrace[this.curTrace.length - 1];
-            if (lastEntry.event == 'raw_input') {
+            if (lastEntry.event === 'raw_input') {
                 this.promptForUserInput = true;
                 this.userInputPromptStr = htmlspecialchars(lastEntry.prompt);
                 this.curTrace.pop() // kill last entry so that it doesn't get displayed
-            } else if (lastEntry.event == 'mouse_input') {
+            } else if (lastEntry.event === 'mouse_input') {
                 this.promptForMouseInput = true;
                 this.userInputPromptStr = htmlspecialchars(lastEntry.prompt);
                 this.curTrace.pop() // kill last entry so that it doesn't get displayed
             }
         }
-
-        this.curInstr = 0;
+        if (instNum) this.curInstr = instraNum;
+        else this.curInstr = 0;
+        curInstruction = this.curInstr;
 
         // if (!params) {
         this.params = {}; // make it an empty object by default
@@ -64,7 +69,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         this.codeRowHeight = undefined;
 
         // avoid 'undefined' state
-        this.textualMemoryLabels = (this.params.textualMemoryLabels == true);
+        this.textualMemoryLabels = (this.params.textualMemoryLabels === true);
 
         this.executeCodeWithRawInputFunc = this.params.executeCodeWithRawInputFunc;
 
@@ -148,7 +153,7 @@ app.factory('VisualizeCodeFactory', function($http) {
       "isPrimitiveType",
       function(args) {
         var obj = args.obj; // unpack
-        if (obj instanceof Array && obj[0] == "CHAR-LITERAL")
+        if (obj instanceof Array && obj[0] === "CHAR-LITERAL")
           return [true, true]; // yes we handled it, yes it's primitive
         return [false]; // didn't handle it, let someone else
       });
@@ -158,6 +163,11 @@ app.factory('VisualizeCodeFactory', function($http) {
 
      NB: If multiple functions are added to a hook, the oldest goes first.
     */
+    ExecutionVisualizer.prototype.currentStep = function() {
+        // console.log(curInstruction);
+        return curInstruction;
+    };
+
     ExecutionVisualizer.prototype.add_pytutor_hook = function(hook_name, func) {
         if (this.pytutor_hooks[hook_name])
             this.pytutor_hooks[hook_name].push(func);
@@ -267,10 +277,10 @@ app.factory('VisualizeCodeFactory', function($http) {
          <button id="jmpLastInstr", type="button"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\
        </div>\
        <div id="pyCodeOutputDiv"/>\
-       <div id="help"><p>*To step-through more quickly, use your arrow keys.<p></div>\
+       <div id="graphPlaceholder"></div>\
        <div id="errorOutput"/>\
        <div id="progOutputs">\
-       Program output:<br/>\
+       <p>Program output:</p>\
        <textarea id="pyStdout" rows="3" wrap="off" readonly></textarea>\
      </div>\
      </div>';
@@ -282,7 +292,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // </div>';
 
         var codeVizHTML =
-            '<div id="placeholder"></div><div id="dataVizOuter"><div id="graphPlaceholder" style="height:300px;"></div><div id="dataViz"><table id="stackHeapTable">\
+            '<div id="placeholder"></div><div id="dataVizOuter"><div id="dataViz"><table id="stackHeapTable">\
          <tr>\
            <td id="stack_td">\
              <div id="globals_area">\
@@ -366,19 +376,16 @@ app.factory('VisualizeCodeFactory', function($http) {
             myViz.stepBack();
         });
 
-        var timeout;
-        $("#jmpStepFwd").mousedown(function() {
-            timeout = setInterval(myViz.stepForward(), 100);
-        });
-        $("#jmpStepFwd").mouseup(function() {
-            clearInterval(timeout);
+        this.domRoot.find("#jmpStepFwd").mousedown(function() {
+            myViz.stepForward();
         });
 
+        // for arrow keys
         $("body").keydown(function(e) {
-            if (e.keyCode == 37) {
-              myViz.stepBack();
-            } else if (e.keyCode == 39) { // right
-              myViz.stepForward();
+            if (e.keyCode === 37) { // left
+                myViz.stepBack();
+            } else if (e.keyCode === 39) { // right
+                myViz.stepForward();
             }
         });
 
@@ -393,7 +400,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         // must postprocess curTrace prior to running precomputeCurTraceLayouts() ...
         var lastEntry = this.curTrace[this.curTrace.length - 1];
 
-        this.instrLimitReached = (lastEntry.event == 'instruction_limit_reached');
+        this.instrLimitReached = (lastEntry.event === 'instruction_limit_reached');
 
         if (this.instrLimitReached) {
             this.curTrace.pop() // kill last entry
@@ -426,17 +433,19 @@ app.factory('VisualizeCodeFactory', function($http) {
         if (this.params.startingInstruction) {
             // weird special case for something like:
             // e=raw_input(raw_input("Enter something:"))
-            if (this.params.startingInstruction == this.curTrace.length) {
+            if (this.params.startingInstruction === this.curTrace.length) {
                 this.params.startingInstruction--;
             }
 
             assert(0 <= this.params.startingInstruction &&
                 this.params.startingInstruction < this.curTrace.length);
             this.curInstr = this.params.startingInstruction;
+            curInstruction = this.curInstr;
         }
 
         if (this.params.jumpToEnd) {
             this.curInstr = this.curTrace.length - 1;
+            curInstruction = this.curInstr;
         }
 
         if (this.params.hideCode) {
@@ -463,7 +472,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         var myViz = this;
         var c = myViz.curInstr;
 
-        if (myViz.sortedBreakpointsList.length == 0) {
+        if (myViz.sortedBreakpointsList.length === 0) {
             return -1;
         } else {
             for (var i = 1; i < myViz.sortedBreakpointsList.length; i++) {
@@ -485,7 +494,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         var myViz = this;
         var c = myViz.curInstr;
 
-        if (myViz.sortedBreakpointsList.length == 0) {
+        if (myViz.sortedBreakpointsList.length === 0) {
             return -1;
         }
         // usability hack: if you're currently on a breakpoint, then
@@ -519,13 +528,15 @@ app.factory('VisualizeCodeFactory', function($http) {
             // if there is a next breakpoint, then jump to it ...
             if (myViz.sortedBreakpointsList.length > 0) {
                 var nextBreakpoint = myViz.findNextBreakpoint();
-                if (nextBreakpoint != -1)
+                if (nextBreakpoint != -1) {
                     myViz.curInstr = nextBreakpoint;
-                else
+                } else {
                     myViz.curInstr += 1; // prevent "getting stuck" on a solitary breakpoint
+                }
             } else {
                 myViz.curInstr += 1;
             }
+            curInstruction = myViz.curInstr;
             myViz.updateOutput(true);
             return true;
         }
@@ -548,6 +559,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             } else {
                 myViz.curInstr -= 1;
             }
+            curInstruction = myViz.curInstr;
             myViz.updateOutput();
             return true;
         }
@@ -660,7 +672,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             n.breakpointHere = false;
 
             $.each(this.curTrace, function(j, elt) {
-                if (elt.line == n.lineNumber) {
+                if (elt.line === n.lineNumber) {
                     n.executionPoints.push(j);
                 }
             });
@@ -700,21 +712,21 @@ app.factory('VisualizeCodeFactory', function($http) {
             })
             .enter().append('td')
             .attr('class', function(d, i) {
-                if (i == 0) {
+                if (i === 0) {
                     return 'lineNo';
                 } else {
                     return 'cod';
                 }
             })
             .attr('id', function(d, i) {
-                if (i == 0) {
+                if (i === 0) {
                     return 'lineNo' + d.lineNumber;
                 } else {
                     return myViz.generateID('cod' + d.lineNumber); // make globally unique (within the page)
                 }
             })
             .html(function(d, i) {
-                if (i == 0) {
+                if (i === 0) {
                     return d.lineNumber;
                 } else {
                     return htmlspecialchars(d.text);
@@ -747,7 +759,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             .style('cursor', function(d, i) {
                 // don't do anything if exePts empty (i.e., this line was never executed)
                 var exePts = d.executionPoints;
-                if (!exePts || exePts.length == 0) {
+                if (!exePts || exePts.length === 0) {
                     return;
                 } else {
                     return 'pointer'
@@ -756,7 +768,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             .on('click', function(d, i) {
                 // don't do anything if exePts empty (i.e., this line was never executed)
                 var exePts = d.executionPoints;
-                if (!exePts || exePts.length == 0) {
+                if (!exePts || exePts.length === 0) {
                     return;
                 }
 
@@ -900,7 +912,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             // render VCR controls:
             var totalInstrs = this.curTrace.length;
 
-            var isLastInstr = (this.curInstr == (totalInstrs - 1));
+            var isLastInstr = (this.curInstr === (totalInstrs - 1));
 
             var vcrControls = myViz.domRoot.find("#vcrControls");
             if (isLastInstr) {
@@ -922,7 +934,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             vcrControls.find("#jmpStepFwd").attr("disabled", false);
             vcrControls.find("#jmpLastInstr").attr("disabled", false);
 
-            if (this.curInstr == 0) {
+            if (this.curInstr === 0) {
                 vcrControls.find("#jmpFirstInstr").attr("disabled", true);
                 vcrControls.find("#jmpStepBack").attr("disabled", true);
             }
@@ -937,11 +949,11 @@ app.factory('VisualizeCodeFactory', function($http) {
 
 
             // render error (if applicable):
-            if (curEntry.event == 'exception' ||
-                curEntry.event == 'uncaught_exception') {
+            if (curEntry.event === 'exception' ||
+                curEntry.event === 'uncaught_exception') {
                 assert(curEntry.exception_msg);
 
-                if (curEntry.exception_msg == "Unknown error") {
+                if (curEntry.exception_msg === "Unknown error") {
                     myViz.domRoot.find("#errorOutput").html('Unknown error: Please email a bug report to philip@pgbovine.net');
                 } else {
                     myViz.domRoot.find("#errorOutput").html(htmlspecialchars(curEntry.exception_msg));
@@ -972,13 +984,13 @@ app.factory('VisualizeCodeFactory', function($http) {
                 var prevExprStartCol = undefined;
                 var prevExprWidth = undefined;
 
-                var curIsReturn = (curEntry.event == 'return');
+                var curIsReturn = (curEntry.event === 'return');
                 var prevIsReturn = false;
 
 
                 if (myViz.curInstr > 0) {
                     prevLineNumber = myViz.curTrace[myViz.curInstr - 1].line;
-                    prevIsReturn = (myViz.curTrace[myViz.curInstr - 1].event == 'return');
+                    prevIsReturn = (myViz.curTrace[myViz.curInstr - 1].event === 'return');
 
                     /* kinda nutsy hack: if the previous line is a return line, don't
                        highlight it. instead, highlight the line in the enclosing
@@ -1008,9 +1020,9 @@ app.factory('VisualizeCodeFactory', function($http) {
                         // now go backwards until we find a 'call' to this frame
                         while (idx >= 0) {
                             var entry = myViz.curTrace[idx];
-                            if (entry.event == 'call' && entry.stack_to_render) {
+                            if (entry.event === 'call' && entry.stack_to_render) {
                                 var topFrame = entry.stack_to_render[entry.stack_to_render.length - 1];
-                                if (topFrame.frame_id == retFrameId) {
+                                if (topFrame.frame_id === retFrameId) {
                                     break; // DONE, we found the call that corresponds to this return
                                 }
                             }
@@ -1042,7 +1054,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 // edge case for the final instruction :0
                 if (isTerminated && !hasError) {
                     // don't show redundant arrows on the same line when terminated ...
-                    if (prevLineNumber == curLineNumber) {
+                    if (prevLineNumber === curLineNumber) {
                         curLineNumber = null;
                     }
                     // otherwise have a smaller vertical nudge (to fit at bottom of display table)
@@ -1099,7 +1111,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
                 myViz.domRootD3.selectAll('#pyCodeOutputDiv td.cod')
                     .style('border-top', function(d) {
-                        if (hasError && (d.lineNumber == curEntry.line)) {
+                        if (hasError && (d.lineNumber === curEntry.line)) {
                             return '1px solid ' + errorColor;
                         } else {
                             return '';
@@ -1107,7 +1119,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                     })
                     .style('border-bottom', function(d) {
                         // COPY AND PASTE ALERT!
-                        if (hasError && (d.lineNumber == curEntry.line)) {
+                        if (hasError && (d.lineNumber === curEntry.line)) {
                             return '1px solid ' + errorColor;
                         } else {
                             return '';
@@ -1189,7 +1201,7 @@ app.factory('VisualizeCodeFactory', function($http) {
             }
 
             // finally, render all of the data structures
-            var curEntry = this.curTrace[this.curInstr];
+            curEntry = this.curTrace[this.curInstr];
             var curToplevelLayout = this.curTraceLayouts[this.curInstr];
             this.renderDataStructures(curEntry, curToplevelLayout);
 
@@ -1223,11 +1235,12 @@ app.factory('VisualizeCodeFactory', function($http) {
         assert(step < this.curTrace.length);
 
         // ignore redundant calls
-        if (this.curInstr == step) {
+        if (this.curInstr === step) {
             return;
         }
 
         this.curInstr = step;
+        curInstruction = this.curInstr;
         this.updateOutput();
     }
 
@@ -1303,7 +1316,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 var hook_result = myViz.try_hook("isLinearObj", { heapObj: heapObj });
                 if (hook_result[0]) return hook_result[1];
 
-                return heapObj[0] == 'LIST' || heapObj[0] == 'TUPLE' || heapObj[0] == 'SET';
+                return heapObj[0] === 'LIST' || heapObj[0] === 'TUPLE' || heapObj[0] === 'SET';
             }
 
             function recurseIntoObject(id, curRow, newRow) {
@@ -1330,7 +1343,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
                         }
                     });
-                } else if (heapObj[0] == 'DICT') {
+                } else if (heapObj[0] === 'DICT') {
                     $.each(heapObj, function(ind, child) {
                         if (ind < 1) return; // skip type tag
 
@@ -1344,9 +1357,9 @@ app.factory('VisualizeCodeFactory', function($http) {
                             }
                         }
                     });
-                } else if (heapObj[0] == 'INSTANCE' || heapObj[0] == 'CLASS') {
+                } else if (heapObj[0] === 'INSTANCE' || heapObj[0] === 'CLASS') {
                     jQuery.each(heapObj, function(ind, child) {
-                        var headerLength = (heapObj[0] == 'INSTANCE') ? 2 : 3;
+                        var headerLength = (heapObj[0] === 'INSTANCE') ? 2 : 3;
                         if (ind < headerLength) return;
 
 
@@ -1414,7 +1427,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                     recurseIntoObject(id, foundRow, []);
                 } else {
                     // push id into newRow ...
-                    if (newRow.length == 0) {
+                    if (newRow.length === 0) {
                         newRow.push('row' + id); // unique row ID (since IDs are unique)
                     }
                     newRow.push(id);
@@ -1504,7 +1517,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         });
 
         this.curTraceLayouts.splice(0, 1); // remove seeded empty sentinel element
-        assert(this.curTrace.length == this.curTraceLayouts.length);
+        assert(this.curTrace.length === this.curTraceLayouts.length);
     }
 
 
@@ -1716,7 +1729,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         globalVarTableCells.enter()
             .append('td')
             .attr('class', function(d, i) {
-                return (i == 0) ? 'stackFrameVar' : 'stackFrameValue';
+                return (i === 0) ? 'stackFrameVar' : 'stackFrameValue';
             });
 
         // remember that the enter selection is added to the update
@@ -1726,7 +1739,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         globalVarTableCells
             .order() // VERY IMPORTANT to put in the order corresponding to data elements
             .each(function(varname, i) {
-                if (i == 0) {
+                if (i === 0) {
                     $(this).html(varname);
                 } else {
                     // always delete and re-render the global var ...
@@ -1797,7 +1810,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
 
         // for aesthetics, hide globals if there aren't any globals to display
-        if (curEntry.ordered_globals.length == 0) {
+        if (curEntry.ordered_globals.length === 0) {
             this.domRoot.find('#' + globalsID).hide();
         } else {
             this.domRoot.find('#' + globalsID).show();
@@ -1838,7 +1851,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 //console.log(my_CSS_id, 'ENTER');
 
                 // render a parent pointer whose SOURCE node is this frame
-                // i.e., connect this frame to p, where this.parent_frame_id == p.frame_id
+                // i.e., connect this frame to p, where this.parent_frame_id === p.frame_id
                 // (if this.parent_frame_id is null, then p is the global frame)
                 if (frame.parent_frame_id_list.length > 0) {
                     var parent_frame_id = frame.parent_frame_id_list[0];
@@ -1864,7 +1877,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 }
 
                 // tricky turkey: render parent pointers whose TARGET node is this frame.
-                // i.e., for all frames f such that f.parent_frame_id == my_frame_id,
+                // i.e., for all frames f such that f.parent_frame_id === my_frame_id,
                 // connect f to this frame.
                 // (make sure not to confuse frame IDs with CSS IDs!!!)
                 var my_frame_id = frame.frame_id;
@@ -1941,7 +1954,7 @@ app.factory('VisualizeCodeFactory', function($http) {
         stackVarTableCells.enter()
             .append('td')
             .attr('class', function(d, i) {
-                return (i == 0) ? 'stackFrameVar' : 'stackFrameValue';
+                return (i === 0) ? 'stackFrameVar' : 'stackFrameValue';
             });
 
         stackVarTableCells
@@ -1950,8 +1963,8 @@ app.factory('VisualizeCodeFactory', function($http) {
                 var varname = d.varname;
                 var frame = d.frame;
 
-                if (i == 0) {
-                    if (varname == '__return__')
+                if (i === 0) {
+                    if (varname === '__return__')
                         $(this).html('<span class="retval">Return<br/>value</span>');
                     else
                         $(this).html(varname);
@@ -2033,7 +2046,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
                 // Remove all pointers where either the source or destination end is my_CSS_id
                 existingParentPointerConnectionEndpointIDs.forEach(function(k, v) {
-                    if (k == my_CSS_id || v == my_CSS_id) {
+                    if (k === my_CSS_id || v === my_CSS_id) {
                         //console.log('remove EPP', k, v);
                         existingParentPointerConnectionEndpointIDs.remove(k);
                     }
@@ -2080,7 +2093,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 var srcAnchorObject = myViz.domRoot.find('#' + srcID);
                 var srcHeapObject = srcAnchorObject.closest('.heapObject');
                 var dstHeapObject = myViz.domRoot.find('#' + dstID);
-                assert(dstHeapObject.attr('class') == 'heapObject');
+                assert(dstHeapObject.attr('class') === 'heapObject');
 
                 var srcHeapRow = srcHeapObject.closest('.heapRow');
                 var dstHeapRow = dstHeapObject.closest('.heapRow');
@@ -2167,8 +2180,8 @@ app.factory('VisualizeCodeFactory', function($http) {
         function renderParentPointerConnector(srcID, dstID) {
             // SUPER-DUPER-ugly hack since I can't figure out a cleaner solution for now:
             // if either srcID or dstID no longer exists, then SKIP rendering ...
-            if ((myViz.domRoot.find('#' + srcID).length == 0) ||
-                (myViz.domRoot.find('#' + dstID).length == 0)) {
+            if ((myViz.domRoot.find('#' + srcID).length === 0) ||
+                (myViz.domRoot.find('#' + dstID).length === 0)) {
                 return;
             }
 
@@ -2213,7 +2226,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 var stackFrameDiv = c.source.closest('.stackFrame');
 
                 // if this connector starts in the selected stack frame ...
-                if (stackFrameDiv.attr('id') == frameID) {
+                if (stackFrameDiv.attr('id') === frameID) {
                     // then HIGHLIGHT IT!
                     c.setPaintStyle({ lineWidth: 1, strokeStyle: connectorBaseColor });
                     c.endpoints[0].setPaintStyle({ fillStyle: connectorBaseColor });
@@ -2265,17 +2278,17 @@ app.factory('VisualizeCodeFactory', function($http) {
 
         var typ = typeof obj;
 
-        if (obj == null) {
+        if (obj === null) {
             d3DomElement.append('<span class="nullObj">' + this.getRealLabel('None') + '</span>');
-        } else if (typ == "number") {
+        } else if (typ === "number") {
             d3DomElement.append('<span class="numberObj">' + obj + '</span>');
-        } else if (typ == "boolean") {
+        } else if (typ === "boolean") {
             if (obj) {
                 d3DomElement.append('<span class="boolObj">' + this.getRealLabel('True') + '</span>');
             } else {
                 d3DomElement.append('<span class="boolObj">' + this.getRealLabel('False') + '</span>');
             }
-        } else if (typ == "string") {
+        } else if (typ === "string") {
             // escape using htmlspecialchars to prevent HTML/script injection
             var literalStr = htmlspecialchars(obj);
 
@@ -2286,8 +2299,8 @@ app.factory('VisualizeCodeFactory', function($http) {
             literalStr = '"' + literalStr + '"';
 
             d3DomElement.append('<span class="stringObj">' + literalStr + '</span>');
-        } else if (typ == "object") {
-            assert(obj[0] == 'SPECIAL_FLOAT' || obj[0] == 'JS_SPECIAL_VAL');
+        } else if (typ === "object") {
+            assert(obj[0] === 'SPECIAL_FLOAT' || obj[0] === 'JS_SPECIAL_VAL');
             d3DomElement.append('<span class="numberObj">' + obj[1] + '</span>');
         } else {
             assert(false);
@@ -2381,18 +2394,18 @@ app.factory('VisualizeCodeFactory', function($http) {
             });
             if (hook_result[0]) return;
 
-            if (obj[0] == 'LIST' || obj[0] == 'TUPLE' || obj[0] == 'SET' || obj[0] == 'DICT') {
+            if (obj[0] === 'LIST' || obj[0] === 'TUPLE' || obj[0] === 'SET' || obj[0] === 'DICT') {
                 var label = obj[0].toLowerCase();
 
                 assert(obj.length >= 1);
-                if (obj.length == 1) {
+                if (obj.length === 1) {
                     d3DomElement.append('<div class="typeLabel">' + typeLabelPrefix + ' empty ' + myViz.getRealLabel(label) + '</div>');
                 } else {
                     d3DomElement.append('<div class="typeLabel">' + typeLabelPrefix + myViz.getRealLabel(label) + '</div>');
                     d3DomElement.append('<table class="' + label + 'Tbl"></table>');
                     var tbl = d3DomElement.children('table');
 
-                    if (obj[0] == 'LIST' || obj[0] == 'TUPLE') {
+                    if (obj[0] === 'LIST' || obj[0] === 'TUPLE') {
                         tbl.append('<tr></tr><tr></tr>');
                         var headerTr = tbl.find('tr:first');
                         var contentTr = tbl.find('tr:last');
@@ -2407,7 +2420,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                             contentTr.append('<td class="' + label + 'Elt"></td>');
                             myViz.renderNestedObject(val, stepNum, contentTr.find('td:last'));
                         });
-                    } else if (obj[0] == 'SET') {
+                    } else if (obj[0] === 'SET') {
                         // create an R x C matrix:
                         var numElts = obj.length - 1;
 
@@ -2427,7 +2440,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                         jQuery.each(obj, function(ind, val) {
                             if (ind < 1) return; // skip 'SET' tag
 
-                            if (((ind - 1) % numCols) == 0) {
+                            if (((ind - 1) % numCols) === 0) {
                                 tbl.append('<tr></tr>');
                             }
 
@@ -2435,7 +2448,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                             curTr.append('<td class="setElt"></td>');
                             myViz.renderNestedObject(val, stepNum, curTr.find('td:last'));
                         });
-                    } else if (obj[0] == 'DICT') {
+                    } else if (obj[0] === 'DICT') {
                         $.each(obj, function(ind, kvPair) {
                             if (ind < 1) return; // skip 'DICT' tag
 
@@ -2452,8 +2465,8 @@ app.factory('VisualizeCodeFactory', function($http) {
                         });
                     }
                 }
-            } else if (obj[0] == 'INSTANCE' || obj[0] == 'CLASS') {
-                var isInstance = (obj[0] == 'INSTANCE');
+            } else if (obj[0] === 'INSTANCE' || obj[0] === 'CLASS') {
+                var isInstance = (obj[0] === 'INSTANCE');
                 var headerLength = isInstance ? 2 : 3;
 
                 assert(obj.length >= headerLength);
@@ -2492,7 +2505,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
                         // the keys should always be strings, so render them directly (and without quotes):
                         // (actually this isn't the case when strings are rendered on the heap)
-                        if (typeof kvPair[0] == "string") {
+                        if (typeof kvPair[0] === "string") {
                             // common case ...
                             var attrnameStr = htmlspecialchars(kvPair[0]);
                             keyTd.append('<span class="keyObj">' + attrnameStr + '</span>');
@@ -2541,13 +2554,13 @@ app.factory('VisualizeCodeFactory', function($http) {
                         $(d3DomElement.selector + ' .typeLabel #attrToggleLink').html('show attributes');
                     }
                 }
-            } else if (obj[0] == 'INSTANCE_PPRINT') {
+            } else if (obj[0] === 'INSTANCE_PPRINT') {
                 d3DomElement.append('<div class="typeLabel">' + typeLabelPrefix + obj[1] + ' instance</div>');
 
                 strRepr = htmlspecialchars(obj[2]); // escape strings!
                 d3DomElement.append('<table class="customObjTbl"><tr><td class="customObjElt">' + strRepr + '</td></tr></table>');
-            } else if (obj[0] == 'FUNCTION') {
-                assert(obj.length == 3);
+            } else if (obj[0] === 'FUNCTION') {
+                assert(obj.length === 3);
 
                 // pretty-print lambdas and display other weird characters:
                 var funcName = htmlspecialchars(obj[1]).replace('&lt;lambda&gt;', '\u03bb');
@@ -2564,9 +2577,9 @@ app.factory('VisualizeCodeFactory', function($http) {
                 } else {
                     d3DomElement.append('<div class="funcObj">' + funcPrefix + ' ' + funcName + '</div>');
                 }
-            } else if (obj[0] == 'JS_FUNCTION') { /* TODO: refactor me */
+            } else if (obj[0] === 'JS_FUNCTION') { /* TODO: refactor me */
                 // JavaScript function
-                assert(obj.length == 5);
+                assert(obj.length === 5);
                 var funcName = htmlspecialchars(obj[1]);
                 var funcCode = typeLabelPrefix + htmlspecialchars(obj[2]);
                 var funcProperties = obj[3]; // either null or a non-empty list of key-value pairs
@@ -2597,8 +2610,8 @@ app.factory('VisualizeCodeFactory', function($http) {
                     // compact form:
                     d3DomElement.append('<pre class="funcCode">' + funcCode + '</pre>');
                 }
-            } else if (obj[0] == 'HEAP_PRIMITIVE') {
-                assert(obj.length == 3);
+            } else if (obj[0] === 'HEAP_PRIMITIVE') {
+                assert(obj.length === 3);
 
                 var typeName = obj[1];
                 var primitiveVal = obj[2];
@@ -2609,7 +2622,7 @@ app.factory('VisualizeCodeFactory', function($http) {
                 myViz.renderPrimitiveObject(primitiveVal, d3DomElement.find('div.heapPrimitive'));
             } else {
                 // render custom data type
-                assert(obj.length == 2);
+                assert(obj.length === 2);
 
                 var typeName = obj[0];
                 var strRepr = obj[1];
@@ -2684,7 +2697,7 @@ app.factory('VisualizeCodeFactory', function($http) {
 
     // taken from http://www.toao.net/32-my-htmlspecialchars-function-for-javascript
     function htmlspecialchars(str) {
-        if (typeof(str) == "string") {
+        if (typeof(str) === "string") {
             str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
 
             // ignore these for now ...
@@ -2707,7 +2720,7 @@ app.factory('VisualizeCodeFactory', function($http) {
     // same as htmlspecialchars except don't worry about expanding spaces or
     // tabs since we want proper word wrapping in divs.
     function htmlsanitize(str) {
-        if (typeof(str) == "string") {
+        if (typeof(str) === "string") {
             str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
 
             str = str.replace(/</g, "&lt;");
@@ -2771,14 +2784,14 @@ app.factory('VisualizeCodeFactory', function($http) {
         }
 
         // for a list or tuple, same size (e.g., a cons cell is a list/tuple of size 2)
-        if (obj1[0] == 'LIST' || obj1[0] == 'TUPLE') {
+        if (obj1[0] === 'LIST' || obj1[0] === 'TUPLE') {
             return true;
         } else {
             var startingInd = -1;
 
-            if (obj1[0] == 'DICT') {
+            if (obj1[0] === 'DICT') {
                 startingInd = 2;
-            } else if (obj1[0] == 'INSTANCE') {
+            } else if (obj1[0] === 'INSTANCE') {
                 startingInd = 3;
             } else {
                 return false; // punt on all other types
@@ -2811,9 +2824,9 @@ app.factory('VisualizeCodeFactory', function($http) {
             return true;
         }
 
-        if (typeof obj == "object") {
+        if (typeof obj === "object") {
             // kludge: only 'SPECIAL_FLOAT' objects count as primitives
-            return (obj[0] == 'SPECIAL_FLOAT' || obj[0] == 'JS_SPECIAL_VAL');
+            return (obj[0] === 'SPECIAL_FLOAT' || obj[0] === 'JS_SPECIAL_VAL');
         } else {
             // non-objects are primitives
             return true;
@@ -2821,21 +2834,18 @@ app.factory('VisualizeCodeFactory', function($http) {
     }
 
     function getRefID(obj) {
-        assert(obj[0] == 'REF');
+        assert(obj[0] === 'REF');
         return obj[1];
     }
 
     return {
-        // executionVisualizer: ExecutionVisualizer,
         submitCode: function(code) {
             return $http.post('/api/pt/exec_js', { user_script: code })
                 .then(function(response) {
-                  // console.log(response);
                     return response.data;
                 });
         },
-        executionVisualizer: ExecutionVisualizer,
-        update: ExecutionVisualizer.prototype.updateOutputFull
+        executionVisualizer: ExecutionVisualizer
     };
 
 
