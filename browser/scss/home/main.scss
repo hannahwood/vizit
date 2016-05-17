@@ -10,9 +10,10 @@ vizit-logo {
 }
 
 #toolbar {
-    position: fixed;
+    position: relative;
+    background-color: #fff !important;
     height: 30px !important;
-    top: 80px;
+    top: 0;
     left: 0;
     z-index: 8;
     .tools {

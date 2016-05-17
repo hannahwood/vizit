@@ -7,7 +7,7 @@ app.filter('titlecase', function() {
 });
 
 
-app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory) {
+app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthService, $rootScope) {
 
     $scope.code = '// Adapted from Effective JavaScript\
         \nfunction Actor(x, y) {\
