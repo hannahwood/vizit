@@ -1,0 +1,41 @@
+<section id="visualize" ng-controller="VizCtrl">
+    <md-toolbar class="md-accent" id="toolbar">
+        <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
+            <span flex></span>
+            <md-button class="tools" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
+            <md-button class="tools" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layout-align="space-around">
+                <span ng-hide="progress">Visualize</span>
+                <span ng-show="progress">Calculating...</span>
+            </md-button>
+            <span flex></span>
+        </div>
+        <md-progress-linear ng-show="progress" md-mode="indeterminate"></md-progress-linear>
+    </md-toolbar>
+    <md-content flex>
+        <div layout="column" layout-fill layout-padding class="full">
+            <div layout="row" layout-xs="column">
+                <div flex ng-show="selection === 'edit'">
+                    <div id="ace" ng-model="code" ui-ace="{
+                  require: ['ace/ext/language_tools'],
+                  useWrapMode : true,
+                  splitMode: true,
+                  showGutter: true,
+                  theme:'solarized_dark',
+                  mode: 'javascript',
+                  firstLineNumber: 1,
+                    advanced: {
+                      enableSnippets: true,
+                      enableBasicAutocompletion: true,
+                      enableLiveAutocompletion: true
+                    }
+                  }">
+                    </div>
+                    <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
+                </div>
+                <visualize ng-if="selection === 'visualize'">
+                </visualize>
+            </div>
+        </div>
+        </div>
+    </md-content>
+</section>
