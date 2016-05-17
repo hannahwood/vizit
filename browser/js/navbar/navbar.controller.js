@@ -74,7 +74,10 @@ app.controller('NavCtrl', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog
       clickOutsideToClose: true,
       openFrom: '#usernav',
       closeTo: '#usernav',
-      hasBackdrop: false
+      hasBackdrop: false,
+      onRemoving: function(){
+        $rootScope.$emit('toggledUserNav');
+      }
     })
   };
 

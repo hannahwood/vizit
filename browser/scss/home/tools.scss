@@ -1,0 +1,22 @@
+$gray: #eee;
+$dark: #263238;
+$light: #fff;
+$yellow: #F9ED10;
+$bluegray: #CFD8DC;
+
+tools {
+  .center {
+    text-align: center;
+  }
+  #left {
+    min-height: 80px;
+    color: $dark;
+    background-color: $bluegray;
+  },
+
+  #right {
+    min-height: 80px;
+    color: $dark;
+    background-color: $yellow;
+  }
+}

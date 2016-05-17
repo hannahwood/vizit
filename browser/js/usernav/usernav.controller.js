@@ -13,7 +13,6 @@ app.controller('UserNavCtrl', function ($scope, $mdDialog, AuthService, $state, 
     };
 
     $scope.goToNewState = function(state){
-      $rootScope.$emit('toggledUserNav');
       $scope.hide();
 
     }

@@ -80,6 +80,34 @@ $bluegray: #CFD8DC;
   }
 }
 
+
+
+// ng-animate between states
+
+main {
+    /* start 'enter' transition */
+    &.ng-enter {
+        /* transition on enter for 5s */
+        transition: 5s;
+
+        /* start with opacity 0 (invisible) */
+        opacity: 0;
+    }
+
+    /* end 'enter' transition */
+    &.ng-enter-active {
+        /* end with opacity 1 (fade in) */
+        opacity: 1;
+    }
+}
+// ng-animate between states
+
+
+
+
+
+
+
 // #sidenav {
 //   background-color: #263238;
 //   .inset {
@@ -134,6 +162,9 @@ body, h1, h2, h3, h4, h5 {
   letter-spacing: 0.1em !important;
   .dark-text {
     color: $dark;
+  }
+  .text-left {
+    text-align: left;
   }
 }
 

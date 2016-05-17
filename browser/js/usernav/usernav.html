@@ -1,7 +1,9 @@
 <div id="userNavModal">
 <md-dialog aria-label="User Navigation Menu">
 <md-toolbar class="md-hue-3" layout-align="center center">
-  <h4 class="dark-text">User Nav</h4>
+<br>
+<!--   <h5 class="dark-text left-text">{{user.fullName? user.fullName : user.email}}</h5> -->
+  <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" />
 </md-toolbar>
 <md-content class="dark">
   <md-button class="md-hue-3" ng-repeat="item in admin">
