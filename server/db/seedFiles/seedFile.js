@@ -20,7 +20,7 @@ function seed(files) {
 	var code = [];
 	files.forEach(function(file, i){
 		var codeObj = {};
-		i >= files.length-3 ? codeObj.author = users.find(function (user) { return user.email === 'Laura'}) : codeObj.author = users[((Math.random() * users.length) | 0)]._id;
+		i >= files.length-3 ? codeObj.author = users.find(function (user) { return user.email === 'lauraweiner@icloud.com'}) : codeObj.author = users[((Math.random() * users.length) | 0)]._id;
 		var numRevisions = (Math.random() * 8 | 0) + 1;
 		codeObj.revisions = [];
 		for (var j = 0; j < numRevisions; j++){

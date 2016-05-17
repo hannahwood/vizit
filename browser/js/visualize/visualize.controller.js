@@ -1,4 +1,14 @@
-app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory) {
+app.filter('titlecase', function() {
+    return function(input) {
+        return input.replace(/\w\S*/g, function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    };
+});
+
+
+app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthService, $rootScope) {
+
     $scope.code = '// Adapted from Effective JavaScript\
         \nfunction Actor(x, y) {\
         \n  this.x = x;\
@@ -130,7 +140,7 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory) {
         // debugger;
         var graph = angular.element(document.createElement('nvd3'));
         var title = angular.element(document.createElement('div'));
-        title.text('Call Stack:');            
+        title.text('Call Stack:');
         graph[0].setAttribute('options', 'options');
         graph[0].setAttribute('data', 'data');
         graph[0].setAttribute('api', 'api');
@@ -140,6 +150,22 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory) {
         angular.element(graphPlaceholder).prepend(el);
         angular.element(graphPlaceholder).prepend(head);
     };
+
+    $scope.user;
+
+    AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+    });
+
+    $rootScope.$on('loggedOut', function(){
+        $scope.user = null;
+    });
+
+    $scope.save = function(code){
+        CodeFactory.saveCode(code, $scope.user._id)
+        .then(code => $state.go('code.revision', {codeId: code._id, revisionNum: 0}));
+    }
+
 
     // re-render graph on arrow key presses
     // must be on keyUP to allow viz functions to run on keyDOWN
