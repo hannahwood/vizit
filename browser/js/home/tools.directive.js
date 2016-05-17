@@ -1,7 +1,7 @@
 app.directive('tools', function () {
     return {
         restrict: 'E',
-        scope: { options: '='},
+        controller: 'ToolsCtrl',
         templateUrl: 'js/home/tools.html'
     };
 });

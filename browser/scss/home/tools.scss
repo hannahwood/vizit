@@ -8,6 +8,13 @@ tools {
   .center {
     text-align: center;
   }
+  .padding-top {
+    padding-top:  20px;
+  }
+  .active {
+    color: $dark !important;
+    border-bottom: solid 3px $yellow;
+  }
   #left {
     min-height: 80px;
     color: $dark;
@@ -17,6 +24,6 @@ tools {
   #right {
     min-height: 80px;
     color: $dark;
-    background-color: $yellow;
+    background-color: $gray;
   }
 }
