@@ -1,12 +1,4 @@
-app.filter('titlecase', function() {
-    return function(input) {
-        return input.replace(/\w\S*/g, function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    };
-});
-
-app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
+app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory) {
     $scope.code = '// Adapted from Effective JavaScript\
         \nfunction Actor(x, y) {\
         \n  this.x = x;\
@@ -135,6 +127,7 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
     };
 
     $scope.add = function() {
+        // debugger;
         var graph = angular.element(document.createElement('nvd3'));
         var title = angular.element(document.createElement('div'));
         title.text('Call Stack:');            
@@ -143,6 +136,7 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
         graph[0].setAttribute('api', 'api');
         var el = $compile(graph)($scope);
         var head = $compile(title)($scope);
+
         angular.element(graphPlaceholder).prepend(el);
         angular.element(graphPlaceholder).prepend(head);
     };
@@ -170,8 +164,8 @@ app.controller('HomeCtrl', function($scope, $compile, VisualizeCodeFactory) {
                 visData[0].values.push({
                     'step': i,
                     'height': el.stack_to_render.length
-                })
-            })
+                });
+            });
         return visData;
     };
 });
