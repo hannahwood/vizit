@@ -1,10 +1,4 @@
 app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $state, AuthService, VisualizeCodeFactory, $compile, $rootScope) {
-    $scope.original = revision;
-    $scope.revision = angular.extend({}, $scope.original);
-
-    $scope.code = code;
-
-    
 
     $scope.session = code;
     $scope.revision = revision;
