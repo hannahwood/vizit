@@ -1,4 +1,5 @@
 app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $state) {
+    console.log(code);
     $scope.original = revision;
     $scope.revision = angular.extend({}, $scope.original);
 
@@ -13,7 +14,7 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
             CodeFactory.addRevision($scope.code._id, $scope.revision.content)
             .then(function (revisedCode) {
                 console.log(revisedCode);
-                $state.go('code.revision', {codeId: revisedCode._id, revisionNum: revisedCode.revisions.length-1})
+                $state.go('revision', {codeId: revisedCode._id, revisionNum: revisedCode.revisions.length-1})
             })
         }
     }

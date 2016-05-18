@@ -43,7 +43,7 @@
                 <div class="inset">
 
                   <div ng-repeat="revision in code.revisions | orderBy:'-date'" ng-if="code.isOpen">
-                    <a ui-sref="code.revision({codeId: code._id, revisionNum: $index})">Revision {{code.revisions.length-$index}} - {{revision.date | timefromnow }}</a>
+                    <a ui-sref="revision({codeId: code._id, revisionNum: code.revisions.length-$index-1})">Revision {{code.revisions.length-$index}} - {{revision.date | timefromnow }}</a>
                   </div>
 
                 </div>

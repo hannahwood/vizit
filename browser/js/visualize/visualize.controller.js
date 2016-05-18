@@ -163,7 +163,7 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
 
     $scope.save = function(code){
         CodeFactory.saveCode(code, $scope.user._id)
-        .then(code => $state.go('code.revision', {codeId: code._id, revisionNum: 0}));
+        .then(code => $state.go('revision', {codeId: code._id, revisionNum: 0}));
     }
 
 

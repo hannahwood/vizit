@@ -4,7 +4,7 @@ app.controller('SessionsController', function ($scope, code, $state) {
     $scope.searchText;
     $scope.goToSelected = function(code){
         var revisionNum = code.revisions.length-1
-        $state.go('code.revision', {codeId: code._id, revisionNum: revisionNum})
+        $state.go('revision', {codeId: code._id, revisionNum: revisionNum})
     }
 
     $scope.icon = "keyboard_arrow_right";
