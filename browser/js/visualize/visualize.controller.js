@@ -7,34 +7,9 @@ app.filter('titlecase', function() {
 });
 
 
-app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthService, $rootScope) {
+app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthService, $rootScope, CodeFactory, $state, ExampleCodeFactory) {
 
-    $scope.code = '// Adapted from Effective JavaScript\
-        \nfunction Actor(x, y) {\
-        \n  this.x = x;\
-        \n  this.y = y;\
-        \n}\
-        \n\
-        \nActor.prototype.moveTo = function(x, y) {\
-        \n  this.x = x;\
-        \n  this.y = y;\
-        \n}\
-        \n\
-        \nfunction SpaceShip(x, y) {\
-        \n  Actor.call(this, x, y);\
-        \n  this.points = 0;\
-        \n}\
-        \n\
-        \nSpaceShip.prototype = Object.create(Actor.prototype); // inherit!\
-        \nSpaceShip.prototype.type = "spaceship";\
-        \nSpaceShip.prototype.scorePoint = function() {\
-        \n  this.points++;\
-        \n}\
-        \n\
-        \nvar s = new SpaceShip(10, 20);\
-        \ns.moveTo(30, 40);\
-        \ns.scorePoint();\
-        \ns.scorePoint();'
+    $scope.code = '// input your code here then press "VISUALIZE"';
 
     // selections: edit, visualize, analyze
     $scope.selection = 'edit';
@@ -60,7 +35,9 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
     // options for timeline graph
     $scope.options = {
         chart: {
-        tooltipContent: function(key, y, e, graph) { return 'Some String' },
+            tooltipContent: function(key, y, e, graph) {
+                return 'Some String'
+            },
             margin: {
                 bottom: 0,
                 left: 0
@@ -121,7 +98,7 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
                 $scope.trace = response.trace;
                 $scope.data = $scope.makeGraphData();
                 $scope.newViz = new VisualizeCodeFactory.executionVisualizer("pyOutputPane", response);
-                var sum = $scope.data[0].values.reduce((prev,curr)=> prev+curr.height,0);
+                var sum = $scope.data[0].values.reduce((prev, curr) => prev + curr.height, 0);
                 sum && $scope.add();
 
                 $scope.progress = false;
@@ -138,6 +115,9 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
 
     $scope.add = function() {
         // debugger;
+        $('#pyCodeOutputDiv').css({
+            'max-height': 'calc(100vh - 500px)'
+        });
         var graph = angular.element(document.createElement('nvd3'));
         var title = angular.element(document.createElement('div'));
         title.text('Call Stack:');
@@ -153,31 +133,39 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
 
     $scope.user;
 
-    AuthService.getLoggedInUser().then(function (user) {
+    AuthService.getLoggedInUser().then(function(user) {
         $scope.user = user;
     });
 
-    $rootScope.$on('loggedOut', function(){
+    $rootScope.$on('loggedOut', function() {
         $scope.user = null;
     });
 
-    $scope.save = function(code){
+    $scope.save = function(code) {
         CodeFactory.saveCode(code, $scope.user._id)
-        .then(code => $state.go('code.revision', {codeId: code._id, revisionNum: 0}));
-    }
-
+            .then(code => $state.go('code.revision', { codeId: code._id, revisionNum: 0 }));
+    };
 
     // re-render graph on arrow key presses
     // must be on keyUP to allow viz functions to run on keyDOWN
-    $("body").keyup(function(e) {
+    function refreshKey(e) {
         if (e.keyCode == 37 || e.keyCode == 39) {
             $scope.api.refresh();
         }
-    });
+    }
+    $("body").keyup(refreshKey);
 
     // re-render graph on clicks (for buttons)
-    $("body").mouseup(function() {
+    function refreshClick() {
         $scope.api.refresh();
+    }
+    $("body").mouseup(refreshClick);
+
+    // destroys the event handlers when going to different state
+    $scope.$on('$destroy', function() {
+        console.log('DESTROYED');
+        $("body").off('mouseup', refreshClick);
+        $("body").off('keyup', refreshKey);
     });
 
     $scope.makeGraphData = function() {
@@ -193,5 +181,11 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
                 });
             });
         return visData;
+    };
+
+    $scope.examples = ExampleCodeFactory;
+
+    $scope.updateCode = function (newCode) {
+        $scope.code = newCode;
     };
 });

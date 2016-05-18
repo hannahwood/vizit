@@ -100,26 +100,6 @@ main {
         opacity: 1;
     }
 }
-// ng-animate between states
-
-
-
-
-
-
-
-// #sidenav {
-//   background-color: #263238;
-//   .inset {
-//     color: #fafafa;
-//     font-size: 1.1em;
-//     letter-spacing: 0.1em;
-//     text-transform: none;
-//   }
-//   .md-button {
-//     margin: 0 0;
-//   }
-// }
 
 #logo {
   position: absolute;
@@ -153,10 +133,6 @@ ng-md-icon {
   outline: none;
 }
 
-// md-sidenav {
-//   height: 100vh;
-// }
-
 body, h1, h2, h3, h4, h5 {
   font-family: 'Roboto', sans-serif;
   letter-spacing: 0.1em !important;
@@ -179,3 +155,9 @@ h2 {
   top: 55px;
 }
 
+// for the tools: Visualize and Analyze
+.fixed {
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+}

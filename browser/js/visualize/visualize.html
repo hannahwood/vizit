@@ -1,22 +1,18 @@
-<section id="visualize" ng-controller="VizCtrl">
-<tools></tools>
-    <md-toolbar id="toolbar">
-        <div class="md-toolbar-tools" layout="row" layout-margin layout-align="center center">
-            <span flex></span>
-            <md-button class="tools" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
-            <md-button class="tools" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layout-align="space-around">
-                <span ng-hide="progress">Visualize</span>
-                <span ng-show="progress">Calculating...</span>
-            </md-button>
-            <span flex></span>
-        </div>
-        <md-progress-linear ng-show="progress" md-mode="indeterminate"></md-progress-linear>
-    </md-toolbar>
+<section id="visualize">
+    <div class="button-container fixed">
+        <md-button class="tools" ng-if="user" ng-click="save(code)"> Save </md-button>
+        <md-button class="tools" ng-show="selection === 'visualize'" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
+        <md-button class="tools" ng-show="selection === 'edit'" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layout-align="space-around">
+            <span ng-hide="progress">Visualize</span>
+            <span ng-show="progress">Calculating...</span>
+        </md-button>
+    </div>
+    <md-progress-linear ng-show="progress" md-mode="indeterminate"></md-progress-linear>
     <md-content flex>
-        <div layout="column" layout-fill layout-padding class="full">
+        <div layout="column" layout-fill layout-padding class="full visualize">
             <div layout="row" layout-xs="column">
                 <div flex ng-show="selection === 'edit'">
-                    <div id="ace" ng-model="code" ui-ace="{
+                    <div flex id="ace" ng-model="code" ui-ace="{
                   require: ['ace/ext/language_tools'],
                   useWrapMode : true,
                   splitMode: true,
@@ -32,6 +28,21 @@
                   }">
                     </div>
                     <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
+                </div>
+                <div flex ng-show="selection === 'edit'" class="examples">
+                    <div>
+                        <h4>EXAMPLES:</h4>
+                        <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p><!-- 
+                        <p ng-click="code = examples.inheritance">inheritance</p>
+                        <p ng-click="code = examples.permutation">permutation</p>
+                        <p ng-click="code = examples.fib">fibonacci</p>
+                        <p ng-click="code = examples.fibMem">fibonacci (with memoization)</p>
+                        <p ng-click="code = examples.dataTypes">data types</p>
+                        <p ng-click="code = examples.closure">closure</p>
+                        <p ng-click="code = examples.shadowing">shadowing</p>
+                        <p ng-click="code = examples.linkedList">linked list</p>
+                        <p ng-click="code = examples.GCD">greatest common denominator</p> -->
+                    </div>
                 </div>
                 <visualize ng-if="selection === 'visualize'">
                 </visualize>
