@@ -1,5 +1,4 @@
 app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $state) {
-    console.log(code);
     $scope.original = revision;
     $scope.revision = angular.extend({}, $scope.original);
 
