@@ -16,7 +16,7 @@ app.config(function($stateProvider){
     .state('revision', {
         url: '/code/:codeId/{revisionNum: int}',
         controller: 'RevisionCtrl',
-        templateUrl: 'js/revisions/revisions.html',
+        templateUrl: 'js/visualize/visualize.html',
         resolve: {
             revision: function (CodeFactory, $stateParams) {
                 return CodeFactory.getRevision($stateParams.codeId, $stateParams.revisionNum);
