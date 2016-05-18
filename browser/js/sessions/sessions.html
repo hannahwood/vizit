@@ -58,11 +58,13 @@
             <div class="md-list-item-text date">
               <h4>{{code.revisions[code.revisions.length-1].date | timefromnow}}</h4>
               <br>
-              <h3 ng-show="code.tags">{{code.tags.join(", ") | titlecase}}</h3>
+<!--               <h3 ng-show="code.tags">{{code.tags.join(", ") | titlecase}}</h3> -->
+        <md-chips
+            ng-model="code.tags"
+            readonly="true">
+        </md-chips>
+
             </div>
-
-            <!-- <ng-md-icon icon="more_vert" aria-label="Open Settings" ng-style="{'margin-top': '20px'}" ng-click="delete(code._id, $index)"></ng-md-icon> -->
-
 
         <md-menu md-position-mode="target-right target">
           <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">

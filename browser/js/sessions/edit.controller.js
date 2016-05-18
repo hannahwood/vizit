@@ -9,9 +9,9 @@ app.controller('EditCtrl', function ($scope, $mdDialog, CodeFactory, code, $mdCo
     };
 
     $scope.code = code;
-    $scope.updateInfo = {};
-    Object.keys($scope.code).forEach(k => {
-        if (k === 'title' || k === 'tags') $scope.updateInfo[k] = $scope.code[k];
+    $scope.updateInfo = angular.merge({}, code);
+    Object.keys($scope.updateInfo).forEach(k => {
+        if (k !== 'title' && k !== 'tags') delete $scope.updateInfo[k]
     })
 
     $scope.updateSession = function(){
