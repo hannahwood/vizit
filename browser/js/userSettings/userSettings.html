@@ -1,4 +1,4 @@
-<section ng-if="user" style="max-width: 1080px; margin: auto; padding: 20px;">
+<section ng-if="user" style="max-width: 1080px; margin: auto; padding: 20px; padding-top: 40px;">
    <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="My Account">
          <md-content id="account" layout-padding>
@@ -27,7 +27,7 @@
       </md-tab>
       <md-tab label="Change Password">
          <md-content id="password" layout-padding>
-            <form name="passwordInfo" ng-submit="pass.oldPassword && pass.newPassword === pass.newPasswordDuplicate && pass.oldPassword !== pass.newPassword && updatePassword(pass)" novalidate>
+            <form name="passwordInfo" ng-submit="pass.oldPassword && pass.password === pass.passwordConfirm && pass.oldPassword !== pass.password && updatePassword(pass)" novalidate>
                <md-input-container class="md-block">
                   <label>Old Password</label>
                   <input type="{{peek.old ? 'text' : 'password'}}" name="oldPassword" ng-model="pass.oldPassword"><br>
@@ -35,18 +35,18 @@
                </md-input-container>
                <md-input-container class="md-block">
                   <label>New Password</label>
-                  <input type="{{peek.new ? 'text' : 'password'}}" name="newPassword" ng-model="pass.newPassword" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/"><br>
+                  <input type="{{peek.new ? 'text' : 'password'}}" name="password" ng-model="pass.password" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\w{8,}$/"><br>
                   <md-switch ng-model="peek.new">Peek</md-switch>
-                  <div ng-messages="passwordInfo.newPassword.$touched && passwordInfo.newPassword.$error">
+                  <div ng-messages="passwordInfo.password.$touched && passwordInfo.password.$error">
                      <div ng-message="pattern">Must contain one lower & uppercase letter, and one number.</div>
                   </div>
                </md-input-container>
                <md-input-container class="md-block">
                   <label>Retype New Password</label>
-                  <input type="{{peek.newConfirm ? 'text' : 'password'}}" name="newPasswordDuplicate" ng-model="pass.newPasswordDuplicate"><br>
+                  <input type="{{peek.newConfirm ? 'text' : 'password'}}" name="passwordConfirm" ng-model="pass.passwordConfirm"><br>
                   <md-switch ng-model="peek.newConfirm">Peek</md-switch>
                </md-input-container>
-               <md-button class="md-raised md-primary" type="submit" ng-disabled="!pass.oldPassword || pass.newPassword !== pass.newPasswordDuplicate || !(pass.oldPassword && pass.newPassword && pass.newPasswordDuplicate) || pass.oldPassword === pass.newPassword">Update Password</md-button>
+               <md-button class="md-raised md-primary" type="submit" ng-disabled="!pass.oldPassword || pass.password !== pass.passwordConfirm || !(pass.oldPassword && pass.password && pass.passwordConfirm) || pass.oldPassword === pass.password">Update Password</md-button>
             </form>
          </md-content>
       </md-tab>

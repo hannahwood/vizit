@@ -7,7 +7,7 @@ prod:
 	eslint server/app/routes/pt/index.js && forever -l cokapi-https.log start server/app/routes/pt/index.js https &
 
 docker:
-	docker build -t="pgbovine/cokapi:v1" .
+	docker build -t="vizit:v1" .
 
 dockerbash:
 	docker run -t -i --rm --user=netuser --net=none --cap-drop all pgbovine/cokapi:v1 bash
