@@ -21,7 +21,7 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
     $scope.delete = function (codeId, index){
         CodeFactory.removeCode(codeId)
         .then(() => {
-            $scope.codes.splice($scope.codes.length-index-1, 1)
+            $scope.codes.splice(index, 1)
         })
     }
 
@@ -31,13 +31,13 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
       $mdOpenMenu(ev);
     };
 
-    $scope.openEditDialog = function($event, code, index) {
+    $scope.openEditDialog = function($event, codeInfo, index) {
         console.log(index);
       $mdDialog.show({
         templateUrl: 'js/sessions/edit.html',
         controller: 'EditCtrl',
         clickOutsideToClose: true,
-        locals: {code: code},
+        locals: {code: codeInfo},
         targetEvent: $event
       })
       .then(function (updatedCode) {
