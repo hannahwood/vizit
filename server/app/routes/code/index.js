@@ -24,8 +24,7 @@ router.get('/:codeId', function(req,res,next) {
     .catch(next);
 });
 
-router.post('/', Auth.assertAuthenticated, function(req, res, next) {
-    console.log(req.body);
+router.post('/', function(req, res, next) {
     Code.create(req.body) // Body must include code, author.
         .then(code => res.send(code))
     .then(null, next);
@@ -54,14 +53,14 @@ router.put('/:codeId', function(req, res, next) {
 });
 
 // remove entire code document
-router.delete('/:codeId', Auth.assertAdminOrSelf, function(req, res, next) {
+router.delete('/:codeId', function(req, res, next) {
     Code.remove({_id: req.params.codeId})
         .then(() => res.status(204).send())
     .then(null, next);
 });
 
 // remove one revision
-router.delete('/:codeId/:revisionIndex', Auth.assertAdminOrSelf, function(req, res, next) {
+router.delete('/:codeId/:revisionIndex', function(req, res, next) {
     Code.findById(req.params.codeId)
         .then(code => {
             var index = parseInt(req.params.revisionIndex);
