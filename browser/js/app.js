@@ -13,7 +13,7 @@ app.config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) 
     });
     $mdThemingProvider.definePalette('neon', {
         '50': 'FAFAFA',
-        '100': 'F5F5F5',
+        '100': 'F9ED10',
         '200': 'EEEEEE',
         '300': 'E0E0E0',
         '400': 'BDBDBD',
@@ -40,7 +40,7 @@ app.config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) 
 });
 
 // This app.run is for controlling access to specific states.
-app.run(function($rootScope, AuthService, $state, $location) {
+app.run(function($rootScope, AuthService, $state) {
 
     // The given state requires an authenticated user.
     var destinationStateRequiresAuth = function(state) {

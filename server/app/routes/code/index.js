@@ -32,6 +32,7 @@ router.get('/:codeId', function(req,res,next) {
 });
 
 router.post('/', Auth.assertAuthenticated, function(req, res, next) {
+    console.log(req.body);
     Code.create(req.body) // Body must include code, author.
         .then(code => res.send(code))
     .then(null, next);
@@ -40,11 +41,11 @@ router.post('/', Auth.assertAuthenticated, function(req, res, next) {
 router.put('/:codeId', function(req, res, next) {
     Code.findById(req.params.codeId)
         .then(code => {
-            code.revisions.push(req.body.revisedCode);
+            code.revisions.push(req.body.revision);
             // be sure to include 'revisedCode' in the $http request body
             return code.save();
         })
-    .then(updatedCode => res.json(updatedCode))
+    .then(updatedCode => res.status(201).json(updatedCode))
     .then(null, next);
 });
 

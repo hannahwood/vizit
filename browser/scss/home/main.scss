@@ -4,16 +4,18 @@ $light: #fff;
 
 vizit-logo {
     img {
-        margin: 10px;
+        margin: 0px;
+        margin-left: -10px;
     }
 }
 
 #toolbar {
-    position: fixed;
+    position: relative;
+    background-color: #fff !important;
     height: 30px !important;
-    top: 80px;
+    top: 0;
     left: 0;
-    z-index: 9;
+    z-index: 8;
     .tools {
         color: $dark;
         border: solid 2px $dark;

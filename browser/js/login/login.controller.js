@@ -11,7 +11,7 @@ app.controller('LoginCtrl', function ($scope, $mdDialog, AuthService, $state) {
     $scope.answer = function(answer) {
         $mdDialog.hide(answer);
     };
-    
+
     $scope.login = {};
     $scope.error = null;
 
