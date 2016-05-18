@@ -10,6 +10,11 @@ app.factory('UserFactory', function ($state, $http, $q) {
          code.isOpen = false;
          return code;
       }))
+      .then(updatedCodes => {
+         return updatedCodes.sort(function (a,b) {
+            return Date.parse(b.revisions[b.revisions.length-1].date) - Date.parse(a.revisions[a.revisions.length-1].date);
+         })
+      })
       .catch(rejectErr);
    }
 

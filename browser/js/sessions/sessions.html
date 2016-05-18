@@ -9,13 +9,16 @@
             md-search-text-change="searchTextChange(searchText)"
             md-selected-item-change="goToSelected(code)"
             md-items="code in codes | filter: searchText"
-            md-item-text="code._id"
+            md-item-text="code.title ? code.title || code.tags : code._id"
             md-min-length="0"
             placeholder="Search for sessions"
             md-menu-class="autocomplete-custom-template">
           <md-item-template>
             <span class="item-title">
-              <span md-highlight-text="searchText" md-highlight-flags="^i"> {{code._id.slice(code_id.length-5, code_id.length)}} </span>
+              <span md-highlight-text="searchText" md-highlight-flags="^i"> {{code.title ? code.title : code._id.slice(code_id.length-5, code_id.length)}} - </span>
+            </span>
+           <span ng-show="code.tags" md-highlight-text="searchText" md-highlight-flags="^i">
+                {{code.tags.join(", ")}}
             </span>
             <span class="item-metadata">
                 <strong>{{code.revisions[code.revisions.length-1].date | timefromnow}}</strong>
@@ -29,11 +32,11 @@
     <md-divider></md-divider>
 
     <md-list>
-        <md-list-item class="md-2-line"  md-ink-ripple="#FFEB3B" ng-repeat="code in codes | orderBy:mostRecent:true" layout-align="space-between start">
+        <md-list-item class="md-2-line"  md-ink-ripple="#FFEB3B" ng-repeat="code in codes" layout-align="space-between start">
 
             <div class="md-list-item-text">
 
-              <h2><a ui-sref="revision({codeId: code._id, revisionNum: code.revisions.length-1})">{{code._id.slice(code_id.length-5, code_id.length)}}</a></h2>
+              <h2><a ui-sref="revision({codeId: code._id, revisionNum: code.revisions.length-1})">{{code.title ? code.title : code._id.slice(code_id.length-5, code_id.length)}}</a></h2>
 
               <div class="inset">
                 <div layout="row">
@@ -53,10 +56,35 @@
             </div>
 
             <div class="md-list-item-text date">
-              <h3>{{code.revisions[code.revisions.length-1].date | timefromnow}}</h3>
+              <h4>{{code.revisions[code.revisions.length-1].date | timefromnow}}</h4>
+              <br>
+              <h3 ng-show="code.tags">{{code.tags.join(", ") | titlecase}}</h3>
             </div>
 
-            <ng-md-icon icon="more_vert" ng-click="showSettings" aria-label="Open Settings" ng-style="{'margin-top': '20px'}"></ng-md-icon>
+            <!-- <ng-md-icon icon="more_vert" aria-label="Open Settings" ng-style="{'margin-top': '20px'}" ng-click="delete(code._id, $index)"></ng-md-icon> -->
+
+
+        <md-menu md-position-mode="target-right target">
+          <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+            <ng-md-icon icon="more_vert" md-menu-origin ng-style="{'margin-top': '20px'}"></ng-md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item>
+              <md-button ng-click="openEditDialog($event, code, $index)">
+                <ng-md-icon icon="edit" md-menu-align-target></ng-md-icon>
+                Edit
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="delete(code._id, $index)">
+                <ng-md-icon icon="delete"></ng-md-icon>
+                Delete
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+
 
         <md-divider></md-divider>
         </md-list-item>
