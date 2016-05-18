@@ -10,17 +10,10 @@ const Auth = require('../../../utils/auth.middleware');
 
 // get all for testing purposes
 router.get('/', function(req,res,next) {
-    Code.find({})
+    Code.find(req.query)
         .then((code) => res.json(code))
     .catch(next);
 });
-
-// router.get('/eval', function(req,res,next) {
-//     //console.log('192.168.1.194:3000/exec_js?user_script=' + req.query.user_script.toString())
-//     request.get('http://192.168.1.194:3000/exec_js?user_script=' + req.query.user_script, function(err, response) {
-//        res.send(response.body)
-//    });
-// });
 
 // get all revisions from one code document
 router.get('/:codeId', function(req,res,next) {

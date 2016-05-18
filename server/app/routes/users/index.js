@@ -59,11 +59,4 @@ router.route('/:userId')
     .catch(next);
 })
 
-router.get('/:userId/code', Auth.assertAdminOrSelf, function(req, res, next) {
-    Code.find({
-        author: req.requestedUser._id})
-    .then(code => res.json(code))
-    .catch(next);
-});
-
 module.exports = router;
