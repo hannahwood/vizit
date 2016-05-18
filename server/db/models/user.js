@@ -55,6 +55,11 @@ schema.pre('save', function (next) {
     }
 
     if (this.isModified('email')) {
+        if (/gmail\.com$/.test(this.email)) {
+            var split = this.email.split('@');
+            split[0] = split[0].split('.').join('');
+            this.email = split.join('@');
+        }
         var md5 = crypto.createHash('md5');
         this.email = this.email.toLowerCase();
         md5.update(this.email);
