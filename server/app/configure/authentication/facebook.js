@@ -7,52 +7,37 @@ var UserModel = mongoose.model('User');
 module.exports = function (app) {
 
     var facebookConfig = app.getValue('env').FACEBOOK;
-
-    var facebookCredentials = {
-        clientID: facebookConfig.clientID,
-        clientSecret: facebookConfig.clientSecret,
-        callbackURL: facebookConfig.callbackURL,
-        profileFields: ['id', 'displayName', 'photos', 'emails']
-    };
+    facebookConfig.profileFields = ['id', 'displayName', 'photos', 'emails'];
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
         
-        UserModel.findOne({ 'facebook.id': profile.id }).exec()
-            .then(function (user) {
-
-                if (user) {
-                    return user;
-                } else {
-                    return UserModel.findOne({email: profile.emails[0].value.toLowerCase()});
-                }
-
-            })
-            .then(function (potentialUser) {
-                if (potentialUser) {
-                    potentialUser.facebook.id = profile.id;
-                    potentialUser.fullName = potentialUser.fullName || profile.displayName;
-                    return potentialUser.save();
-                } else {
-                    return UserModel.create({
-                        google: {
-                            id: profile.id
-                        },
-                        fullName: profile.displayName,
-                        email: profile.emails[0].value.toLowerCase()
-                    });
-                }
-            })
-            .then(function (userToLogin) {
-                done(null, userToLogin);
-            })
-            .catch(function (err) {
-                console.error('Error creating user from Facebook authentication', err);
-                done(err);
-            })
+        UserModel.findOne({email: profile.emails[0].value.toLowerCase()})
+        .then(function (potentialUser) {
+            if (potentialUser) {
+                potentialUser.facebook.id = potentialUser.facebook.id || profile.id;
+                potentialUser.fullName = potentialUser.fullName || profile.displayName;
+                return potentialUser.save();
+            } else {
+                return UserModel.create({
+                    facebook: {
+                        id: profile.id
+                    },
+                    fullName: profile.displayName,
+                    email: profile.emails[0].value.toLowerCase()
+                });
+            }
+        })
+        .then(function (userToLogin) {
+            done(null, userToLogin);
+        })
+        .catch(function (err) {
+            console.error('Error creating user from Facebook authentication', err);
+            done(err);
+        })
 
     };
 
-    passport.use(new FacebookStrategy(facebookCredentials, verifyCallback));
+    passport.use(new FacebookStrategy(facebookConfig, verifyCallback));
     
     function checkReturnTo (req,res,next) {
         var returnTo = req.query.returnTo;

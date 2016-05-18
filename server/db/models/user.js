@@ -65,6 +65,11 @@ schema.pre('save', function (next) {
 
 });
 
+schema.pre('findOneAndUpdate', function (next) {
+    console.log(this);
+    next();
+})
+
 schema.statics.generateSalt = generateSalt;
 schema.statics.encryptPassword = encryptPassword;
 
