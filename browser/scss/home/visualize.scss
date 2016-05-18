@@ -6,16 +6,16 @@ $codeOutputTextGrey: #93A1A1;
 #pyCodeOutputDiv {
     overflow-x: scroll;
     overflow-y: scroll;
-    max-width: calc(40vw - 44px);
+    // max-width: calc(40vw - 44px);
     min-width: calc(40vw - 44px);
     height: 100%;
-    max-height: calc(100vh - 500px);
-    max-height: -o-calc(100vh - 500px);
-    /* opera */
-    max-height: -webkit-calc(100vh - 500px);
-    /* google, safari */
-    max-height: -moz-calc(100vh - 500px);
-    /* firefox */
+    max-height: calc(100vh - 370px);
+    // max-height: -o-calc(100vh - 370px);
+    // /* opera */
+    // max-height: -webkit-calc(100vh - 370px);
+    // /* google, safari */
+    // max-height: -moz-calc(100vh - 370px);
+    // /* firefox */
     background-color: $darkBlueBackground;
     margin-bottom: 15px;
     table td,
@@ -81,12 +81,12 @@ textarea {
         max-width: 40vw;
         min-width: 40vw;
         background-color: #F5F5F5;
-        border-radius: 10px;
+        border-radius: 5px;
         position: fixed;
         margin: 5px;
         padding: 20px;
         border-style: solid;
-        border-width: 1px 3px 3px 1px;
+        border-width: 0 2px 2px 0;
         border-color: #DDDDDD;
         #errorOutput {
             color: red;
