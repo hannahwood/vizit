@@ -1,4 +1,4 @@
-app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, $rootScope, $mdToast, $document, Upload) {
+app.controller('UserSettingsCtrl', function ($scope, user, UserFactory, $rootScope, $mdToast, $document) {
    $scope.user = user;
    $scope.open = true;
    $scope.oneAtATime = true;
@@ -61,28 +61,19 @@ app.controller('UserSettingsCtrl', function ($scope, user, UserAuthFactory, $roo
    }
 
    $scope.updateUser = function (userInfo) {
-      delete userInfo.emailConfirm;
-      var update = {};
-
-      Object.keys(userInfo).forEach(function (k) {
-         if (userInfo[k]) {
-            update[k] = userInfo[k];
-         }
-      })
-
-      UserAuthFactory.updateUser($scope.user._id, update)
+      UserFactory.updateUser($scope.user._id, userInfo)
       .then(userSuccess)
       .catch(userError);
    }
 
    $scope.updatePassword = function (passObj) {
-      UserAuthFactory.updatePassword($scope.user._id, passObj)
+      UserFactory.updateUser($scope.user._id, passObj)
       .then(passwordSuccess)
       .catch(passwordFail);
    }
 
    $scope.disconnect = function (provider) {
-      UserAuthFactory.disconnect($scope.user._id, provider.toLowerCase())
+      UserFactory.updateUser($scope.user._id, {provider: provider.toLowerCase()})
       .then(function (updatedUser) {
          disconnectSuccess(updatedUser, provider);
       })

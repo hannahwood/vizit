@@ -10,17 +10,10 @@ const Auth = require('../../../utils/auth.middleware');
 
 // get all for testing purposes
 router.get('/', function(req,res,next) {
-    Code.find({})
+    Code.find(req.query)
         .then((code) => res.json(code))
     .catch(next);
 });
-
-// router.get('/eval', function(req,res,next) {
-//     //console.log('192.168.1.194:3000/exec_js?user_script=' + req.query.user_script.toString())
-//     request.get('http://192.168.1.194:3000/exec_js?user_script=' + req.query.user_script, function(err, response) {
-//        res.send(response.body)
-//    });
-// });
 
 // get all revisions from one code document
 router.get('/:codeId', function(req,res,next) {
@@ -38,13 +31,24 @@ router.post('/', Auth.assertAuthenticated, function(req, res, next) {
     .then(null, next);
 });
 
+router.param('codeId', function (req,res,next,codeId) {
+    Code.findById(codeId)
+    .then(function (code) {
+        if (!code) {
+            let err = new Error('Code not found');
+            err.status = 404;
+            throw err;
+        }
+        req.code = code;
+        next();
+    })
+    .catch(next);
+})
+
 router.put('/:codeId', function(req, res, next) {
-    Code.findById(req.params.codeId)
-        .then(code => {
-            code.revisions.push(req.body.revision);
-            // be sure to include 'revisedCode' in the $http request body
-            return code.save();
-        })
+    if (req.body.revision) req.code.revisions.push(req.body.revision);
+    else if (req.body.title || req.body.tags) req.code.set(req.body);
+    req.code.save()
     .then(updatedCode => res.status(201).json(updatedCode))
     .then(null, next);
 });

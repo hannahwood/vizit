@@ -1,0 +1,34 @@
+
+$gray: #eee;
+$dark: #263238;
+$light: #fff;
+$yellow: #F9ED10;
+$bluegray: #CFD8DC;
+$gray: #eee;
+
+md-dialog {
+    border-radius: 0 !important;
+}
+
+#sessions {
+    md-chips .md-chips {
+        box-shadow: 0 0 !important;
+    }
+}
+
+#edit {
+    width: 400px;
+    min-width: 400px;
+    padding: 50px 40px 30px 40px;
+    md-dialog {
+        border-radius: 0 !important;
+    }
+    .cancel {
+        background-color: $bluegray;
+        color: $dark;
+    }
+    .update {
+        background-color: $dark;
+        color: $bluegray;
+    }
+}
