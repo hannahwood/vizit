@@ -195,7 +195,7 @@ function main() {
     console.log('Greatest common denominator of ' + x + ', ' + y + ' = ' + g);
 }
 
-main();}`
+main();`
         }
     ]
 });
