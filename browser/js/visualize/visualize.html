@@ -30,18 +30,9 @@
                     <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
                 <div flex ng-show="selection === 'edit'" class="examples">
-                    <div>
+                    <div ng-show="examples">
                         <h4>EXAMPLES:</h4>
-                        <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p><!-- 
-                        <p ng-click="code = examples.inheritance">inheritance</p>
-                        <p ng-click="code = examples.permutation">permutation</p>
-                        <p ng-click="code = examples.fib">fibonacci</p>
-                        <p ng-click="code = examples.fibMem">fibonacci (with memoization)</p>
-                        <p ng-click="code = examples.dataTypes">data types</p>
-                        <p ng-click="code = examples.closure">closure</p>
-                        <p ng-click="code = examples.shadowing">shadowing</p>
-                        <p ng-click="code = examples.linkedList">linked list</p>
-                        <p ng-click="code = examples.GCD">greatest common denominator</p> -->
+                        <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p>
                     </div>
                 </div>
                 <visualize ng-if="selection === 'visualize'">
