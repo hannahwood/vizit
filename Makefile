@@ -10,8 +10,8 @@ docker:
 	docker build -t="vizit:v1" .
 
 dockerbash:
-	docker run -t -i --rm --user=netuser --net=none --cap-drop all pgbovine/cokapi:v1 bash
+	docker run -t -i --rm --user=netuser --net=none --cap-drop all vizit:v1 bash
 
 test:
 	@echo 'JS'
-	@time --portability docker run --rm pgbovine/cokapi:v1 node --expose-debug-as=Debug /tmp/javascript/jslogger.js --jsondump=true --code="var x=1; var y=2; var z=x+y;"
+	@time --portability docker run --rm vizit:v1 node --expose-debug-as=Debug /tmp/javascript/jslogger.js --jsondump=true --code="var x=1; var y=2; var z=x+y;"

@@ -44,13 +44,15 @@ function postExecHandler(res, err, stdout, stderr) {
     errTrace.trace[0].exception_msg = err.killed ? 'Timeout error. Your code ran for more than ' + TIMEOUT_SECS + ' seconds. Please shorten and try again.' : 'Unknown error. We apologize for the inconvenience.';
     res.send(JSON.stringify(errTrace));
   }
-  else res.send(stdout);
+  else {
+    res.send(stdout);
+  }
 }
 
 function execHandler(req, res) {
-  var exeFile = '/usr/local/bin/docker'; // absolute path to docker executable
-  var args = ['run', '--rm', '--user=netuser', '--net=none', '--cap-drop', 'all', 'pgbovine/cokapi:v1',
-              '/tmp/javascript/node-v6.0.0-linux-x64/bin/node', // custom Node.js version
+  var exeFile = 'docker';
+  var args = ['run', '--rm', '--user=netuser', '--net=none', '--cap-drop', 'all', 'vizit:v1',
+              'node',
               '--expose-debug-as=Debug', '/tmp/javascript/jslogger.js',
               '--jsondump=true', '--code='+req.body.user_script
               ];
