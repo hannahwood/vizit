@@ -1,0 +1,17 @@
+{
+  "name": "vizit",
+  "description": "A generated project at Fullstack Academy",
+  "main": "server/start.js",
+  "authors": [
+    "Jason Unger <jasonscottunger@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hannahwood/vizit",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
