@@ -47,8 +47,8 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
 
 });
 
-app.filter( 'timefromnow', function(moment) {
-        return function( input ) {
+app.filter('timefromnow', function(moment) {
+        return function(input) {
             return moment(input).fromNow()
         }
     });
