@@ -165,7 +165,6 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
 
     // destroys the event handlers when going to different state
     $scope.$on('$destroy', function() {
-        console.log('DESTROYED');
         $("body").off('mouseup', refreshClick);
         $("body").off('keyup', refreshKey);
     });

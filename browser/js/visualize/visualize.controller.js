@@ -163,7 +163,6 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
 
     // destroys the event handlers when going to different state
     $scope.$on('$destroy', function() {
-        console.log('DESTROYED');
         $("body").off('mouseup', refreshClick);
         $("body").off('keyup', refreshKey);
     });

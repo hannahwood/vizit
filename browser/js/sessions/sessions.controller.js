@@ -32,7 +32,6 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
     };
 
     $scope.openEditDialog = function($event, codeInfo, index) {
-        console.log(index);
       $mdDialog.show({
         templateUrl: 'js/sessions/edit.html',
         controller: 'EditCtrl',
