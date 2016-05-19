@@ -9,12 +9,7 @@ module.exports = function (app) {
     // When passport.authenticate('local') is used, this function will receive
     // the email and password to run the actual authentication logic.
     var strategyFn = function (email, password, done) {
-        if (/gmail\.com$/.test(email)) {
-            var split = email.split('@');
-            split[0] = split[0].split('.').join('');
-            email = split.join('@').toLowerCase();
-        }
-        User.findOne({ email: email })
+        User.findByEmail(email)
             .then(function (user) {
                 // user.correctPassword is a method from the User schema.
                 if (!user || !user.correctPassword(password)) {
@@ -58,12 +53,7 @@ module.exports = function (app) {
     });
 
     app.post('/signup', function (req, res, next) {
-        if (/gmail\.com$/.test(req.body.email)) {
-            var split = req.body.email.split('@');
-            split[0] = split[0].split('.').join('');
-            req.body.email = split.join('@').toLowerCase();
-        }
-        User.findOne({email: req.body.email})
+        User.findByEmail(req.body.email)
         .then(function (user) {
             if (user) {
                 var error = new Error('Email already connected to user');

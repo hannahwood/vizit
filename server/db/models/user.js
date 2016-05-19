@@ -48,6 +48,16 @@ var encryptPassword = function (plainText, salt) {
     return hash.digest('hex');
 };
 
+var gmailCheck = function (email) {
+    email = email.toLowerCase();
+    if (/gmail\.com$/.test(email)) {
+        var split = email.split('@');
+        split[0] = split[0].replace(/\./g, '');
+        email = split.join('@');
+    }
+    return email;
+}
+
 schema.pre('save', function (next) {
     if (this.isModified('password')) {
         this.salt = this.constructor.generateSalt();
@@ -55,13 +65,8 @@ schema.pre('save', function (next) {
     }
 
     if (this.isModified('email')) {
-        if (/gmail\.com$/.test(this.email)) {
-            var split = this.email.split('@');
-            split[0] = split[0].split('.').join('');
-            this.email = split.join('@');
-        }
+        this.email = this.gmailCheck(this.email);
         var md5 = crypto.createHash('md5');
-        this.email = this.email.toLowerCase();
         md5.update(this.email);
         this.gravatar = 'http://www.gravatar.com/avatar/'+md5.digest('hex')+'?'+querystring.stringify({s: 300, d: 'http://i.imgur.com/RHjWlqX.png'});
     }
@@ -72,7 +77,12 @@ schema.pre('save', function (next) {
 
 schema.statics.generateSalt = generateSalt;
 schema.statics.encryptPassword = encryptPassword;
+schema.statics.findByEmail = function (email) {
+    email = gmailCheck(email);
+    return this.findOne({email: email}).exec();
+}
 
+schema.methods.gmailCheck = gmailCheck;
 schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });

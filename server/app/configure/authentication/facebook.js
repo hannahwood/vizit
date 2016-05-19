@@ -11,7 +11,7 @@ module.exports = function (app) {
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
         
-        UserModel.findOne({email: profile.emails[0].value.toLowerCase()})
+        UserModel.findByEmail(profile.emails[0].value)
         .then(function (potentialUser) {
             if (potentialUser) {
                 potentialUser.facebook.id = potentialUser.facebook.id || profile.id;
@@ -23,7 +23,7 @@ module.exports = function (app) {
                         id: profile.id
                     },
                     fullName: profile.displayName,
-                    email: profile.emails[0].value.toLowerCase()
+                    email: profile.emails[0].value
                 });
             }
         })
