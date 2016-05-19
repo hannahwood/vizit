@@ -5,6 +5,7 @@ $light: #fff;
 $yellow: #F9ED10;
 $bluegray: #CFD8DC;
 $gray: #eee;
+$darkbluegray: #546E7A;
 
 md-dialog {
     border-radius: 0 !important;
@@ -14,6 +15,11 @@ md-dialog {
     md-chips .md-chips {
         box-shadow: 0 0 !important;
     }
+}
+
+.item-metadata {
+    font-weight: 700;
+    color: $darkbluegray;
 }
 
 #edit {

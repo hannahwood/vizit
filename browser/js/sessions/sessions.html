@@ -17,11 +17,10 @@
             <span class="item-title">
               <span md-highlight-text="searchText" md-highlight-flags="^i"> {{code.title ? code.title : code._id.slice(code_id.length-5, code_id.length)}} - </span>
             </span>
-           <span ng-show="code.tags" md-highlight-text="searchText" md-highlight-flags="^i">
+            <span class="item-metadata">
+            <span ng-show="code.tags" md-highlight-text="searchText" md-highlight-flags="^i">
                 {{code.tags.join(", ")}}
             </span>
-            <span class="item-metadata">
-                <strong>{{code.revisions[code.revisions.length-1].date | timefromnow}}</strong>
             </span>
           </md-item-template>
         </md-autocomplete>
@@ -32,7 +31,7 @@
     <md-divider></md-divider>
 
     <md-list>
-        <md-list-item class="md-2-line"  md-ink-ripple="#FFEB3B" ng-repeat="code in codes" layout-align="space-between start">
+        <md-list-item class="md-2-line" ng-repeat="code in codes" layout-align="space-between start">
 
             <div class="md-list-item-text">
 
@@ -58,11 +57,10 @@
             <div class="md-list-item-text date">
               <h4>{{code.revisions[code.revisions.length-1].date | timefromnow}}</h4>
               <br>
-<!--               <h3 ng-show="code.tags">{{code.tags.join(", ") | titlecase}}</h3> -->
-        <md-chips
-            ng-model="code.tags"
-            readonly="true">
-        </md-chips>
+            <md-chips
+                ng-model="code.tags"
+                readonly="true">
+            </md-chips>
 
             </div>
 
