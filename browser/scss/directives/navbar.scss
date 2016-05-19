@@ -40,8 +40,8 @@ $bluegray: #CFD8DC;
 }
 
 #usernav {
-  border-left: solid 2px $bluegray;
-  background-color: $bluegray;
+  // border-left: solid 2px $bluegray;
+  // background-color: $bluegray;
   position: absolute;
   top: 0;
   right: 0;
@@ -70,7 +70,7 @@ $bluegray: #CFD8DC;
      .inset {
      color: #fafafa;
      font-size: 1.1em;
-     letter-spacing: 0.1em;
+     // letter-spacing: 0.1em;
      text-transform: none;
    }
    .md-button {
@@ -135,7 +135,7 @@ ng-md-icon {
 
 body, h1, h2, h3, h4, h5 {
   font-family: 'Roboto', sans-serif;
-  letter-spacing: 0.1em !important;
+  // letter-spacing: 0.1em;
   .dark-text {
     color: $dark;
   }
