@@ -17,7 +17,7 @@ app.controller('SignUpCtrl', function($scope, $mdDialog, AuthService, $state) {
 
   $scope.sendSignup = function (signupInfo) {
       $scope.error = null;
-      signupInfo.email = signupInfo.email.toLowerCase();
+      signupInfo.email = signupInfo.email;
       
       AuthService.signup(signupInfo).then(function () {
           $mdDialog.hide();

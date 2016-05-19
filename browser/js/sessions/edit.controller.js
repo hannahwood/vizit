@@ -20,7 +20,6 @@ app.controller('EditCtrl', function ($scope, $mdDialog, CodeFactory, code, $mdCo
             $mdDialog.hide(updatedCode);
         })
     }
-    console.log($mdConstant.KEY_CODE);
     $scope.space = [$mdConstant.KEY_CODE.COMMA, $mdConstant.KEY_CODE.SPACE, $mdConstant.KEY_CODE.TAB];
 
 

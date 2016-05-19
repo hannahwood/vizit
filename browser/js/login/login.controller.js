@@ -18,7 +18,7 @@ app.controller('LoginCtrl', function ($scope, $mdDialog, AuthService, $state) {
     $scope.sendLogin = function (loginInfo) {
 
         $scope.error = null;
-        loginInfo.email = loginInfo.email.toLowerCase();
+        loginInfo.email = loginInfo.email;
 
         AuthService.login(loginInfo).then(function () {
             $mdDialog.hide();
