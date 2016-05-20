@@ -1,4 +1,3 @@
-
 $gray: #eee;
 $dark: #263238;
 $light: #fff;
@@ -6,12 +5,20 @@ $yellow: #F9ED10;
 $bluegray: #CFD8DC;
 $gray: #eee;
 $darkbluegray: #546E7A;
-
 md-dialog {
     border-radius: 0 !important;
 }
 
 #sessions {
+    -webkit-animation: fadein 1s;
+    /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s;
+    /* Firefox < 16 */
+    -ms-animation: fadein 1s;
+    /* Internet Explorer */
+    -o-animation: fadein 1s;
+    /* Opera < 12.1 */
+    animation: fadein 1s;
     md-chips .md-chips {
         box-shadow: 0 0 !important;
     }

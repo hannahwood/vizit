@@ -21,7 +21,7 @@ app.controller('UserNavCtrl', function ($scope, $mdDialog, AuthService, $state, 
     {
       state : 'profile',
       title: 'Profile',
-      icon: 'group'
+      icon: 'account_circle'
     },
     {
       state : 'sessions',
