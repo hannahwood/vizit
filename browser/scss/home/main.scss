@@ -81,9 +81,14 @@ md-progress-linear {
     }
 }
 
+.runtimeAce {
+    width: 45vw;
+}
+
 .dualAce {
     height: calc(60vh - 200px);
     margin-bottom: 10px;
+    width: 45vw;
 }
 
 .examples {
