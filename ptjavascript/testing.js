@@ -9,10 +9,10 @@ function trim (str) {
 }
 
 argv.code = trim(argv.code);
-argv.compareCode = trim(argv.compareCode);
+// argv.compareCode = trim(argv.compareCode);
 
-var func = _eval(argv.code);
-var otherFunc = _eval(argv.compareCode)
+var func = eval(argv.code);
+// var otherFunc = eval(argv.compareCode)
 var arr = [1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3];
 
 // function toStringBench() {
@@ -37,9 +37,9 @@ var arr = [1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3
 suite.add('MergeSort', function() {
     func(arr);
 }, {maxTime: .1})
-suite.add('BubbleSort', function () {
-   otherFunc(arr);
-}, {maxTime: .1})
+// suite.add('BubbleSort', function () {
+//    otherFunc(arr);
+// }, {maxTime: .1})
 // .on('cycle', function(event) {
 //    console.log(event.target.toString());
 // })
