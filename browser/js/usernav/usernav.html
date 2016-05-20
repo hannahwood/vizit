@@ -1,32 +1,42 @@
 <div id="userNavModal">
-<md-dialog aria-label="User Navigation Menu">
-<md-toolbar class="md-hue-3" layout-align="center center">
-<h5 class="dark-text left-text"> My Settings</h5>
-<!--   <h5 class="dark-text left-text">{{user.fullName? user.fullName : user.email}}</h5> -->
-<!--   <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" /> -->
-</md-toolbar>
-<md-content class="dark">
-  <md-button class="md-hue-3" ng-repeat="item in admin">
-      <md-item ng-click="goToNewState(item.state)">
-          <md-item-content ui-sref="{{item.state}}" md-ink-ripple layout="row" layout-align="left center">
-              <div class="inset">
-                  <ng-md-icon icon="{{item.icon}}" style="fill: #fafafa" size="14"></ng-md-icon>
-              </div>
-              <div class="inset">{{item.title}}</div>
-          </md-item-content>
-      </md-item>
-      <md-divider></md-divider>
-  </md-button>
-  <md-button class="md-hue-3" ng-click="logout()">
-      <md-item>
-          <md-item-content md-ink-ripple layout="row" layout-align="left center">
-              <div class="inset">
-              <ng-md-icon icon="logout" size="14" style="fill: #fafafa"></ng-md-icon>
-              </div>
-              <div class="inset">Logout</div>
-          </md-item-content>
-      </md-item>
-  </md-button>
-  </md-content>
-</md-dialog>
+    <md-dialog aria-label="User Navigation Menu">
+        <md-toolbar class="md-hue-1" layout-align="center center">
+            <h5 class="dark-text left-text"> My Settings</h5>
+            <!--   <h5 class="dark-text left-text">{{user.fullName? user.fullName : user.email}}</h5> -->
+            <!--   <img ng-src="{{user.photo ? user.photo : user.gravatar}}" class="md-avatar" /> -->
+        </md-toolbar>
+        <md-content class="dark">
+            <md-button class="md-hue-3" ng-repeat="item in admin">
+                <md-item ng-click="goToNewState(item.state)">
+                    <md-item-content ui-sref="{{item.state}}" md-ink-ripple layout="row" layout-align="left center">
+                        <div class="inset">
+                            <ng-md-icon icon="{{item.icon}}" style="fill: #fafafa" size="14"></ng-md-icon>
+                        </div>
+                        <div class="inset">{{item.title}}</div>
+                    </md-item-content>
+                </md-item>
+                <md-divider></md-divider>
+            </md-button>
+            <md-button class="md-hue-3" ui-sref="about" ng-click="hide()">
+                <md-item>
+                    <md-item-content md-ink-ripple layout="row" layout-align="left center">
+                        <div class="inset">
+                            <ng-md-icon icon="info" size="14" style="fill: #fafafa"></ng-md-icon>
+                        </div>
+                        <div class="inset">About</div>
+                    </md-item-content>
+                </md-item>
+            </md-button>
+            <md-button class="md-hue-3" ng-click="logout()">
+                <md-item>
+                    <md-item-content md-ink-ripple layout="row" layout-align="left center">
+                        <div class="inset">
+                            <ng-md-icon icon="logout" size="14" style="fill: #fafafa"></ng-md-icon>
+                        </div>
+                        <div class="inset">Logout</div>
+                    </md-item-content>
+                </md-item>
+            </md-button>
+        </md-content>
+    </md-dialog>
 </div>

@@ -1,7 +1,6 @@
 var _eval = require('eval');
 var argv = require('minimist')(process.argv.slice(2));
 var Benchmark = require('benchmark');
-
 var suite = new Benchmark.Suite('Sorting')
 
 function trim (str) {
@@ -13,7 +12,11 @@ argv.compareCode = trim(argv.compareCode);
 
 var func = _eval(argv.code);
 var otherFunc = _eval(argv.compareCode)
+console.log(otherFunc)
 var arr = [1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3];
+
+
+
 
 // function toStringBench() {
 //     var me = this,
@@ -34,12 +37,12 @@ var arr = [1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3
 //     return result;
 //   }
 
-suite.add('MergeSort', function() {
+suite.add('BubbleSort', function() {
     func(arr);
-}, {maxTime: .1})
-suite.add('BubbleSort', function () {
+}, {maxTime: 3})
+suite.add('MergeSort', function () {
    otherFunc(arr);
-}, {maxTime: .1})
+}, {maxTime: 3})
 // .on('cycle', function(event) {
 //    console.log(event.target.toString());
 // })

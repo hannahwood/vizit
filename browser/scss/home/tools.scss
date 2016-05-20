@@ -1,8 +1,9 @@
-$gray: #eee;
+$gray: #DDDDDD;
 $dark: #263238;
 $light: #fff;
 $yellow: #F9ED10;
-$bluegray: #CFD8DC;
+$darkGray: #CECECE;
+// $bluegray: #CFD8DC;
 tools {
     .pointer {
         cursor: pointer;
@@ -13,18 +14,21 @@ tools {
     .padding-top {
         padding-top: 5px;
     }
-    .active {
-        color: $dark !important;
-        border-bottom: solid 3px $yellow;
-    }
     #left {
-        min-height: 40px;
-        color: $dark;
-        background-color: $bluegray;
+        border-right: 2px solid $darkGray;
     }
+    #left,
     #right {
         min-height: 40px;
         color: $dark;
         background-color: $gray;
+        transition: all .2s ease-in-out;
+        &:hover {
+            opacity: .7;
+        }
+    }
+    .active {
+        color: $dark !important;
+        border-bottom: solid 3px $yellow;
     }
 }
