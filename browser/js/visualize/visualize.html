@@ -30,10 +30,12 @@
                     <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
                 <div flex ng-show="selection === 'edit'" class="examples edit">
+                <md-card>
                     <div ng-if="examples">
                         <h4>EXAMPLES:</h4>
                         <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p>
                     </div>
+                    </md-card>
                 </div>
                 <visualize class="vis" ng-if="selection === 'visualize'">
                 </visualize>
