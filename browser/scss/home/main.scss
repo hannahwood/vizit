@@ -48,6 +48,29 @@ md-progress-linear {
     letter-spacing: 0.1em;
 }
 
+#visualize {
+    -webkit-animation: fadein 1s;
+    /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s;
+    /* Firefox < 16 */
+    -ms-animation: fadein 1s;
+    /* Internet Explorer */
+    -o-animation: fadein 1s;
+    /* Opera < 12.1 */
+    animation: fadein 1s;
+    
+    .edit {
+        opacity: 1;
+    }
+    .edit.ng-hide-add,
+    .edit.ng-hide-remove {
+        transition: all linear 0.5s;
+    }
+    .edit.ng-hide {
+        opacity: 0;
+    }
+}
+
 #error {
     color: red;
     font-weight: bold;

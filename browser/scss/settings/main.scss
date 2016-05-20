@@ -1,39 +1,46 @@
-#settings {
- &span:focus {
-  outline: none;
-}
+.settings {
+    -webkit-animation: fadein 1s;
+    /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s;
+    /* Firefox < 16 */
+    -ms-animation: fadein 1s;
+    /* Internet Explorer */
+    -o-animation: fadein 1s;
+    /* Opera < 12.1 */
+    animation: fadein 1s;
 }
 
 .disconnect {
- color: rgb(96,125,139);
- background-color: rgb(255,255,255);
+    color: rgb(96, 125, 139);
+    background-color: rgb(255, 255, 255);
 }
 
 .connect {
- padding: 0px 15px;
+    padding: 0px 15px;
 }
 
 .providerBox {
-  border: 1px solid;
-  border-color: #9E9E9E;
-  padding: 2rem;
-  text-align: center;
-  max-width: 75%;
-  height: 140px;
-  margin: auto;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px #616161;
+    border: 1px solid;
+    border-color: #9E9E9E;
+    padding: 2rem;
+    text-align: center;
+    max-width: 75%;
+    height: 140px;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px #616161;
 }
 
 .accordion-toggle {
-  &:focus, &:hover {
-    outline: none;
-    text-decoration: none;
-  }
+    &:focus,
+    &:hover {
+        outline: none;
+        text-decoration: none;
+    }
 }
 
 md-tabs {
-  & md-ink-bar {
-    background: #607D8B;
-  }
+    & md-ink-bar {
+        background: #607D8B;
+    }
 }

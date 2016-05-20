@@ -1,5 +1,13 @@
 #about-section {
-    // background-color: #EFEFEF;
+    -webkit-animation: fadein 1s;
+    /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s;
+    /* Firefox < 16 */
+    -ms-animation: fadein 1s;
+    /* Internet Explorer */
+    -o-animation: fadein 1s;
+    /* Opera < 12.1 */
+    animation: fadein 1s;
     color: #263238;
     hr {
         border-color: #ADADAD;
@@ -9,7 +17,14 @@
             margin: 100px 0 40px 0;
             text-align: center;
         }
+        button {
+            background-color: white;
+            border: none;
+            text-align: center;
+            outline: none;
+        }
         .about-container {
+            min-height: 80vh;
             margin: auto;
             display: flex;
             flex-wrap: wrap;
