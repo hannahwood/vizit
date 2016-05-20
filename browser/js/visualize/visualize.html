@@ -7,11 +7,11 @@
             <span ng-show="progress">Calculating...</span>
         </md-button>
     </div>
-    <md-progress-linear ng-show="progress" md-mode="indeterminate"></md-progress-linear>
+    <md-progress-linear ng-if="progress" md-mode="indeterminate"></md-progress-linear>
     <md-content flex>
         <div layout="column" layout-fill layout-padding class="full visualize">
             <div layout="row" layout-xs="column">
-                <div flex ng-show="selection === 'edit'">
+                <div flex class="edit" ng-show="selection === 'edit'">
                     <div flex id="ace" ng-model="code" ui-ace="{
                   require: ['ace/ext/language_tools'],
                   useWrapMode : true,
@@ -29,13 +29,13 @@
                     </div>
                     <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
-                <div flex ng-show="selection === 'edit'" class="examples">
-                    <div ng-show="examples">
+                <div flex ng-show="selection === 'edit'" class="examples edit">
+                    <div ng-if="examples">
                         <h4>EXAMPLES:</h4>
                         <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p>
                     </div>
                 </div>
-                <visualize ng-if="selection === 'visualize'">
+                <visualize class="vis" ng-if="selection === 'visualize'">
                 </visualize>
             </div>
         </div>
