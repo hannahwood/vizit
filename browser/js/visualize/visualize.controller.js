@@ -27,7 +27,7 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
     // set color for timeline graph
     $scope.colorFunction = function() {
         return function(d, i) {
-            var color = i === VisualizeCodeFactory.executionVisualizer.prototype.currentStep() ? 'red' : '#DDDDDD';
+            var color = i === VisualizeCodeFactory.executionVisualizer.prototype.currentStep() ? 'red' : '#C1C1C1';
             return color;
         };
     };

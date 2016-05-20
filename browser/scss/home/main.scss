@@ -49,26 +49,15 @@ md-progress-linear {
 }
 
 #visualize {
-    -webkit-animation: fadein 1s;
+    -webkit-animation: fadein .3s;
     /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadein 1s;
+    -moz-animation: fadein .3s;
     /* Firefox < 16 */
-    -ms-animation: fadein 1s;
+    -ms-animation: fadein .3s;
     /* Internet Explorer */
-    -o-animation: fadein 1s;
+    -o-animation: fadein .3s;
     /* Opera < 12.1 */
-    animation: fadein 1s;
-    
-    .edit {
-        opacity: 1;
-    }
-    .edit.ng-hide-add,
-    .edit.ng-hide-remove {
-        transition: all linear 0.5s;
-    }
-    .edit.ng-hide {
-        opacity: 0;
-    }
+    animation: fadein .3s;
 }
 
 #error {
@@ -82,10 +71,14 @@ md-progress-linear {
 }
 
 .ace_editor {
-    height: calc(100vh - 200px);
-    width: 100%;
+    height: calc(100vh - 165px);
+    width: 70vw;
     font-size: 18px !important;
     font-family: 'Ubuntu Mono' !important;
+    .ace_print-margin {
+        //removes vertical split line
+        display: none;
+    }
 }
 
 .dualAce {
@@ -94,8 +87,19 @@ md-progress-linear {
 }
 
 .examples {
+    overflow: scroll;
+    height: calc(100vh - 165px);
+    h4 {
+        margin-left: 22vw;
+        padding: 30px, 0, 0, 30px;
+    }
     div {
         padding-left: 50px;
+    }
+    p {
+        margin-left: 22vw;
+        padding: 6px 0;
+        text-decoration: underline;
     }
     p:focus {
         outline: 0;
