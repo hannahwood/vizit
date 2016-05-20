@@ -9,40 +9,18 @@ function trim (str) {
 }
 
 argv.code = trim(argv.code);
-// argv.compareCode = trim(argv.compareCode);
+argv.compareCode = trim(argv.compareCode);
 
-var func = eval(argv.code);
-// var otherFunc = eval(argv.compareCode)
-var arr = [1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3,1,4,2,5,3];
-
-// function toStringBench() {
-//     var me = this,
-//         error = me.error,
-//         hz = me.hz,
-//         id = me.id,
-//         stats = me.stats,
-//         size = stats.sample.length,
-//         pm = support.java ? '+/-' : '\xb1',
-//         result = me.name || (isNaN(id) ? id : '<Test #' + id + '>');
-
-//     if (error) {
-//       result += ': ' + join(error);
-//     } else {
-//       result += ' x ' + formatNumber(hz.toFixed(hz < 100 ? 2 : 0)) + ' ops/sec ' + pm +
-//         stats.rme.toFixed(2) + '% (' + size + ' run' + (size == 1 ? '' : 's') + ' sampled)';
-//     }
-//     return result;
-//   }
+var func = _eval(argv.code);
+var otherFunc = _eval(argv.compareCode)
+var arr = _eval(argv.input);
 
 suite.add('MergeSort', function() {
     func(arr);
 }, {maxTime: .1})
-// suite.add('BubbleSort', function () {
-//    otherFunc(arr);
-// }, {maxTime: .1})
-// .on('cycle', function(event) {
-//    console.log(event.target.toString());
-// })
+suite.add('BubbleSort', function () {
+   otherFunc(arr);
+}, {maxTime: .1})
 .on('complete', function() {
    var thisArr = Array.from(this);
    var results = [];

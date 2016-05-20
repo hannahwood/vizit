@@ -17,6 +17,7 @@ router.post('/', function (req,res,next) {
                'node',
                '/tmp/javascript/testing.js',
                '--code='+req.body.code,
-               '--compareCode='+req.body.compareCode
+               '--compareCode='+req.body.compareCode,
+               '--input='+req.body.input
                ], {killSignal: 'SIGINT'}, sendResult.bind(null,res));
 })
