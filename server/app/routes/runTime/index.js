@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var child_process = require('child_process');
+var _eval = require('eval');
 module.exports = router;
 
 function sendResult (res, err, stdout, stderr) {
@@ -7,7 +8,11 @@ function sendResult (res, err, stdout, stderr) {
 }
 
 router.post('/', function (req,res,next) {
-   child_process.execFile('docker', ['run',
+   // console.log(typeof req.body.input, req.body.input)
+   // var input = _eval(req.body.input);
+   // console.log(typeof input, input)
+   console.log(req.body)
+   var args = ['run',
                '--rm',
                '--user=netuser',
                '--net=none',
@@ -17,7 +22,13 @@ router.post('/', function (req,res,next) {
                'node',
                '/tmp/javascript/testing.js',
                '--code='+req.body.code,
-               '--compareCode='+req.body.compareCode,
+               '--func1='+req.body.func1,
                '--input='+req.body.input
-               ], {killSignal: 'SIGINT'}, sendResult.bind(null,res));
+               ]
+   if(req.body.compareCode){
+      args.push('--compareCode='+req.body.compareCode)
+      args.push('--func2='+req.body.func2)
+   }
+   console.log(args)
+   child_process.execFile('docker', args, {killSignal: 'SIGINT'}, sendResult.bind(null,res));
 })
