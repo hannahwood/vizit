@@ -1,6 +1,8 @@
-app.controller('AboutController', function ($scope, FullstackPics) {
-
-    // Images of beautiful Fullstack people.
-    $scope.images = _.shuffle(FullstackPics);
-
+app.controller('AboutController', function($scope) {
+    $scope.scroll = $("button").click(function() {
+        $('html,body').animate({
+                scrollTop: $(".glyphicon").offset().top
+            },
+            'slow');
+    });
 });

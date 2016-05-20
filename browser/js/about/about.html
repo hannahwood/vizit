@@ -1,4 +1,4 @@
-<section id="about-section">
+<section id="about-section" ng-controller='AboutController'>
     <div id="about">
         <!-- <h2>Welcome to VIZIT</h2>
         <hr> -->
@@ -6,16 +6,18 @@
             <div flex>
                 <h4>VISUALIZER</h4>
                 <p>The VIZIT <strong>Visualizer Tool</strong> was built using <a href="http://pythontutor.com/">PythonTutor</a>, an awesome tool built by Philip Guo that helps users understand what happens as the computer executes each line of code.</p>
-                <p>Always remember in the jungle there’s a lot of they in there, after you overcome they, you will make it to paradise. Don’t ever play yourself. I told you all this before, when you have a swimming pool, do not use chlorine, use salt water, the healing, salt water is the healing.</p>
+                <p>Always remember in the jungle there’s a lot of they in there, after you overcome they, you will make it to paradise. Don’t ever play yourself. </p>
+                <img style="width:100%;" src="http://i.imgur.com/i5VMsxX.png">
             </div>
             <div flex>
                 <h4>RUNTIME ANALYSIS</h4>
                 <p>The VIZIT <strong>Runtime Analysis Tool</strong> was built using <a href="http://pythontutor.com/">BLAHBLAH</a>, an awesome tool built by Philip Guo that helps users understand what happens as the computer executes each line of code.</p>
-                <p>You do know, you do know that they don’t want you to have lunch. I’m keeping it real with you, so what you going do is have lunch. Give thanks to the most high. The key to more success is to get a massage once a week, very important, major key, cloth talk. They don’t want us to win. We the best.</p>
+                <p>You do know, you do know that they don’t want you to have lunch. I’m keeping it real with you, so what you going do is have lunch. Give thanks to the most high.</p>
+                <img style="width:100%;" src="http://i.imgur.com/i5VMsxX.png">
             </div>
         </div>
         <div style="text-align:center">
-        <button type="button" class="glyphicon glyphicon-chevron-down" onClick="document.getElementById('middle').scrollIntoView({behavior:'smooth', block:'start'});"></button>
+        <button type="button" class="glyphicon glyphicon-chevron-down" ng-click="scroll()"></button>
         </div>
         <hr id="middle">
         <h2>TEAM</h2>
