@@ -1,17 +1,17 @@
 <section id="visualize">
     <div class="button-container fixed">
-        <md-button class="tools" ng-if="user" ng-click="save(code)"> Save </md-button>
-        <md-button class="tools" ng-show="selection === 'visualize'" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"> Edit </md-button>
-        <md-button class="tools" ng-show="selection === 'edit'" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layout-align="space-around">
+        <md-button class="tools" ng-show="selection === 'visualize'" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"><ng-md-icon icon="keyboard_backspace" size="12" style="fill: black" size="..."></ng-md-icon>    Edit Your Code</md-button>
+        <md-button class="tools viz" ng-show="selection === 'edit'" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layout-align="space-around">
             <span ng-hide="progress">Visualize</span>
             <span ng-show="progress">Calculating...</span>
         </md-button>
+        <md-button class="tools save" ng-show="selection === 'edit'" ng-if="user" ng-click="save(code)"> Save </md-button>
     </div>
     <md-progress-linear ng-if="progress" md-mode="indeterminate"></md-progress-linear>
     <md-content flex>
         <div layout="column" layout-fill layout-padding class="full visualize">
             <div layout="row" layout-xs="column">
-                <div flex class="edit" ng-show="selection === 'edit'">
+                <div class="edit" ng-show="selection === 'edit'">
                     <div flex id="ace" ng-model="code" ui-ace="{
                   require: ['ace/ext/language_tools'],
                   useWrapMode : true,
@@ -29,13 +29,11 @@
                     </div>
                     <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
-                <div flex ng-show="selection === 'edit'" class="examples edit">
-                <md-card>
+                <div ng-show="selection === 'edit'" class="examples edit">
                     <div ng-if="examples">
                         <h4>EXAMPLES:</h4>
                         <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p>
                     </div>
-                    </md-card>
                 </div>
                 <visualize class="vis" ng-if="selection === 'visualize'">
                 </visualize>

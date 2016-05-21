@@ -5,27 +5,10 @@
             <vizit-logo></vizit-logo>
             <span flex></span>
             <div layout="column" class="md-toolbar-tools-bottom inset" ng-show="user">
-                <!--         <md-list>
-          <md-list-item layout-padding>
-            {{userName}}
-            <img ng-src="{{avatar}}" class="md-avatar" />
-          </md-list-item>
-        </md-list> -->
             </div>
             <div layout="column" class="md-toolbar-tools-bottom inset" ng-show="!user">
             </div>
         </md-toolbar>
-        <!-- <md-button class="md-hue-3" ng-repeat="item in menu">
-            <md-item>
-                <md-item-content md-ink-ripple layout="row" layout-align="left center">
-                    <div class="inset">
-                        <ng-md-icon icon="{{item.icon}}" style="fill: #fafafa"></ng-md-icon>
-                    </div>
-                    <div class="inset">{{item.title}}</div>
-                </md-item-content>
-            </md-item>
-            <md-divider></md-divider>
-        </md-button> -->
         <md-button class="md-hue-3" ng-show="user" ng-click="goToSettings()">
             <md-item>
                 <md-item-content md-ink-ripple layout="row" layout-align="left center">

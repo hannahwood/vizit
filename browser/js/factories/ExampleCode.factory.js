@@ -205,7 +205,7 @@ main();`
   var right = arr.slice(arr.length/2);
   return merge(mergeSort(left), mergeSort(right));
 }
-​
+
 function merge (left, right) {
   var merged = [];
   var i = 0;
@@ -215,7 +215,7 @@ function merge (left, right) {
   }
   return merged.concat(left.slice(i), right.slice(j));
 }
-​
+
 console.log(mergeSort([2,4,3,1,5]))`
         }
     ];

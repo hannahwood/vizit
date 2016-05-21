@@ -7,7 +7,7 @@ app.filter('titlecase', function() {
 });
 
 
-app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthService, $rootScope, CodeFactory, $state, ExampleCodeFactory) {
+app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthService, $rootScope, CodeFactory, $state, ExampleCodeFactory, $mdToast) {
 
     $scope.code = '// input your code here then press "VISUALIZE"';
 
@@ -143,7 +143,14 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
 
     $scope.save = function(code) {
         CodeFactory.saveCode(code, $scope.user._id)
-        .then(code => $state.go('revision', {codeId: code._id, revisionNum: 0}));
+            .then(code => $state.go('revision', { codeId: code._id, revisionNum: 0 }))
+            .then(function() {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent('Your session was saved!')
+                    .hideDelay(3000)
+                );
+            });
     }
 
     // re-render graph on arrow key presses
@@ -184,7 +191,7 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
 
     $scope.examples = ExampleCodeFactory;
 
-    $scope.updateCode = function (newCode) {
+    $scope.updateCode = function(newCode) {
         $scope.code = newCode;
     };
 });

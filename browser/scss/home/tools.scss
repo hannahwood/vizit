@@ -19,16 +19,18 @@ tools {
     }
     #left,
     #right {
+        box-shadow: 0 2px 3px #CCCCCC;
         min-height: 40px;
         color: $dark;
         background-color: $gray;
         transition: all .2s ease-in-out;
         &:hover {
-            opacity: .7;
+            box-shadow: 0 0px 0px gray;
         }
     }
     .active {
         color: $dark !important;
-        border-bottom: solid 3px $yellow;
+        border-top: solid 6px $yellow;
+        background-color: #E8E8E8 !important;
     }
 }

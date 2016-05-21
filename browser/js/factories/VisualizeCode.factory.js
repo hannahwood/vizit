@@ -270,11 +270,11 @@ app.factory('VisualizeCodeFactory', function($http) {
         var codeDisplayHTML =
             '<div id="codeDisplayDiv">\
        <div id="vcrControls">\
-         <button id="jmpFirstInstr", type="button"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></button>\
-         <button id="jmpStepBack", type="button"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>\
+         <button id="jmpFirstInstr", type="button"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>\
+         <button id="jmpStepBack", type="button"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></button>\
          <span id="curInstr">Step ? of ?</span>\
-         <button id="jmpStepFwd", type="button"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>\
-         <button id="jmpLastInstr", type="button"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\
+         <button id="jmpStepFwd", type="button"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></button>\
+         <button id="jmpLastInstr", type="button"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>\
        </div>\
        <div id="pyCodeOutputDiv"/>\
        <div id="graphPlaceholder"></div>\

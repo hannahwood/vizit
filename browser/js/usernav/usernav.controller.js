@@ -19,11 +19,6 @@ app.controller('UserNavCtrl', function ($scope, $mdDialog, AuthService, $state, 
 
     $scope.admin = [
     {
-      state : 'profile',
-      title: 'Profile',
-      icon: 'account_circle'
-    },
-    {
       state : 'sessions',
       title: 'Sessions',
       icon: 'code'

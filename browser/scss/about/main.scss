@@ -1,3 +1,5 @@
+$gray: #CECECE;
+
 #about-section {
     -webkit-animation: fadein 1s;
     /* Safari, Chrome and Opera > 12.1 */
@@ -29,14 +31,30 @@
             display: flex;
             flex-wrap: wrap;
             max-width: 850px;
+            .one {
+                margin-top: 100px;
+                img {
+                    float: left;
+                    margin: 0 30px 30px 0;
+                }
+            }
+            .two {
+                margin-bottom: 100px;
+                margin-top: 20px;
+                img {
+                    float: right;
+                    margin: -10px 0 30px 30px;
+                }
+            }
             div {
-                margin: 80px 10px;
-                padding: 20px;
-                h4 {
-                    text-align: center;
+                img {
+                    width: 20vw;
+                    min-width: 250px;
+                    max-width: 320px;
+                    cursor: pointer;
                 }
                 p {
-                    text-align: center;
+                    text-align: left;
                     font-size: 12pt;
                 }
             }
@@ -46,7 +64,6 @@
         padding-top: 50px;
         padding-bottom: 100px;
         width: 90%;
-        // letter-spacing: 0 !important;
         .images-container {
             margin: auto;
             max-width: 850px;
@@ -77,26 +94,20 @@
                     -webkit-filter: grayscale(90%);
                     filter: grayscale(90%);
                     transition: all .2s ease-in-out;
+                        box-shadow: 3px 3px 3px $gray;
                     &:hover {
                         -webkit-filter: grayscale(0);
                         filter: grayscale(0);
+                        box-shadow: 1px 1px 1px $gray;
                     }
                 }
                 .faces {
                     div {
                         background-color: black
                     }
-                    // &:hover {
-                    //   transform-origin: bottom right;
-                    //     transform: scale(1.03, 1.03);
-                    // }
                     width: 250px;
                     margin: 10px;
-                    border-color: #CFD8DC;
                     border-radius: 100%;
-                    // opacity: .5;
-                    border-style: solid;
-                    border-width: 0 4px 5px 0;
                 }
             }
         }
