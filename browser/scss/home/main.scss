@@ -1,4 +1,5 @@
 $gray: #eee;
+$shadow: #CECECE;
 $dark: #263238;
 $light: #fff;
 vizit-logo {
@@ -30,21 +31,46 @@ vizit-logo {
     .tools {
         margin: 50px 5px 2px 5px;
         min-height: 25px !important;
-        border: #E2E2E2 solid 2px;
-        width: 120px;
+        background-color: #E8E8E8;
+        box-shadow: 1px 1px 1px $shadow;
+        width: 200px;
         padding: 2px;
-        line-height: 0px;
+        line-height: .5px;
+        &:hover {
+            transform: translate(1px, 1px);
+            box-shadow: 0 0 0 gray;
+            background-color: #E8E8E8;
+        }
+    }
+    .viz, .save {
+        left: calc(70vw - 175px);
+        top: calc(100vh - 210px);
+        width: 150px;
+        z-index: 1;
+        line-height: 3;
+    }
+    .save {
+        left: calc(70vw - 510px);
+    }
+    // on the runtime page
+    .run {
+        width: 150px;
+        line-height: 3;
+        margin: 0;
+        padding-left: 0;
     }
 }
 
+
 md-progress-linear {
-    margin-top: 47px;
+    margin-top: 50px;
     position: fixed;
-    z-index: 1;
+    z-index: 3;
+    box-shadow: 0 1px 1px $shadow;
 }
 
 .visualize {
-    margin-top: 80px;
+    margin-top: 60px;
     letter-spacing: 0.1em;
 }
 
@@ -63,21 +89,24 @@ md-progress-linear {
 #error {
     color: red;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     .glyphicon {
-        // font-weight: 4000;
         width: 20px;
     }
 }
 
 .ace_editor {
-    height: calc(100vh - 165px);
+    height: calc(100vh - 160px);
     width: 70vw;
     font-size: 18px !important;
     font-family: 'Ubuntu Mono' !important;
+    box-shadow: 3px 3px 10px $shadow;
     .ace_print-margin {
         //removes vertical split line
         display: none;
+    }
+    .ace-layer {
+        z-index: 0;
     }
 }
 
@@ -92,19 +121,24 @@ md-progress-linear {
 }
 
 .examples {
+    z-index: 1;
+    background-color: #F4F4F4;
     overflow: scroll;
-    height: calc(100vh - 165px);
+    height: calc(100vh - 160px);
+    box-shadow: 3px 3px 10px $shadow;
     h4 {
-        margin-left: 22vw;
-        padding: 30px, 0, 0, 30px;
-    }
-    div {
-        padding-left: 50px;
+        margin: 20px 0 10px 40px;
     }
     p {
-        margin-left: 22vw;
+        margin: 10px 40px;
+        width: 23vw;
         padding: 6px 0;
-        text-decoration: underline;
+        transition: all 0.2s ease;
+        border-left: solid 0px $yellow;
+        &:hover {
+            border-left: solid 6px $yellow;
+            padding-left: 5px;
+        }
     }
     p:focus {
         outline: 0;

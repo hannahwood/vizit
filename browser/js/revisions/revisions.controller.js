@@ -1,4 +1,4 @@
-app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $state, AuthService, VisualizeCodeFactory, $compile, $rootScope) {
+app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $state, AuthService, VisualizeCodeFactory, $compile, $rootScope, ExampleCodeFactory, $mdToast) {
 
     $scope.session = code;
     $scope.revision = revision;
@@ -13,8 +13,16 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
         if (newEdit) {
             CodeFactory.addRevision($scope.session._id, $scope.code)
             .then(function (revisedCode) {
-                $state.go('revision', {codeId: revisedCode._id, revisionNum: revisedCode.revisions.length-1})
+                $state.go('revision', {codeId: revisedCode._id, revisionNum: revisedCode.revisions.length-1});
+                return revisedCode;
             })
+            .then(function(code) {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent(`Revision ${code.revisions.length-1} was saved!`)
+                    .hideDelay(3000)
+                );
+            });
         }
     }
 
@@ -150,18 +158,18 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
 
     // re-render graph on arrow key presses
     // must be on keyUP to allow viz functions to run on keyDOWN
-    // function refreshKey(e) {
-    //     if (e.keyCode == 37 || e.keyCode == 39) {
-    //         $scope.api.refresh();
-    //     }
-    // }
-    // $("body").keyup(refreshKey);
+    function refreshKey(e) {
+        if (e.keyCode == 37 || e.keyCode == 39) {
+            $scope.api.refresh();
+        }
+    }
+    $("body").keyup(refreshKey);
 
     // re-render graph on clicks (for buttons)
-    // function refreshClick() {
-    //     $scope.api.refresh();
-    // }
-    // $("body").mouseup(refreshClick);
+    function refreshClick() {
+        $scope.api.refresh();
+    }
+    $("body").mouseup(refreshClick);
 
     // destroys the event handlers when going to different state
     $scope.$on('$destroy', function() {
@@ -183,5 +191,7 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
             });
         return visData;
     };
+
+    $scope.examples = ExampleCodeFactory;
 
 });

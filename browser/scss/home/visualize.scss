@@ -2,7 +2,6 @@ $darkBlueBackground: #002B36;
 $vcrControlBlue: #073D49;
 $gutterBlue: #01313F;
 $codeOutputTextGrey: #93A1A1;
-
 #pyCodeOutputDiv {
     overflow-x: scroll;
     overflow-y: scroll;
@@ -74,13 +73,11 @@ textarea {
         max-width: 40vw;
         min-width: 40vw;
         background-color: #F5F5F5;
-        border-radius: 5px;
+        border-radius: 1%;
         position: fixed;
-        margin: 5px;
+        margin-top: 20px;
         padding: 20px;
-        border-style: solid;
-        border-width: 0 2px 2px 0;
-        border-color: #DDDDDD;
+        box-shadow: 3px 3px 3px #CECECE;
         #errorOutput {
             color: red;
         }
@@ -117,10 +114,19 @@ textarea {
     button {
         border: none;
         border-radius: 5%;
+        box-shadow: 1px 1px 1px gray;
+        transition: all 0.2s ease;
+        &:focus {
+            outline: none;
+        }
+        &:hover {
+            box-shadow: 0px 0px 0px gray;
+            transform: translate(1px, 1px);
+        }
     }
     .glyphicon {
         font-size: 10pt;
-        color: $vcrControlBlue;
+        color: white;
     }
     span {
         padding: 5px;
