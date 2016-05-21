@@ -1,0 +1,33 @@
+.runtimeAce {
+    width: 100%;
+}
+
+.dualAce {
+    height: calc(((100vh - 170px)/2));
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#runtimeForm {
+    z-index: 1;
+    background-color: #F4F4F4;
+    overflow: scroll;
+    height: calc(100vh - 160px);
+    box-shadow: 3px 3px 10px $shadow;
+    form {
+        padding: 30px;
+    }
+
+    svg {
+        width: 40vw !important;
+        height: 50vh !important;
+    }
+    // .tick {
+    //     display: none;
+    //     height: 0;
+    // }
+    // .nvd3 text {
+    //     font: inherit;
+    //     font-size: 8pt;
+    // }
+}
