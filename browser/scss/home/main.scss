@@ -52,7 +52,6 @@ vizit-logo {
     .save {
         left: calc(70vw - 510px);
     }
-    // on the runtime page
     .run {
         width: 150px;
         line-height: 3;
@@ -108,16 +107,6 @@ md-progress-linear {
     .ace-layer {
         z-index: 0;
     }
-}
-
-.runtimeAce {
-    width: 45vw;
-}
-
-.dualAce {
-    height: calc(((100vh - 170px)/2));
-    margin-bottom: 10px;
-    width: 45vw;
 }
 
 .examples {

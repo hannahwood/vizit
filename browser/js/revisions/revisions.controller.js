@@ -24,7 +24,7 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
                 );
             });
         }
-    }
+    };
 
     // selections: edit, visualize, analyze
     $scope.selection = 'edit';
@@ -193,5 +193,8 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
     };
 
     $scope.examples = ExampleCodeFactory;
-
+    
+    $scope.updateCode = function(newCode) {
+        $scope.code = newCode;
+    };
 });
