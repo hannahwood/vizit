@@ -25,7 +25,8 @@ tools {
         background-color: $gray;
         transition: all .2s ease-in-out;
         &:hover {
-            box-shadow: 0 0px 0px gray;
+            opacity: 0.8;
+            box-shadow: 0 2px 1px #CCCCCC;
         }
     }
     .active {
