@@ -16,10 +16,10 @@ var input = _eval(" module.exports="+argv.input);
 
 suite.add(argv.func2, function () {
    otherFunc(input);
-}, {maxTime: 1})
+}, {maxTime: .1})
 .add(argv.func1, function() {
     func(input);
-}, {maxTime: 1})
+}, {maxTime: .1})
 .on('complete', function() {
    var thisArr = Array.from(this);
    var results = [];

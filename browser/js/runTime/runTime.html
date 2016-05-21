@@ -2,6 +2,7 @@
    <div layout="column" layout-fill layout-padding>
       <div layout="row" layout-xs="column">
          <div flex>
+         <div class='#popupContainer'></div>
             <div class="runtimeAce" ng-model="runTime.code" ui-ace="{
                require: ['ace/ext/language_tools'],
                useWrapMode : true,
@@ -34,8 +35,8 @@
             </div>
          </div>
          <div flex>
-            <div ng-show="results">{{results[0].name}} is {{results[0].hz/results[1].hz}}x faster than {{results[1].name}}</div>
-            <form style="margin-left: 1em;" name="runTimeForm" ng-submit="submit(runTime)" ng-show="!results">
+   
+            <form style="margin-left: 1em;" name="runTimeForm" ng-submit="submit(runTime)">
                <md-checkbox ng-model="compare" ng-click="func2Params = false">Compare</md-checkbox>
                <md-input-container class="md-block">
                   <label>Function 1 Name</label>
