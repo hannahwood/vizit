@@ -1,3 +1,4 @@
+<md-progress-linear ng-if="progress" md-mode="indeterminate"></md-progress-linear>
 <md-content flex class="visualize">
    <div layout="column" layout-fill layout-padding>
       <div layout="row" layout-xs="column">
@@ -35,8 +36,8 @@
             </div>
          </div>
          <div flex>
-   
-            <form style="margin-left: 1em;" name="runTimeForm" ng-submit="submit(runTime)">
+            <div id="scatter" ng-show="graphData"></div>
+            <form style="margin-left: 1em;" name="runTimeForm" ng-show="!graphData" ng-submit="submit(runTime)">
                <md-checkbox ng-model="compare" ng-click="func2Params = false">Compare</md-checkbox>
                <md-input-container class="md-block">
                   <label>Function 1 Name</label>

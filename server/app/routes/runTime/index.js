@@ -8,10 +8,6 @@ function sendResult (res, err, stdout, stderr) {
 }
 
 router.post('/', function (req,res,next) {
-   // console.log(typeof req.body.input, req.body.input)
-   // var input = _eval(req.body.input);
-   // console.log(typeof input, input)
-   console.log(req.body)
    var args = ['run',
                '--rm',
                '--user=netuser',
@@ -21,14 +17,13 @@ router.post('/', function (req,res,next) {
                'vizit:v1',
                'node',
                '/tmp/javascript/testing.js',
+               '--input='+req.body.input,
                '--code='+req.body.code,
-               '--func1='+req.body.func1,
-               '--input='+req.body.input
+               '--func1='+req.body.func1
                ]
    if(req.body.compareCode){
       args.push('--compareCode='+req.body.compareCode)
       args.push('--func2='+req.body.func2)
    }
-   console.log(args)
    child_process.execFile('docker', args, {killSignal: 'SIGINT'}, sendResult.bind(null,res));
 })
