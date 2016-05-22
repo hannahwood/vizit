@@ -19,6 +19,11 @@ tools {
     }
     #left,
     #right {
+        h4 {
+            margin: 0;
+            padding: 8px 0 12px;
+        }
+        border-top: solid 6px $gray;
         box-shadow: 0 2px 3px #CCCCCC;
         min-height: 40px;
         color: $dark;
@@ -31,7 +36,7 @@ tools {
     }
     .active {
         color: $dark !important;
-        border-top: solid 6px $yellow;
+        border-top: solid 6px $yellow !important;
         background-color: #E8E8E8 !important;
     }
 }

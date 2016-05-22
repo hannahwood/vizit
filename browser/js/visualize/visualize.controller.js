@@ -35,9 +35,6 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
     // options for timeline graph
     $scope.options = {
         chart: {
-            tooltipContent: function(key, y, e, graph) {
-                return 'Some String'
-            },
             margin: {
                 bottom: 0,
                 left: 0

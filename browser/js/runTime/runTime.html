@@ -1,10 +1,10 @@
 <md-progress-linear ng-if="progress" md-mode="indeterminate"></md-progress-linear>
 <md-content flex class="visualize">
-   <div layout="column" layout-fill layout-padding>
-      <div layout="row" layout-xs="column">
-         <div flex>
-         <div class='#popupContainer'></div>
-            <div class="runtimeAce" ng-model="runTime.code" ui-ace="{
+    <div layout="column" layout-fill layout-padding>
+        <div layout="row" layout-xs="column">
+            <div flex>
+                <!-- <div class='#popupContainer'></div> -->
+                <div class="runtimeAce" ng-model="runTime.code" ui-ace="{
                require: ['ace/ext/language_tools'],
                useWrapMode : true,
                splitMode: true,
@@ -18,8 +18,8 @@
                enableLiveAutocompletion: true
                }
             }" ng-class="{dualAce: compare}">
-            </div>
-            <div ng-model="runTime.compareCode" ui-ace="{
+                </div>
+                <div ng-model="runTime.compareCode" ui-ace="{
                require: ['ace/ext/language_tools'],
                useWrapMode : true,
                splitMode: true,
@@ -33,24 +33,31 @@
                enableLiveAutocompletion: true
                }
             }" ng-show="compare" class="dualAce">
+                </div>
             </div>
-         </div>
-         <div flex>
-            <div id="scatter" ng-show="graphData"></div>
-            <form style="margin-left: 1em;" name="runTimeForm" ng-show="!graphData" ng-submit="submit(runTime)">
-               <md-checkbox ng-model="compare" ng-click="func2Params = false">Compare</md-checkbox>
-               <md-input-container class="md-block">
-                  <label>Function 1 Name</label>
-                  <input type="text" ng-model="runTime.func1">
-               </md-input-container>
-               <md-input-container ng-show="compare" class="md-block">
-                  <label>Function 2 Name</label>
-                  <input type="text" ng-model="runTime.func2">
-               </md-input-container>
-              <!--  <md-switch ng-model="runTime.formType" ng-true-value="'Manual'" ng-false-value="'Form'">
+            <div flex>
+                <div id="runtimeForm">
+                    <div id="scatter" ng-show="graphData">
+                    </div>
+                    <div ng-show="graphData" class="button-container">
+                        <md-button ng-click="removeGraph()" class="tools run" type="submit">
+                            back to form
+                        </md-button>
+                    </div>
+                    <form style="margin-left: 1em;" name="runTimeForm" ng-show="!graphData" ng-submit="submit(runTime)">
+                        <md-checkbox ng-model="compare" ng-click="func2Params = false">Compare</md-checkbox>
+                        <md-input-container class="md-block">
+                            <label>Function 1 Name</label>
+                            <input type="text" ng-model="runTime.func1">
+                        </md-input-container>
+                        <md-input-container ng-show="compare" class="md-block">
+                            <label>Function 2 Name</label>
+                            <input type="text" ng-model="runTime.func2">
+                        </md-input-container>
+                        <!--  <md-switch ng-model="runTime.formType" ng-true-value="'Manual'" ng-false-value="'Form'">
                   {{runTime.formType}}
                </md-switch> -->
-               <!-- <div ng-show="runTime.formType === 'Form'">
+                        <!-- <div ng-show="runTime.formType === 'Form'">
                   <div layout="row">
                      <div flex>
                         <div layout="row" ng-repeat="param in runTime.func1Parameters track by $index">
@@ -85,17 +92,21 @@
                      </div>
                   </div>
                </div> -->
-               <div>
-                  <md-input-container class="md-block">
-                     <label>Your input</label>
-                     <textarea ng-model="runTime.input" rows="5" md-select-on-focus></textarea>
-                  </md-input-container>
-               </div>
-               <div class="button-container">
-               <md-button class="tools run" type="submit">Run Code</md-button>
-               </div>
-            </form>
-         </div>
-      </div>
-   </div>
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Your input:</label>
+                                <textarea ng-model="runTime.input" rows="5" md-select-on-focus></textarea>
+                            </md-input-container>
+                        </div>
+                        <div class="button-container">
+                            <md-button ng-disabled="progress" class="tools run" type="submit">
+                                <span ng-hide="progress">Run</span>
+                                <span ng-show="progress">Calculating...</span>
+                            </md-button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </md-content>
