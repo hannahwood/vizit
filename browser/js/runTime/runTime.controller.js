@@ -9,7 +9,6 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
     };
 
     $scope.makeGraphData = function() {
-        debugger;
         var inputSizes = $scope.results[0].input.map(param => typeof param === 'number' ? param : param.length)
         var visData = [];
         var numFunc = $scope.results.length / inputSizes.length;
