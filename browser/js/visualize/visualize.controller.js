@@ -154,14 +154,14 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
     // must be on keyUP to allow viz functions to run on keyDOWN
     function refreshKey(e) {
         if (e.keyCode == 37 || e.keyCode == 39) {
-            $scope.api.refresh();
+            //$scope.api.refresh();
         }
     }
     $("body").keyup(refreshKey);
 
     // re-render graph on clicks (for buttons)
     function refreshClick() {
-        $scope.api.refresh();
+        //$scope.api.refresh();
     }
     $("body").mouseup(refreshClick);
 
