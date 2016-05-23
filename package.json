@@ -7,8 +7,8 @@
     "start": "nodemon --watch server -e js,html server/start.js",
     "postinstall": "gulp build",
     "seed": "node server/db/seedFiles/seedFile.js",
-    "docker": "docker build -t='vizit:v1' .",
-    "dockerbash": "docker run -t -i --rm --user=netuser --net=none --cap-drop all pgbovine/cokapi:v1 bash"
+    "docker": "docker build -t='jasonunger/vizit:v1' .",
+    "dockerbash": "docker run -t -i --rm --user=netuser --net=none --cap-drop all jasonunger/vizit:v1 bash"
   },
   "engines": {
     "node": ">=4.0.0"
