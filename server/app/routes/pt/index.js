@@ -51,7 +51,7 @@ function postExecHandler(res, err, stdout, stderr) {
 
 function execHandler(req, res) {
   var exeFile = 'docker';
-  var args = ['run', '--rm', '--user=netuser', '--net=none', '--cap-drop', 'all', 'vizit:v1',
+  var args = ['run', '--rm', '--user=netuser', '--net=none', '--cap-drop', 'all', 'jasonunger/vizit:v1',
               'node',
               '--expose-debug-as=Debug', '/tmp/javascript/jslogger.js',
               '--jsondump=true', '--code='+req.body.user_script

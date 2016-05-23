@@ -14,7 +14,7 @@ router.post('/', function (req,res,next) {
                '--net=none',
                '--cap-drop',
                'all',
-               'vizit:v1',
+               'jasonunger/vizit:v1',
                'node',
                '/tmp/javascript/testing.js',
                '--input='+req.body.input,
