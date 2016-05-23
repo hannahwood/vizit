@@ -13,6 +13,7 @@ var compareCode = argv.func2 && trim(argv.compareCode+ " module.exports=" + argv
 var func = _eval(code);
 var otherFunc = compareCode && _eval(compareCode)
 var inputs = _eval(" module.exports=["+argv.input+"]");
+var oldInputs = _eval(" module.exports=["+argv.input+"]");
 
 inputs.forEach(input => {
 	suite.add(argv.func1, function () {
@@ -30,7 +31,7 @@ suite.on('complete', function() {
 	var results = [];
 	thisArr.forEach(function (bench) {
 		delete bench.stats.sample;
-		results.push({name: bench.name, stats: bench.stats, hz: bench.hz, input: inputs});
+		results.push({name: bench.name, stats: bench.stats, hz: bench.hz, input: oldInputs});
 	})
 	console.log(JSON.stringify(results));
 })
