@@ -7,10 +7,10 @@ prod:
 	eslint server/app/routes/pt/index.js && forever -l cokapi-https.log start server/app/routes/pt/index.js https &
 
 docker:
-	docker build -t="vizit:v1" .
+	docker build -t="jasonunger/vizit:v1" .
 
 dockerbash:
-	docker run -t -i --rm --user=netuser --net=none --cap-drop all vizit:v1 bash
+	docker run -t -i --rm --user=netuser --net=none --cap-drop all jasonunger/vizit:v1 bash
 
 test:
 	@echo 'JS'

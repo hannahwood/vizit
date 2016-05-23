@@ -66,7 +66,7 @@ console.log(permArr('viz'));`
     }
 }
 
-fibonacci(10)`
+fibonacci(9)`
         },
 
         {
@@ -85,7 +85,7 @@ fibonacci(10)`
     return cache[n]
 }
 
-fibonacci(10);`
+fibonacci(9);`
         },
 
         {

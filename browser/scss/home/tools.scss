@@ -24,14 +24,14 @@ tools {
             padding: 8px 0 12px;
         }
         border-top: solid 6px $gray;
-        box-shadow: 0 2px 3px #CCCCCC;
+        box-shadow: 0 2px 2px #CCCCCC;
         min-height: 40px;
         color: $dark;
         background-color: $gray;
         transition: all .2s ease-in-out;
         &:hover {
             opacity: 0.8;
-            box-shadow: 0 2px 1px #CCCCCC;
+            box-shadow: 0 1px 1px #CCCCCC;
         }
     }
     .active {
