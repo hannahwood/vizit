@@ -1,44 +1,22 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
     $scope.runTime = {
-        code: `function memFibonacci(n, cache) {
-  cache = cache || {};
-  if(cache[n]) {
-    return cache[n];
-  } else {
-    if(n <= 2) {
-      return 1;
-    } else {
-      cache[n] = memFibonacci(n - 1, cache) + memFibonacci(n - 2, cache);
-    }    
-  }
-  return cache[n]
-}`,
-        compareCode: `function fibonacci(n){
-  if(n <= 2) {
-    return 1;
-  } else {
-    return fibonacci(n - 1) + fibonacci(n - 2);
-  }
-}`,
-        func1: "memFibonacci",
-        func2: "fibonacci",
-        input: "6,8,10,12",
-        // code : `function sorter(arr){return arr.sort();}`,
-        // compareCode : `function sorter2(arr){return arr.reverse().reverse().sort();}`,
-        // func1 : "sorter",
-        // func2 : "sorter2",
-        // input : "[1,2,3,4],[1,2,3],[3,4,2,1,4]"
+        code : `function sorter(arr){return arr.sort();}`,
+        compareCode : `function sorter2(arr){return arr.reverse().reverse().sort();}`,
+        func1 : "sorter",
+        func2 : "sorter2",
+        input : "[1,2,3,4],[1,2,3],[3,4,2,1,4]"
     };
 
     $scope.makeGraphData = function() {
+      debugger;
         var inputSizes = $scope.results[0].input.map(param => typeof param === 'number' ? param : param.length)
         var visData = [];
         var numFunc = $scope.results.length / inputSizes.length;
         var range = inputSizes.slice();
         range.sort((a, b) => a - b);
-        $scope.xRange = [range[0] - 2, range[range.length - 1] + 2];
-        $scope.yRange = [0, -Infinity];
+        $scope.xRange = [range[0] - 1, range[range.length - 1] + 1];
+        $scope.yRange = [Infinity, -Infinity];
 
         $scope.results.forEach(function(benchmark, i) {
             var dataIndex = visData.findIndex(el => el.key === benchmark.name);
@@ -49,16 +27,17 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
             if (benchmark.stats.mean > $scope.yRange[1]) {
                 $scope.yRange[1] = benchmark.stats.mean;
             }
+            if (benchmark.stats.mean < $scope.yRange[0]) {
+                $scope.yRange[0] = benchmark.stats.mean;
+            }
             visData[dataIndex].values.push({
                 'inputSize': inputSizes[Math.floor(i / numFunc)],
-                'runtime': (benchmark.stats.mean * 1000).toFixed(5)
+                'runtime': (benchmark.stats.mean*1000)
             });
         });
-        $scope.yRange[1] *= 1000;
-        $scope.yRange[1] += $scope.yRange[1] * .1;
-        $scope.yRange[1] = $scope.yRange[1].toFixed(4);
+        $scope.yRange[1] *= 1100;
+        $scope.yRange[0] *= 900;
         $scope.graphData = visData;
-        console.log($scope.xRange, $scope.yRange);
     };
 
     // $scope.runTime = {
@@ -86,7 +65,6 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
             delete data.compareCode;
             delete data.func2;
         }
-        console.log(data);
         return RuntimeFactory.submit(data)
             .then(function(response) {
                 console.log(response)
@@ -126,13 +104,27 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
     $scope.add = function() {
         $scope.options = {
             chart: {
+               // "zoom":{  
+               //    "enabled":true,
+               //    "scaleExtent":[  
+               //       1,
+               //       10
+               //    ],
+               //    "useFixedDomain":false,
+               //    "useNiceScale":false,
+               //    "horizontalOff":false,
+               //    "verticalOff":false,
+               //    "unzoomEventType":"dblclick.zoom"
+               // },
+               // interactive: true,
+               showLegend: false,
                 margin: {
-                    top: 100,
-                    left: 100
+                    // top: 100,
+                    left: 130
                 },
                 type: 'scatterChart',
                 x: function(d) {
-                    return (d.inputSize);
+                    return d.inputSize;
                 },
                 y: function(d) {
                     return d.runtime;
@@ -144,14 +136,17 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
                 forceY: $scope.yRange,
                 forceX: $scope.xRange,
                 xAxis: {
-                    // tickPadding: 0,
+                  ticks: Math.min(10,$scope.xRange[1]-$scope.xRange[0]),
+                  // tickPadding: 0,
                     axisLabel: 'input size',
-                    tickFormat: d3.format(',f')
+                    //tickFormat: d3.format(',f')
                 },
                 yAxis: {
+                  axisLabelDistance: 20,
+                  ticks: 4,
                     // tickPadding: 0,
                     axisLabel: 'time (milliseconds)',
-                    tickFormat: d3.format('.2f')
+                    tickFormat: d3.format('.2e')
                 },
                 //color: $scope.colorFunction()
             }
