@@ -37,12 +37,12 @@
             </div>
             <div flex>
                 <div id="runtimeForm">
-                    <div id="scatter" ng-show="graphData">
-                    </div>
                     <div ng-show="graphData" class="button-container">
-                        <md-button ng-click="removeGraph()" class="tools run" type="submit">
-                            back to form
+                        <md-button ng-click="removeGraph()" class="tools">
+                            <ng-md-icon icon="keyboard_backspace" size="12" style="fill: black"></ng-md-icon> Back to Form
                         </md-button>
+                    </div>
+                    <div id="scatter" ng-show="graphData">
                     </div>
                     <form style="margin-left: 1em;" name="runTimeForm" ng-show="!graphData" ng-submit="submit(runTime)">
                         <md-checkbox ng-model="compare" ng-click="func2Params = false">Compare</md-checkbox>

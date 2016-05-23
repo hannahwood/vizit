@@ -5,6 +5,8 @@ $yellow: #F9ED10;
 $bluegray: #CFD8DC;
 $gray: #eee;
 $darkbluegray: #546E7A;
+$medium: #78909C;
+
 md-dialog {
     border-radius: 0 !important;
 }
@@ -18,11 +20,41 @@ md-dialog {
     /* Internet Explorer */
     -o-animation: fadein 1s;
     /* Opera < 12.1 */
-    animation: fadein 1s;
+    animation: fadeins 1s;
     md-chips .md-chips {
         box-shadow: 0 0 !important;
     }
+    #container {
+
+    max-width: 800px;
+    }
+    margin: auto;
+    .container {
+        padding: 0, 20px;
+    }
+    .sm-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 30px 0 0 0;
+    }
+    h2 > a {
+        color: $dark;
+        font-weight: 70;
+        &:hover {
+            color: &gray;
+            text-decoration: none;
+        }
+    }
+    a {
+        color: $medium;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    md-list-item.md-2-line .md-list-item-text.date{
+        margin-top: 25px
+    }
 }
+
 
 .item-metadata {
     font-weight: 700;

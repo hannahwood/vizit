@@ -14,13 +14,26 @@
     overflow: scroll;
     height: calc(100vh - 160px);
     box-shadow: 3px 3px 10px $shadow;
+    .button-container {
+        .tools {
+            margin: 0px;
+        }
+        .run {
+            width: 150px;
+            line-height: 3;
+            margin: 0;
+            padding-left: 0;
+            float: right;
+        }
+    }
     form {
         padding: 30px;
     }
-
-    svg {
-        width: 40vw !important;
-        height: 50vh !important;
+    #scatter {
+        svg {
+            width: 40vw;
+            height: 50vh;
+        }
     }
     // .tick {
     //     display: none;
