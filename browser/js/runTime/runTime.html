@@ -44,6 +44,11 @@
                     </div>
                     <div id="scatter" ng-show="graphData">
                     </div>
+                    <div >
+                    <ul>
+                      <li ng-repeat="row in tableData">{{row.funcs[0].name}} is {{(row.funcs[0].hz/row.funcs[1].hz).toFixed(2)}}x faster than {{row.funcs[1].name}} on {{row.input}}</li>
+                    </ul>
+                    </div>
                     <form style="margin-left: 1em;" name="runTimeForm" ng-show="!graphData" ng-submit="submit(runTime)">
                         <md-checkbox ng-model="compare" ng-click="func2Params = false">Compare</md-checkbox>
                         <md-input-container class="md-block">

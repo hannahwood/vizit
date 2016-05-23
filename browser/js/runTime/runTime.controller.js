@@ -1,43 +1,76 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
     $scope.runTime = {
-        code : `function sorter(arr){return arr.sort();}`,
-        compareCode : `function sorter2(arr){return arr.reverse().reverse().sort();}`,
-        func1 : "sorter",
-        func2 : "sorter2",
-        input : "[1,2,3,4],[1,2,3],[3,4,2,1,4]"
+        compareCode : `function builtinSort(arr){return arr.sort();}`,
+        code : `function mergeSort (arr) {
+  if (arr.length < 2) return arr;
+  var left = arr.slice(0,arr.length/2);
+  var right = arr.slice(arr.length/2);
+  return merge(mergeSort(left), mergeSort(right));
+}
+
+function merge (left, right) {
+  var merged = [];
+  var i = 0;
+  var j = 0;
+  while (i < left.length && j < right.length) {
+    merged.push(left[i] < right[j] ? left[i++] : right[j++]);
+  }
+  return merged.concat(left.slice(i), right.slice(j));
+}
+`,
+        func2 : "builtinSort",
+        func1 : "mergeSort",
+        input : "[9,5,6],[1,9,0,5,4],[3,4,2,1,4,5,0],[9,3,1,4,5,8,3,2,0],[9,2,7,5,3,7,8,9,0,0,7,3]"
     };
 
     $scope.makeGraphData = function() {
       debugger;
-        var inputSizes = $scope.results[0].input.map(param => typeof param === 'number' ? param : param.length)
+        var inputs  = $scope.results[0].input;
+        var numInput = typeof param === 'number';
+        var inputSizes = $scope.results[0].input.map(param => numInput ? param : param.length);
         var visData = [];
+        var tableData = [];
         var numFunc = $scope.results.length / inputSizes.length;
         var range = inputSizes.slice();
         range.sort((a, b) => a - b);
         $scope.xRange = [range[0] - 1, range[range.length - 1] + 1];
-        $scope.yRange = [Infinity, -Infinity];
+        $scope.yRange = [0, -Infinity];
 
         $scope.results.forEach(function(benchmark, i) {
+            debugger;
             var dataIndex = visData.findIndex(el => el.key === benchmark.name);
+            var tableIndex = tableData.findIndex(el => el.input === inputs[Math.floor(i / numFunc)]);
             if (dataIndex === -1) {
                 visData.push({ key: benchmark.name, values: [] });
                 dataIndex = visData.length - 1;
             }
+            if (tableIndex === -1) {
+                tableData.push({ input: inputs[Math.floor(i / numFunc)], funcs: [] });
+                tableIndex = tableData.length - 1;
+            }
             if (benchmark.stats.mean > $scope.yRange[1]) {
                 $scope.yRange[1] = benchmark.stats.mean;
             }
-            if (benchmark.stats.mean < $scope.yRange[0]) {
-                $scope.yRange[0] = benchmark.stats.mean;
-            }
+            // if (benchmark.stats.mean < $scope.yRange[0]) {
+            //     $scope.yRange[0] = benchmark.stats.mean;
+            // }
             visData[dataIndex].values.push({
                 'inputSize': inputSizes[Math.floor(i / numFunc)],
                 'runtime': (benchmark.stats.mean*1000)
             });
+            tableData[tableIndex].funcs.push(benchmark);
         });
+        debugger;
+        tableData.sort((a,b) => {
+            debugger;
+            var diff = numInput ? a.input - a.input : a.input.length - b.input.length;
+            return diff;
+        });
+        tableData.forEach(el => el.funcs.sort((a,b) => a.stats.mean - b.stats.mean));
         $scope.yRange[1] *= 1100;
-        $scope.yRange[0] *= 900;
         $scope.graphData = visData;
+        $scope.tableData = tableData;
     };
 
     // $scope.runTime = {
@@ -58,6 +91,7 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
     //     );
     // };
     $scope.submit = function(params) {
+        debugger;
         var data = angular.copy(params);
         $scope.progress = true;
         $scope.hasError = false;
@@ -143,7 +177,7 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
                 },
                 yAxis: {
                   axisLabelDistance: 20,
-                  ticks: 4,
+                  ticks: 5,
                     // tickPadding: 0,
                     axisLabel: 'time (milliseconds)',
                     tickFormat: d3.format('.2e')
@@ -152,6 +186,7 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
             }
         };
         var graph = angular.element(document.createElement('nvd3'));
+        graph[0].setAttribute('id', 'graph');
         graph[0].setAttribute('options', 'options');
         graph[0].setAttribute('data', 'graphData');
         graph[0].setAttribute('api', 'api');
@@ -161,6 +196,7 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
 
     $scope.removeGraph = function() {
         $scope.graphData = undefined;
+        $scope.tableData = undefined;
         var scatterDiv = document.getElementById("scatter");
         while (scatterDiv.firstChild) {
             scatterDiv.removeChild(scatterDiv.firstChild);

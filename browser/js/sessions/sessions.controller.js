@@ -12,8 +12,8 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
         $scope.codes.forEach(function (c) {
           if (c.isOpen && c._id !== id) {
             c.isOpen = false;
-          }
-        })
+        }
+    })
         var index = $scope.codes.map(e => e._id).indexOf(id);
         $scope.codes[index].isOpen = !$scope.codes[index].isOpen;
     };
@@ -25,29 +25,45 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
         })
     }
 
+    $scope.showDifference = function (current,revisions){
+        var previous = revisions[revisions.indexOf(current) ? revisions.indexOf(current)-1 : 0].content;
+        current = current.content;
+        $scope.difference = [];
+        var diff = JsDiff.diffTrimmedLines(current, previous);
+        var count = 0;
+        diff.forEach(function(part){
+            count += part.count 
+            if(part.added || part.removed){
+                $scope.difference.push({line:count, content: part.value, action: part.added ? 'added' : 'removed'});
+                if(part.removed) count -= 1
+            }
+        })
+        console.log($scope.difference)
+    }
+
     var originatorEv;
     $scope.openMenu = function($mdOpenMenu, ev) {
       originatorEv = ev;
       $mdOpenMenu(ev);
-    };
+  };
 
-    $scope.openEditDialog = function($event, codeInfo, index) {
+  $scope.openEditDialog = function($event, codeInfo, index) {
       $mdDialog.show({
         templateUrl: 'js/sessions/edit.html',
         controller: 'EditCtrl',
         clickOutsideToClose: true,
         locals: {code: codeInfo},
         targetEvent: $event
-      })
+    })
       .then(function (updatedCode) {
         $scope.codes[index] = updatedCode;
-      })
-    };
+    })
+  };
 
 });
 
 app.filter('timefromnow', function(moment) {
-        return function(input) {
-            return moment(input).fromNow()
-        }
-    });
+    return function(input) {
+        return moment(input).fromNow()
+    }
+});
