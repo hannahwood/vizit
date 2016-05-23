@@ -10,8 +10,8 @@
 FROM node:6
 MAINTAINER Jason Unger <jasonscottunger@gmail.com>
 
-RUN mkdir /tmp/javascript
-WORKDIR -p /tmp/javascript
+RUN mkdir -p /tmp/javascript
+WORKDIR /tmp/javascript
 
 COPY ptjavascript/package.json /tmp/javascript
 RUN npm install
