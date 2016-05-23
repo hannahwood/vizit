@@ -9,6 +9,7 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
     };
 
     $scope.makeGraphData = function() {
+      debugger;
         var inputSizes = $scope.results[0].input.map(param => typeof param === 'number' ? param : param.length)
         var visData = [];
         var numFunc = $scope.results.length / inputSizes.length;
@@ -25,7 +26,8 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
             }
             if (benchmark.stats.mean > $scope.yRange[1]) {
                 $scope.yRange[1] = benchmark.stats.mean;
-            } else if (benchmark.stats.mean < $scope.yRange[0]) {
+            }
+            if (benchmark.stats.mean < $scope.yRange[0]) {
                 $scope.yRange[0] = benchmark.stats.mean;
             }
             visData[dataIndex].values.push({
@@ -115,13 +117,14 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
                //    "unzoomEventType":"dblclick.zoom"
                // },
                // interactive: true,
+               showLegend: false,
                 margin: {
-                    top: 100,
-                    left: 100
+                    // top: 100,
+                    left: 130
                 },
                 type: 'scatterChart',
                 x: function(d) {
-                    return (d.inputSize);
+                    return d.inputSize;
                 },
                 y: function(d) {
                     return d.runtime;
