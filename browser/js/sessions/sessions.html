@@ -50,7 +50,7 @@
                     <md-button class="tiny" ng-click='showDifference(revision,code.revisions)'>
                     <ng-md-icon icon="compare_arrows" size="14" ></ng-md-icon>
                     <md-tooltip md-direction="right">
-                      Toggle Difference
+                      {{current === revision ? 'Hide' : 'Show'}} Difference
                     </md-tooltip>
                     </md-button>
                     <ul style="list-style-type:none; font-family: courier, 'courier new', monospace;" ng-if='current === revision'>
