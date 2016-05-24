@@ -90,9 +90,6 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
     //     );
     // };
     $scope.submit = function(params) {
-        $scope.func1 = params.func1;
-        $scope.func2 = params.func2;
-        console.log(params)
         var data = angular.copy(params);
         $scope.progress = true;
         $scope.hasError = false;
@@ -100,6 +97,8 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
             delete data.compareCode;
             delete data.func2;
         }
+        $scope.func1 = data.func1 || null;
+        $scope.func2 = data.func2 || null;
         return RuntimeFactory.submit(data)
         .then(function(response) {
             if ($scope.compare) {
