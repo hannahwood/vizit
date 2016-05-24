@@ -26,16 +26,28 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
     }
 
     $scope.showDifference = function (current,revisions){
+        $scope.current = $scope.current === current ? null : current;
         var previous = revisions[revisions.indexOf(current) ? revisions.indexOf(current)-1 : 0].content;
         current = current.content;
+        console.log(current);
+        //console.log(previous)
+        debugger;
         $scope.difference = [];
-        var diff = JsDiff.diffTrimmedLines(current, previous);
+        var diff = JsDiff.diffLines(previous, current);
+        var place = diff[0].value.split('')
         var count = 0;
         diff.forEach(function(part){
-            count += part.count 
-            if(part.added || part.removed){
-                $scope.difference.push({line:count, content: part.value, action: part.added ? 'added' : 'removed'});
-                if(part.removed) count -= 1
+            if(part.added){
+                $scope.difference.push({line:count, content: "+ "+part.value, color: 'green'});
+                count += 1
+            } else if(part.removed){
+                $scope.difference.push({line:count, content: "- "+part.value, color: 'red'});
+            } else {
+                part.value.split('\n').forEach(line => {
+                    debugger;
+                    $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
+                    count++
+                })
             }
         })
         console.log($scope.difference)

@@ -129,7 +129,6 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
     };
 
     $scope.add = function() {
-        // debugger;
         $('#pyCodeOutputDiv').css({
             'max-height': 'calc(100vh - 500px)'
         });
@@ -160,14 +159,14 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
     // must be on keyUP to allow viz functions to run on keyDOWN
     function refreshKey(e) {
         if (e.keyCode == 37 || e.keyCode == 39) {
-            $scope.api.refresh();
+            //$scope.api.refresh();
         }
     }
     $("body").keyup(refreshKey);
 
     // re-render graph on clicks (for buttons)
     function refreshClick() {
-        $scope.api.refresh();
+        //$scope.api.refresh();
     }
     $("body").mouseup(refreshClick);
 

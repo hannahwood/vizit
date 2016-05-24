@@ -47,7 +47,10 @@
                   <div ng-repeat="revision in code.revisions | orderBy:'-date'" ng-if="code.isOpen">
                     <a ui-sref="revision({codeId: code._id, revisionNum: code.revisions.length-$index-1})">Revision {{code.revisions.length-$index}} - {{revision.date | timefromnow }}
                     </a>
-                    <!-- <md-button ng-click='showDifference(revision,code.revisions)'>Show Revisions</md-button> -->
+                    <md-button ng-click='showDifference(revision,code.revisions)'>Show Revisions</md-button>
+                    <ul style="list-style-type:none; font-family: courier, 'courier new', monospace;" ng-if='current === revision'>
+                      <li style="white-space:pre" ng-repeat='diff in difference' ng-style="{'color':diff.color}">{{diff.line}}    {{diff.content}}</li>
+                    </ul>
                   </div>
 
                 </div>
