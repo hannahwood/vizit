@@ -45,7 +45,7 @@
                     <div id="scatter" ng-show="graphData">
                     </div>
                     <div >
-                    <ul style="list-style-type:none; font-family: courier, 'courier new', monospace;">
+                    <ul ng-show="func2 !== null" style="list-style-type:none; font-family: courier, 'courier new', monospace;">
                       <li ng-repeat="row in tableData"><span ng-style="{'color':row.funcs[0].name === func1 ? '#268BD2' : '#D33682'}"><strong>{{row.funcs[0].name}}</strong></span> is <strong>{{(row.funcs[0].hz/row.funcs[1].hz).toFixed(2)}}x</strong> faster than <span ng-style="{'color':row.funcs[1].name === func1 ? '#268BD2' : '#D33682'}"><strong>{{row.funcs[1].name}}</strong></span> on {{row.input}}</li>
                     </ul>
                     </div>
