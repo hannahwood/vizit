@@ -26,7 +26,6 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
     }
 
     $scope.showDifference = function (current,revisions){
-        debugger;
         $scope.current = $scope.current === current ? null : current;
         var previous = revisions[revisions.indexOf(current) ? revisions.indexOf(current)-1 : 0].content;
         current = current.content;
