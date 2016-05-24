@@ -1,33 +1,35 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
     $scope.runTime = {
-        compareCode : `function builtinSort(arr){return arr.sort();}`,
-        code : `function mergeSort (arr) {
-  if (arr.length < 2) return arr;
-  var left = arr.slice(0,arr.length/2);
-  var right = arr.slice(arr.length/2);
-  return merge(mergeSort(left), mergeSort(right));
-}
-
-function merge (left, right) {
-  var merged = [];
-  var i = 0;
-  var j = 0;
-  while (i < left.length && j < right.length) {
-    merged.push(left[i] < right[j] ? left[i++] : right[j++]);
-  }
-  return merged.concat(left.slice(i), right.slice(j));
-}
-`,
-        func2 : "builtinSort",
-        func1 : "mergeSort",
-        input : "[9,5,6],[1,9,0,5,4],[3,4,2,1,4,5,0],[9,3,1,4,5,8,3,2,0],[9,2,7,5,3,7,8,9,0,0,7,3]"
+        compareCode : `function fibonacci(n) {
+            if(n <= 2) {
+                return 1;
+            } else {
+                return fibonacci(n - 1) + fibonacci(n - 2);
+            }
+        }`,
+        code : `function memFibonacci(n, cache) {
+            cache = cache || {};
+            if(cache[n]){
+                return cache[n];
+            } else {
+                if(n <= 2) {
+                    return 1;
+                } else {
+                    cache[n] = memFibonacci(n - 1, cache) + memFibonacci(n - 2, cache);
+                }    
+            }
+            return cache[n]
+        }`,
+        func2 : "fibonacci",
+        func1 : "memFibonacci",
+        input : "5,8,12,15"
     };
 
     $scope.makeGraphData = function() {
-      debugger;
+        debugger;
         var inputs  = $scope.results[0].input;
-        var numInput = typeof param === 'number';
+        var numInput = typeof  $scope.results[0].input[0] === 'number';
         var inputSizes = $scope.results[0].input.map(param => numInput ? param : param.length);
         var visData = [];
         var tableData = [];
@@ -38,7 +40,6 @@ function merge (left, right) {
         $scope.yRange = [0, -Infinity];
 
         $scope.results.forEach(function(benchmark, i) {
-            debugger;
             var dataIndex = visData.findIndex(el => el.key === benchmark.name);
             var tableIndex = tableData.findIndex(el => el.input === inputs[Math.floor(i / numFunc)]);
             if (dataIndex === -1) {
@@ -61,9 +62,7 @@ function merge (left, right) {
             });
             tableData[tableIndex].funcs.push(benchmark);
         });
-        debugger;
         tableData.sort((a,b) => {
-            debugger;
             var diff = numInput ? a.input - a.input : a.input.length - b.input.length;
             return diff;
         });
@@ -91,7 +90,9 @@ function merge (left, right) {
     //     );
     // };
     $scope.submit = function(params) {
-        debugger;
+        $scope.func1 = params.func1;
+        $scope.func2 = params.func2;
+        console.log(params)
         var data = angular.copy(params);
         $scope.progress = true;
         $scope.hasError = false;
@@ -100,27 +101,26 @@ function merge (left, right) {
             delete data.func2;
         }
         return RuntimeFactory.submit(data)
-            .then(function(response) {
-                console.log(response)
-                if ($scope.compare) {
+        .then(function(response) {
+            if ($scope.compare) {
                     //$scope.results = response.sort((a,b) => b.hz > a.hz)
                     $scope.results = response
                     $scope.makeGraphData();
                     $scope.add()
                         //$scope.text = $scope.results[0].name + " is " + ($scope.results[0].hz/$scope.results[1].hz).toFixed(2) + "x faster than " + $scope.results[1].name
-                } else {
-                    $scope.results = response
-                    $scope.makeGraphData();
-                    $scope.add()
+                    } else {
+                        $scope.results = response
+                        $scope.makeGraphData();
+                        $scope.add()
                         //$scope.text = $scope.results[0].name + " is running at a speed of " + $scope.results.reduce((a,b)=>a+b.hz,0) + " per second"
-                }
+                    }
                 // $scope.showAlert()
                 $scope.progress = false;
             })
-            .catch(function(err) {
-                $scope.hasError = true;
-                $scope.progress = false;
-            });
+        .catch(function(err) {
+            $scope.hasError = true;
+            $scope.progress = false;
+        });
     }
 
     $scope.func2Params = false;
@@ -152,7 +152,7 @@ function merge (left, right) {
                // },
                // interactive: true,
                showLegend: false,
-                margin: {
+               margin: {
                     // top: 100,
                     left: 130
                 },
@@ -172,7 +172,7 @@ function merge (left, right) {
                 xAxis: {
                   ticks: Math.min(10,$scope.xRange[1]-$scope.xRange[0]),
                   // tickPadding: 0,
-                    axisLabel: 'input size',
+                  axisLabel: 'input size',
                     //tickFormat: d3.format(',f')
                 },
                 yAxis: {
@@ -183,6 +183,7 @@ function merge (left, right) {
                     tickFormat: d3.format('.2e')
                 },
                 //color: $scope.colorFunction()
+                color:['#268BD2','#D33682']
             }
         };
         var graph = angular.element(document.createElement('nvd3'));

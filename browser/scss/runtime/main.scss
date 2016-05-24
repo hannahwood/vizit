@@ -33,6 +33,21 @@
         svg {
             width: 45vw !important;
             height: 50vh !important;
+            .nv-group {
+                &:hover {
+                    stroke-width: 8px;
+                    opacity: 1;
+                    stroke-opacity: 1;
+                }
+                
+            }
+            .nv-point {
+                stroke-width: 8px;
+                /*stroke: blue;*/
+                /*fill: blue;*/
+                fill-opacity: .5;
+                stroke-opacity: 0.5;
+            }
         }
     }
     // .tick {

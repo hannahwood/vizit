@@ -111,7 +111,6 @@ app.controller('VizCtrl', function($scope, $compile, VisualizeCodeFactory, AuthS
     };
 
     $scope.add = function() {
-        // debugger;
         $('#pyCodeOutputDiv').css({
             'max-height': 'calc(100vh - 500px)'
         });

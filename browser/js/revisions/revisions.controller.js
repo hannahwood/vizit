@@ -129,7 +129,6 @@ app.controller('RevisionCtrl', function ($scope, revision, code, CodeFactory, $s
     };
 
     $scope.add = function() {
-        // debugger;
         $('#pyCodeOutputDiv').css({
             'max-height': 'calc(100vh - 500px)'
         });

@@ -26,19 +26,37 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
     }
 
     $scope.showDifference = function (current,revisions){
+        $scope.current = $scope.current === current ? null : current;
         var previous = revisions[revisions.indexOf(current) ? revisions.indexOf(current)-1 : 0].content;
         current = current.content;
         $scope.difference = [];
-        var diff = JsDiff.diffTrimmedLines(current, previous);
+        var diff = JsDiff.diffLines(previous, current);
+        var place = diff[0].value.split('')
         var count = 0;
         diff.forEach(function(part){
-            count += part.count 
-            if(part.added || part.removed){
-                $scope.difference.push({line:count, content: part.value, action: part.added ? 'added' : 'removed'});
-                if(part.removed) count -= 1
+            if(part.added){
+                part.value.split('\n').forEach(line => {
+                    if(line.length){
+                        $scope.difference.push({line:count, content: "+ "+line, color: 'green'})
+                        count++
+                    }
+                })
+            } else if(part.removed){
+                part.value.split('\n').forEach(line => {
+                    if(line.length){
+                        $scope.difference.push({line:count, content: "- "+line, color: 'red'})
+                        count++
+                    }
+                })
+            } else {
+                part.value.split('\n').forEach(line => {
+                    if(line.length){
+                        $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
+                        count++
+                    }
+                })
             }
         })
-        console.log($scope.difference)
     }
 
     var originatorEv;
