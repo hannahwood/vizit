@@ -29,9 +29,6 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
         $scope.current = $scope.current === current ? null : current;
         var previous = revisions[revisions.indexOf(current) ? revisions.indexOf(current)-1 : 0].content;
         current = current.content;
-        console.log(current);
-        //console.log(previous)
-        debugger;
         $scope.difference = [];
         var diff = JsDiff.diffLines(previous, current);
         var place = diff[0].value.split('')
@@ -44,13 +41,11 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
                 $scope.difference.push({line:count, content: "- "+part.value, color: 'red'});
             } else {
                 part.value.split('\n').forEach(line => {
-                    debugger;
                     $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
                     count++
                 })
             }
         })
-        console.log($scope.difference)
     }
 
     var originatorEv;

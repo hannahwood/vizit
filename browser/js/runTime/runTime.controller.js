@@ -1,57 +1,58 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
     $scope.runTime = {
-        compareCode : `function builtinSort(arr){
-            return arr.sort();
+        compareCode : `function fibonacci(n) {
+            if(n <= 2) {
+                return 1;
+            } else {
+                return fibonacci(n - 1) + fibonacci(n - 2);
+            }
         }`,
-        code : `function mergeSort (arr) {
-          if (arr.length < 2) return arr;
-          var left = arr.slice(0,arr.length/2);
-          var right = arr.slice(arr.length/2);
-          return merge(mergeSort(left), mergeSort(right));
-      }
+        code : `function memFibonacci(n, cache) {
+            cache = cache || {};
+            if(cache[n]){
+                return cache[n];
+            } else {
+                if(n <= 2) {
+                    return 1;
+                } else {
+                    cache[n] = memFibonacci(n - 1, cache) + memFibonacci(n - 2, cache);
+                }    
+            }
+            return cache[n]
+        }`,
+        func2 : "fibonacci",
+        func1 : "memFibonacci",
+        input : "5,8,12,15"
+    };
 
-      function merge (left, right) {
-          var merged = [];
-          var i = 0;
-          var j = 0;
-          while (i < left.length && j < right.length) {
-            merged.push(left[i] < right[j] ? left[i++] : right[j++]);
-        }
-        return merged.concat(left.slice(i), right.slice(j));
-    }
-    `,
-    func2 : "builtinSort",
-    func1 : "mergeSort",
-    input : "[9,5,6],[1,9,0,5,4],[3,4,2,1,4,5,0],[9,3,1,4,5,8,3,2,0],[9,2,7,5,3,7,8,9,0,0,7,3]"
-};
+    $scope.makeGraphData = function() {
+        debugger;
+        var inputs  = $scope.results[0].input;
+        var numInput = typeof  $scope.results[0].input[0] === 'number';
+        var inputSizes = $scope.results[0].input.map(param => numInput ? param : param.length);
+        var visData = [];
+        var tableData = [];
+        var numFunc = $scope.results.length / inputSizes.length;
+        var range = inputSizes.slice();
+        range.sort((a, b) => a - b);
+        $scope.xRange = [range[0] - 1, range[range.length - 1] + 1];
+        $scope.yRange = [0, -Infinity];
 
-$scope.makeGraphData = function() {
-    var inputs  = $scope.results[0].input;
-    var numInput = typeof param === 'number';
-    var inputSizes = $scope.results[0].input.map(param => numInput ? param : param.length);
-    var visData = [];
-    var tableData = [];
-    var numFunc = $scope.results.length / inputSizes.length;
-    var range = inputSizes.slice();
-    range.sort((a, b) => a - b);
-    $scope.xRange = [range[0] - 1, range[range.length - 1] + 1];
-    $scope.yRange = [0, -Infinity];
-
-    $scope.results.forEach(function(benchmark, i) {
-        var dataIndex = visData.findIndex(el => el.key === benchmark.name);
-        var tableIndex = tableData.findIndex(el => el.input === inputs[Math.floor(i / numFunc)]);
-        if (dataIndex === -1) {
-            visData.push({ key: benchmark.name, values: [] });
-            dataIndex = visData.length - 1;
-        }
-        if (tableIndex === -1) {
-            tableData.push({ input: inputs[Math.floor(i / numFunc)], funcs: [] });
-            tableIndex = tableData.length - 1;
-        }
-        if (benchmark.stats.mean > $scope.yRange[1]) {
-            $scope.yRange[1] = benchmark.stats.mean;
-        }
+        $scope.results.forEach(function(benchmark, i) {
+            var dataIndex = visData.findIndex(el => el.key === benchmark.name);
+            var tableIndex = tableData.findIndex(el => el.input === inputs[Math.floor(i / numFunc)]);
+            if (dataIndex === -1) {
+                visData.push({ key: benchmark.name, values: [] });
+                dataIndex = visData.length - 1;
+            }
+            if (tableIndex === -1) {
+                tableData.push({ input: inputs[Math.floor(i / numFunc)], funcs: [] });
+                tableIndex = tableData.length - 1;
+            }
+            if (benchmark.stats.mean > $scope.yRange[1]) {
+                $scope.yRange[1] = benchmark.stats.mean;
+            }
             // if (benchmark.stats.mean < $scope.yRange[0]) {
             //     $scope.yRange[0] = benchmark.stats.mean;
             // }
@@ -61,15 +62,15 @@ $scope.makeGraphData = function() {
             });
             tableData[tableIndex].funcs.push(benchmark);
         });
-    tableData.sort((a,b) => {
-        var diff = numInput ? a.input - a.input : a.input.length - b.input.length;
-        return diff;
-    });
-    tableData.forEach(el => el.funcs.sort((a,b) => a.stats.mean - b.stats.mean));
-    $scope.yRange[1] *= 1100;
-    $scope.graphData = visData;
-    $scope.tableData = tableData;
-};
+        tableData.sort((a,b) => {
+            var diff = numInput ? a.input - a.input : a.input.length - b.input.length;
+            return diff;
+        });
+        tableData.forEach(el => el.funcs.sort((a,b) => a.stats.mean - b.stats.mean));
+        $scope.yRange[1] *= 1100;
+        $scope.graphData = visData;
+        $scope.tableData = tableData;
+    };
 
     // $scope.runTime = {
     //    func1Parameters: [{type: '', name: ''}],
@@ -89,7 +90,9 @@ $scope.makeGraphData = function() {
     //     );
     // };
     $scope.submit = function(params) {
-        debugger;
+        $scope.func1 = params.func1;
+        $scope.func2 = params.func2;
+        console.log(params)
         var data = angular.copy(params);
         $scope.progress = true;
         $scope.hasError = false;
@@ -99,7 +102,6 @@ $scope.makeGraphData = function() {
         }
         return RuntimeFactory.submit(data)
         .then(function(response) {
-            console.log(response)
             if ($scope.compare) {
                     //$scope.results = response.sort((a,b) => b.hz > a.hz)
                     $scope.results = response
@@ -181,6 +183,7 @@ $scope.makeGraphData = function() {
                     tickFormat: d3.format('.2e')
                 },
                 //color: $scope.colorFunction()
+                color:['#268BD2','#D33682']
             }
         };
         var graph = angular.element(document.createElement('nvd3'));
