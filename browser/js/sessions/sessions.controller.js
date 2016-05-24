@@ -26,6 +26,7 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
     }
 
     $scope.showDifference = function (current,revisions){
+        debugger;
         $scope.current = $scope.current === current ? null : current;
         var previous = revisions[revisions.indexOf(current) ? revisions.indexOf(current)-1 : 0].content;
         current = current.content;
@@ -35,14 +36,25 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
         var count = 0;
         diff.forEach(function(part){
             if(part.added){
-                $scope.difference.push({line:count, content: "+ "+part.value, color: 'green'});
-                count += 1
+                part.value.split('\n').forEach(line => {
+                    if(line.length){
+                        $scope.difference.push({line:count, content: "+ "+line, color: 'green'})
+                        count++
+                    }
+                })
             } else if(part.removed){
-                $scope.difference.push({line:count, content: "- "+part.value, color: 'red'});
+                part.value.split('\n').forEach(line => {
+                    if(line.length){
+                        $scope.difference.push({line:count, content: "- "+line, color: 'red'})
+                        count++
+                    }
+                })
             } else {
                 part.value.split('\n').forEach(line => {
-                    $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
-                    count++
+                    if(line.length){
+                        $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
+                        count++
+                    }
                 })
             }
         })
