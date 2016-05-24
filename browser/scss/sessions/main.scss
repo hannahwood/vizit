@@ -24,6 +24,10 @@ md-dialog {
     md-chips .md-chips {
         box-shadow: 0 0 !important;
     }
+    button.tiny.md-button {
+        padding: 0;
+        margin: 0;
+    }
     #container {
 
     max-width: 800px;
