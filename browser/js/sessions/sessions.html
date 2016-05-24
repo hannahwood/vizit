@@ -47,12 +47,10 @@
                   <div ng-repeat="revision in code.revisions | orderBy:'-date'" ng-if="code.isOpen">
                     <a ui-sref="revision({codeId: code._id, revisionNum: code.revisions.length-$index-1})">Revision {{code.revisions.length-$index}} - {{revision.date | timefromnow }}
                     </a>
-<!--                     <span class="item-metadata"> - {{difference | lowercase}}
-                    </span> -->
                     <md-button class="tiny" ng-click='showDifference(revision,code.revisions)'>
                     <ng-md-icon icon="compare_arrows" size="14" ></ng-md-icon>
                     <md-tooltip md-direction="right">
-                      See Difference
+                      {{current === revision ? 'Hide' : 'Show'}} Difference
                     </md-tooltip>
                     </md-button>
                     <ul style="list-style-type:none; font-family: courier, 'courier new', monospace;" ng-if='current === revision'>
