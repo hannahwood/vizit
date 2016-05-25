@@ -32,28 +32,23 @@ app.controller('SessionsController', function ($scope, code, $state, CodeFactory
         $scope.difference = [];
         var diff = JsDiff.diffLines(previous, current);
         var place = diff[0].value.split('')
-        var count = 0;
-        diff.forEach(function(part){
+        var count = 1;
+        diff.forEach(function(part,i){
+           var arr = part.value.split('\n')
+           if(i < diff.length-1) arr.pop()
             if(part.added){
-                part.value.split('\n').forEach(line => {
-                    if(line.length){
-                        $scope.difference.push({line:count, content: "+ "+line, color: 'green'})
-                        count++
-                    }
+                arr.forEach(line => {
+                    $scope.difference.push({line:count, content: "+ "+line, color: 'green'})
+                    count++
                 })
             } else if(part.removed){
-                part.value.split('\n').forEach(line => {
-                    if(line.length){
-                        $scope.difference.push({line:count, content: "- "+line, color: 'red'})
-                        count++
-                    }
+                arr.forEach(line => {
+                    $scope.difference.push({line:count, content: "- "+line, color: 'red'})
                 })
             } else {
-                part.value.split('\n').forEach(line => {
-                    if(line.length){
-                        $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
-                        count++
-                    }
+                arr.forEach(line => {
+                    $scope.difference.push({line:count, content: "  "+line, color: 'gray'})
+                    count++
                 })
             }
         })

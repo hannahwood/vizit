@@ -15,11 +15,11 @@
             md-menu-class="autocomplete-custom-template">
           <md-item-template>
             <span class="item-title">
-              <span md-highlight-text="searchText" md-highlight-flags="^i"> {{code.title ? code.title : code._id.slice(code_id.length-5, code_id.length)}} - </span>
+              <span md-highlight-text="searchText" md-highlight-flags="^i"> {{code.title ? code.title : code._id.slice(code_id.length-5, code_id.length)}} </span>
             </span>
             <span class="item-metadata">
-            <span ng-show="code.tags" md-highlight-text="searchText" md-highlight-flags="^i">
-                {{code.tags.join(", ")}}
+            <span ng-if="code.tags.length >=1" md-highlight-text="searchText" md-highlight-flags="^i">
+                 - {{code.tags.join(", ")}}
             </span>
             </span>
           </md-item-template>
@@ -47,7 +47,12 @@
                   <div ng-repeat="revision in code.revisions | orderBy:'-date'" ng-if="code.isOpen">
                     <a ui-sref="revision({codeId: code._id, revisionNum: code.revisions.length-$index-1})">Revision {{code.revisions.length-$index}} - {{revision.date | timefromnow }}
                     </a>
-                    <ng-md-icon icon="code" size="14" ng-click='showDifference(revision,code.revisions)'></ng-md-icon>
+                    <md-button class="tiny" ng-click='showDifference(revision,code.revisions)'>
+                    <ng-md-icon icon="compare_arrows" size="14" ></ng-md-icon>
+                    <md-tooltip md-direction="right">
+                      {{current === revision ? 'Hide' : 'Show'}} Difference
+                    </md-tooltip>
+                    </md-button>
                     <ul style="list-style-type:none; font-family: courier, 'courier new', monospace;" ng-if='current === revision'>
                       <li style="white-space:pre" ng-repeat='diff in difference' ng-style="{'color':diff.color}">{{diff.line}}    {{diff.content}}</li>
                     </ul>
