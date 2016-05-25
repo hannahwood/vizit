@@ -5,7 +5,7 @@ var User = mongoose.model('User');
 
 var expect = require('chai').expect;
 
-var dbURI = 'mongodb://localhost:27017/testingDB';
+var dbURI = 'mongodb://localhost:27017/vizitTest';
 var clearDB = require('mocha-mongoose')(dbURI);
 
 var supertest = require('supertest');

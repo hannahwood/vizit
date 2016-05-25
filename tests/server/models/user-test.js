@@ -1,4 +1,4 @@
-var dbURI = 'mongodb://localhost:27017/testingDB';
+var dbURI = 'mongodb://localhost:27017/vizitTest';
 var clearDB = require('mocha-mongoose')(dbURI);
 
 var sinon = require('sinon');
