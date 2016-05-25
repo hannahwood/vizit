@@ -1,15 +1,7 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
-    // $scope.runTime = {
-    //     compareCode : "",
-    //     code : "",
-    //     func2 : "",
-    //     func1 : "",
-    //     input : ""
-    // };
 
     $scope.makeGraphData = function() {
-        debugger;
         var inputs  = $scope.results[0].input;
         var numInput = typeof  $scope.results[0].input[0] === 'number';
         var inputSizes = $scope.results[0].input.map(param => numInput ? param : param.length);
