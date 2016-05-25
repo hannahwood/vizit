@@ -1,30 +1,12 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
-    $scope.runTime = {
-        compareCode : `function fibonacci(n) {
-            if(n <= 2) {
-                return 1;
-            } else {
-                return fibonacci(n - 1) + fibonacci(n - 2);
-            }
-        }`,
-        code : `function memFibonacci(n, cache) {
-            cache = cache || {};
-            if(cache[n]){
-                return cache[n];
-            } else {
-                if(n <= 2) {
-                    return 1;
-                } else {
-                    cache[n] = memFibonacci(n - 1, cache) + memFibonacci(n - 2, cache);
-                }    
-            }
-            return cache[n]
-        }`,
-        func2 : "fibonacci",
-        func1 : "memFibonacci",
-        input : "5,8,12,15"
-    };
+    // $scope.runTime = {
+    //     compareCode : "",
+    //     code : "",
+    //     func2 : "",
+    //     func1 : "",
+    //     input : ""
+    // };
 
     $scope.makeGraphData = function() {
         debugger;
@@ -36,7 +18,7 @@ app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, 
         var numFunc = $scope.results.length / inputSizes.length;
         var range = inputSizes.slice();
         range.sort((a, b) => a - b);
-        $scope.xRange = [range[0] - 1, range[range.length - 1] + 1];
+        $scope.xRange = [Math.floor(range[0] - 1),Math.ceil(range[range.length - 1] + 1)];
         $scope.yRange = [0, -Infinity];
 
         $scope.results.forEach(function(benchmark, i) {
