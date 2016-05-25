@@ -1,7 +1,7 @@
 {
-  "name": "FullstackGeneratedApp",
+  "name": "VIZIT",
   "version": "1.0.0",
-  "description": "A generated project at Fullstack Academy",
+  "description": "A set of educational tools used by developers to see what is happening in their JavaScript code.",
   "main": "server/start.js",
   "scripts": {
     "start": "nodemon --watch server -e js,html server/start.js",

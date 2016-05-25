@@ -20,4 +20,4 @@ var schema = new mongoose.Schema({
 
 
 
-mongoose.model('Code', schema);
+module.exports = mongoose.model('Code', schema);

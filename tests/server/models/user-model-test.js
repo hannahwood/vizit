@@ -3,12 +3,12 @@ var clearDB = require('mocha-mongoose')(dbURI);
 
 var sinon = require('sinon');
 var expect = require('chai').expect;
+var assert = require('chai').assert;
 var mongoose = require('mongoose');
 
-// Require in all models.
-require('../../../server/db/models');
-
+require('../../../server/db/models')
 var User = mongoose.model('User');
+var Code = mongoose.model('Code');
 
 describe('User model', function () {
 
@@ -125,12 +125,12 @@ describe('User model', function () {
             });
 
             it('should set user.salt to the generated salt', function (done) {
-               createUser().then(function (user) {
-                   var generatedSalt = saltSpy.getCall(0).returnValue;
-                   expect(user.salt).to.be.equal(generatedSalt);
-                   done();
-               });
-            });
+             createUser().then(function (user) {
+                 var generatedSalt = saltSpy.getCall(0).returnValue;
+                 expect(user.salt).to.be.equal(generatedSalt);
+                 done();
+             });
+         });
 
             it('should set user.password to the encrypted password', function (done) {
                 createUser().then(function (user) {
@@ -148,17 +148,77 @@ describe('User model', function () {
                 return User.create({ email: 'obama@gmail.com', password: 'potus' });
             };
 
-            it('should remove sensitive information from a user object', function () {
+            it('should remove sensitive information from a user object', function (done) {
                 createUser().then(function (user) {
                     var sanitizedUser = user.sanitize();
                     expect(user.password).to.be.ok;
                     expect(user.salt).to.be.ok;
                     expect(sanitizedUser.password).to.be.undefined;
                     expect(sanitizedUser.salt).to.be.undefined;
-                });
+                    done();
+                })
+                .catch(done);
             });
         });
 
     });
+
+describe('gmail checks', function () {
+    
+    var newUsers;
+
+    beforeEach('Create new users', function (done) {
+        User.create([{
+            email: 'Neil.Patrick.Harris@gmail.com',
+            password: 'Legendary123'
+        }, {
+            email: 'Barack.Obama@whitehouse.gov',
+            password: 'Obama2012'
+        }]).then(function (createdUsers) {
+            newUsers = createdUsers;
+            done()
+        })
+    })
+
+    it('should store emails as lowercase in the database', function () {
+        assert.notMatch(newUsers[0].email, /[A-Z]/, 'Email is not lowercase');
+        assert.notMatch(newUsers[1].email, /[A-Z]/, 'Email is not lowercase');
+    })
+
+    it('should modify gmail emails to remove periods', function () {
+        var emailNames = newUsers.map(function (user) {
+            return user.email.split('@')[0];
+        });
+        expect(emailNames[0]).to.not.include('.');
+        expect(emailNames[1]).to.include('.');
+    })
+})
+
+describe('gravatars', function () {
+
+    var createdUser;
+
+    beforeEach('Create a user', function (done) {
+        User.create({
+            email: 'Neil.Patrick.Harris@gmail.com',
+            password: 'Legendary123'
+        }).then(function (neil) {
+            createdUser = neil;
+            done();
+        })
+    })
+
+    it('should update the gravatar as the email changes', function (done) {
+        var orig = createdUser.gravatar;
+        createdUser.email = 'NPHisAWESOME@himym.com';
+        createdUser.save()
+        .then(function (updatedUser) {
+            expect(orig).to.not.equal(updatedUser.gravatar);
+            expect()
+            done();
+        })
+        .catch(done);
+    })
+})
 
 });

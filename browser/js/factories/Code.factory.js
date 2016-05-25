@@ -39,7 +39,7 @@ app.factory('CodeFactory', function ($http, $q) {
     }
 
     CodeFactory.updateCode = function(codeId, updateInfo){
-        return $http.put(`/api/code/${codeId}`, updateInfo)
+        return $http.put('/api/code/'+codeId, updateInfo)
         .then(res => res.data)
         .catch(rejectErr);
     }
