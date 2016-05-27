@@ -29,8 +29,8 @@
                     </div>
                     <div id="error" ng-if="hasError"><span class="glyphicon glyphicon-warning-sign"></span>{{ errorMessage }}</div>
                 </div>
-                <div ng-show="selection === 'edit'" class="examples edit">
-                    <div ng-if="examples">
+                <div class="examples edit">
+                    <div>
                         <h4>EXAMPLES:</h4>
                         <p ng-repeat="example in examples" ng-click="updateCode(example.code)">{{example.name}}</p>
                     </div>

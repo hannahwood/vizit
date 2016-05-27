@@ -1,5 +1,12 @@
-app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
+app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory,ExampleRuntimeCodeFactory) {
     $scope.compare = false;
+    $scope.formType = 'form';
+    $scope.examples = ExampleRuntimeCodeFactory.concat(ExampleRuntimeCodeFactory).concat(ExampleRuntimeCodeFactory);
+    console.log($scope.examples)
+    $scope.runTime = {
+       func1Parameters: [{type: '', name: ''}],
+       func2Parameters: [{type: '', name: ''}],
+    }
 
     $scope.makeGraphData = function() {
         var inputs  = $scope.results[0].input;
