@@ -25,11 +25,12 @@ vizit-logo {
 
 .button-container {
     z-index: 1;
-    margin-top: 10px;
+    // margin-top: 10px;
     padding-left: 13px;
     width: 100%;
+    height: 0;
     .tools {
-        margin: 50px 5px 2px 5px;
+        // margin: 50px 5px 2px 5px;
         min-height: 25px !important;
         background-color: #E8E8E8;
         box-shadow: 1px 1px 1px $shadow;
@@ -42,9 +43,12 @@ vizit-logo {
             background-color: #E8E8E8;
         }
     }
+    .edit {
+        top: 52px;
+    }
     .viz, .save {
         left: calc(70vw - 175px);
-        top: calc(100vh - 210px);
+        top: calc(100vh - 155px);
         width: 150px;
         z-index: 1;
         line-height: 3;

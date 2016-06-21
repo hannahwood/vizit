@@ -1,6 +1,6 @@
 <section id="visualize">
     <div class="button-container fixed">
-        <md-button class="tools" ng-show="selection === 'visualize'" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"><ng-md-icon icon="keyboard_backspace" size="12" style="fill: black"></ng-md-icon>    Edit Your Code</md-button>
+        <md-button class="tools edit" ng-show="selection === 'visualize'" ng-class="{'active': selection === 'edit'}" ng-click="set('edit')"><ng-md-icon icon="keyboard_backspace" size="12" style="fill: black"></ng-md-icon>    Edit Your Code</md-button>
         <md-button class="tools viz" ng-disabled="progress"  ng-show="selection === 'edit'" ng-class="{'active': selection === 'visualize'}" ng-click="submitCode(code);" layout-align="space-around">
             <span ng-hide="progress">Visualize</span>
             <span ng-show="progress">Calculating...</span>
