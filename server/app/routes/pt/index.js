@@ -33,7 +33,7 @@ var util = require('util');
 var router = require('express')();
 module.exports = router;
 
-var TIMEOUT_SECS = 3;
+var TIMEOUT_SECS = 5;
 
 router.post('/exec_js', execHandler);
 
