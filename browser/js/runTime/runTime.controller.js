@@ -1,5 +1,6 @@
 app.controller('RunTimeCtrl', function($scope, $rootScope, $mdDialog, $compile, RuntimeFactory) {
     $scope.compare = false;
+    $scope.code1 = "//asdkjahsdkjadaksj";
 
     $scope.makeGraphData = function() {
         var inputs  = $scope.results[0].input;
