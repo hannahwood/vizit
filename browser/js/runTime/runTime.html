@@ -4,7 +4,7 @@
         <div layout="row" layout-xs="column">
             <div flex>
                 <!-- <div class='#popupContainer'></div> -->
-                <div class="runtimeAce" ng-model="runTime.code" ui-ace="{
+                <div class="runtimeAce" ng-model="code1" ui-ace="{
                require: ['ace/ext/language_tools'],
                useWrapMode : true,
                splitMode: true,
@@ -19,7 +19,7 @@
                }
             }" ng-class="{dualAce: compare}">
                 </div>
-                <div ng-model="runTime.compareCode" ui-ace="{
+                <div ng-model="code2" ui-ace="{
                require: ['ace/ext/language_tools'],
                useWrapMode : true,
                splitMode: true,
@@ -110,6 +110,7 @@
                             </md-button>
                         </div>
                     </form>
+                    <div>EXAMPLES:</div>
                 </div>
             </div>
         </div>
